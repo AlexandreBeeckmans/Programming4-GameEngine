@@ -23,6 +23,8 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+
+
 	private:
 		Transform m_transform{};
 
