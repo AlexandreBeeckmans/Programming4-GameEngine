@@ -3,9 +3,14 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
+#include <iostream>
+
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update(){}
+void dae::GameObject::Update(const float deltaTime)
+{
+	std::cout << deltaTime << std::endl;
+}
 
 
 void dae::GameObject::Render() const
