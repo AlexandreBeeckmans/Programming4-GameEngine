@@ -1,6 +1,7 @@
 #pragma once
 class BaseComponent
 {
+public:
 	virtual void Update(const float deltaTime) = 0;
 
 	BaseComponent() = default;

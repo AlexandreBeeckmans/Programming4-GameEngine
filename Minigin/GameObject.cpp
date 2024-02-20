@@ -5,11 +5,15 @@
 
 #include <iostream>
 
+
 dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update(const float deltaTime)
 {
-	std::cout << deltaTime << std::endl;
+	for (auto& pComp : m_pComponents)
+	{
+		pComp->Update(deltaTime);
+	}
 }
 
 

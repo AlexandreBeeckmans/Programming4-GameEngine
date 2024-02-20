@@ -1,7 +1,12 @@
 #include "Scene.h"
-#include "GameObject.h"
+#include "TextObject.h"
 
 #include <algorithm>
+#include <iostream>
+#include "FPS.h"
+
+#include <sstream>
+#include <iomanip>
 
 using namespace dae;
 
@@ -31,6 +36,18 @@ void Scene::Update(const float deltaTime)
 	for(auto& object : m_objects)
 	{
 		object->Update(deltaTime);
+
+		if (object->HasComponent<FPSComponent>())
+		{
+			FPSComponent* fpsComp{ dynamic_cast<FPSComponent*>(object->GetComponent<FPSComponent>()) };
+
+			std::stringstream stream;
+			stream << std::fixed << std::setprecision(1) << fpsComp->GetFPS();
+
+			std::string fpsString{ stream.str() + "FPS"};
+
+			dynamic_cast<TextObject*>(object.get())->SetText(fpsString);
+		}
 	}
 }
 

@@ -12,7 +12,7 @@
 
 #include <chrono>
 #define MS_PER_FRAME 8
-#define FIXED_TIME_STEP 0.5f
+#define FIXED_TIME_STEP 0.25f
 
 #include <thread>
 
@@ -107,13 +107,17 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		//Future Implementation of fixedUpdate
 		//(not needed yet)
 		// 
-		//while (lag >= FIXED_TIME_STEP)
-		//{
-		//	/*scene.fixedUpdate(FIXED_TIME_STEP);
-		//	lag -= FIXED_TIME_STEP;*/
-		//}
+		while (lag >= FIXED_TIME_STEP)
+		{
+			//scene.fixedUpdate(FIXED_TIME_STEP);
 
-		sceneManager.Update(deltaTime);
+			sceneManager.Update(deltaTime);
+			lag -= FIXED_TIME_STEP;
+		}
+
+		//sceneManager.Update(deltaTime);
+
+		//sceneManager.Render();
 		renderer.Render();
 
 		const auto sleepTime{ currentTime + std::chrono::milliseconds(MS_PER_FRAME) - std::chrono::high_resolution_clock::now() };
