@@ -18,6 +18,11 @@ dae::TextComponent::TextComponent(GameObject* pGameObject, const std::string& te
 	InitTexture();
 }
 
+dae::TextComponent::~TextComponent()
+{
+	Renderer::GetInstance();
+}
+
 void dae::TextComponent::Update(const float deltaTime)
 {
 	std::cout << "Text Component Update : " << deltaTime << std::endl;
@@ -53,5 +58,5 @@ void dae::TextComponent::InitTexture()
 	SDL_FreeSurface(surf);
 
 	m_pTextTexture = std::make_shared<Texture2D>(texture);
-	m_pParent->SetTexture(m_pTextTexture);
+	//m_pParent->SetTexture(m_pTextTexture);
 }

@@ -17,8 +17,8 @@ namespace dae
 		virtual void Update(const float deltaTime);
 		virtual void Render() const;
 
-		void SetTexture(const std::string& filename);
-		void SetTexture(std::shared_ptr<Texture2D> texture);
+		//void SetTexture(const std::string& filename);
+		//void SetTexture(std::shared_ptr<Texture2D> texture);
 
 		void SetPosition(float x, float y);
 
@@ -46,16 +46,6 @@ namespace dae
 		template<typename TComponent>
 		void RemoveComponent()
 		{
-			//first raw implementation
-			/*for (auto& component : m_pComponents)
-			{
-				if (dynamic_cast<TComponent*>(component.get()))
-				{
-					std::erase()
-				}
-			}*/
-
-
 			//second c++ stdandard implementation
 
 			std::erase_if(m_pComponents, [](std::unique_ptr<dae::BaseComponent>& component) 
@@ -96,9 +86,6 @@ namespace dae
 
 	private:
 		Transform m_transform{};
-
-		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_texture{};
 		std::vector<std::unique_ptr<BaseComponent>>m_pComponents{};
 	};
 }
