@@ -15,6 +15,7 @@ glm::ivec2 dae::Texture2D::GetSize() const
 
 SDL_Texture* dae::Texture2D::GetSDLTexture() const
 {
+	if (!this) return nullptr;
 	return m_texture;
 }
 

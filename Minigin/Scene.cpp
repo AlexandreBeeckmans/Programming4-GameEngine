@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include "FPS.h"
+#include "TextComponent.h"
 
 #include <sstream>
 #include <iomanip>
@@ -37,16 +38,16 @@ void Scene::Update(const float deltaTime)
 	{
 		object->Update(deltaTime);
 
-		if (object->HasComponent<FPSComponent>())
+		if (object->HasComponent<FPSComponent>() && object->HasComponent<TextComponent>())
 		{
 			FPSComponent* fpsComp{ dynamic_cast<FPSComponent*>(object->GetComponent<FPSComponent>()) };
+			TextComponent* pTextComp{ dynamic_cast<TextComponent*>(object->GetComponent<TextComponent>()) };
 
 			std::stringstream stream;
 			stream << std::fixed << std::setprecision(1) << fpsComp->GetFPS();
 
 			std::string fpsString{ stream.str() + "FPS"};
-
-			dynamic_cast<TextObject*>(object.get())->SetText(fpsString);
+			pTextComp->SetText(fpsString);
 		}
 	}
 }

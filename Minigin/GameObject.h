@@ -4,6 +4,7 @@
 
 #include<vector>
 #include "BaseComponent.h"
+#include <string>
 
 namespace dae
 {
@@ -17,7 +18,11 @@ namespace dae
 		virtual void Render() const;
 
 		void SetTexture(const std::string& filename);
+		void SetTexture(std::shared_ptr<Texture2D> texture);
+
 		void SetPosition(float x, float y);
+
+		auto GetPosition() const { return m_transform.GetPosition(); };
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -25,6 +30,12 @@ namespace dae
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
+
+		template<typename TComponent>
+		void AddComponent(TComponent componentToAdd)
+		{
+			m_pComponents.push_back(std::make_unique<TComponent>(componentToAdd));
+		}
 
 		template<typename TComponent>
 		void AddComponent()
