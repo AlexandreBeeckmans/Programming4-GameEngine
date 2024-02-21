@@ -6,8 +6,6 @@
 #include <iostream>
 
 
-dae::GameObject::~GameObject() = default;
-
 void dae::GameObject::Update(const float deltaTime)
 {
 	for (auto& pComp : m_pComponents)

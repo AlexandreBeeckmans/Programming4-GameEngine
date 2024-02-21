@@ -7,7 +7,7 @@ namespace dae
 	{
 	public:
 		virtual void Update(const float deltaTime) = 0;
-		virtual void Render()
+		virtual void Render() const
 		{
 
 		}
@@ -15,9 +15,9 @@ namespace dae
 		BaseComponent(GameObject* m_pParent);
 		virtual ~BaseComponent() = default;
 		BaseComponent(const BaseComponent& other) = default;
-		BaseComponent(BaseComponent&& other) = delete;
-		BaseComponent& operator=(const BaseComponent& other) = delete;
-		BaseComponent& operator=(BaseComponent&& other) = delete;
+		BaseComponent(BaseComponent&& other) = default;
+		BaseComponent& operator=(const BaseComponent& other) = default;
+		BaseComponent& operator=(BaseComponent&& other) = default;
 
 	protected:
 		dae::GameObject* m_pParent{};

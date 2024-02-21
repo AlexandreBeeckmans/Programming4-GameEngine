@@ -37,18 +37,6 @@ void Scene::Update(const float deltaTime)
 	for(auto& object : m_objects)
 	{
 		object->Update(deltaTime);
-
-		if (object->HasComponent<FPSComponent>() && object->HasComponent<TextComponent>())
-		{
-			FPSComponent* fpsComp{ dynamic_cast<FPSComponent*>(object->GetComponent<FPSComponent>()) };
-			TextComponent* pTextComp{ dynamic_cast<TextComponent*>(object->GetComponent<TextComponent>()) };
-
-			std::stringstream stream;
-			stream << std::fixed << std::setprecision(1) << fpsComp->GetFPS();
-
-			std::string fpsString{ stream.str() + "FPS"};
-			pTextComp->SetText(fpsString);
-		}
 	}
 }
 

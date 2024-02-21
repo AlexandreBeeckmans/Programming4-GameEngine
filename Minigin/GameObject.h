@@ -25,7 +25,7 @@ namespace dae
 		auto GetPosition() const { return m_transform.GetPosition(); };
 
 		GameObject() = default;
-		virtual ~GameObject();
+		virtual ~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;

@@ -19,7 +19,7 @@ namespace dae
 		~TextComponent() = default;
 
 		virtual void Update(const float deltaTime) override;
-		virtual void Render() override;
+		virtual void Render() const override;
 
 		void SetText(const std::string& text);
 
