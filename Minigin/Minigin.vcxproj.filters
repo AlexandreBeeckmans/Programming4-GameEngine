@@ -63,6 +63,9 @@
     <ClInclude Include="RenderFPSComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ImageComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -111,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderFPSComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
