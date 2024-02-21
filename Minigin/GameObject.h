@@ -44,6 +44,27 @@ namespace dae
 		}
 
 		template<typename TComponent>
+		void RemoveComponent()
+		{
+			//first raw implementation
+			/*for (auto& component : m_pComponents)
+			{
+				if (dynamic_cast<TComponent*>(component.get()))
+				{
+					std::erase()
+				}
+			}*/
+
+
+			//second c++ stdandard implementation
+
+			std::erase_if(m_pComponents, [](std::unique_ptr<dae::BaseComponent>& component) 
+											{ 
+												return dynamic_cast<TComponent*>(component.get());
+											});
+		}
+
+		template<typename TComponent>
 		bool HasComponent()
 		{
 			for (auto& comp : m_pComponents)
