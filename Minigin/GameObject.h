@@ -17,9 +17,6 @@ namespace dae
 		virtual void Update(const float deltaTime);
 		virtual void Render() const;
 
-		//void SetTexture(const std::string& filename);
-		//void SetTexture(std::shared_ptr<Texture2D> texture);
-
 		void SetPosition(float x, float y);
 
 		auto GetPosition() const { return m_transform.GetPosition(); };
