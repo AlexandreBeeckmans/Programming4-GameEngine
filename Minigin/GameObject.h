@@ -3,14 +3,13 @@
 #include "Transform.h"
 
 #include<vector>
+#include<algorithm>
+
 #include "BaseComponent.h"
 #include <string>
 
 namespace dae
 {
-	class Texture2D;
-
-	// todo: this should become final.
 	class GameObject final
 	{
 	public:
@@ -31,21 +30,19 @@ namespace dae
 		template<typename TComponent>
 		void AddComponent(TComponent componentToAdd)
 		{
-			m_pComponents.push_back(std::make_unique<TComponent>(componentToAdd));
+			m_pComponents.push_back(std::make_shared<TComponent>(componentToAdd));
 		}
 
 		template<typename TComponent>
 		void AddComponent()
 		{
-			m_pComponents.push_back(std::make_unique<TComponent>());
+			m_pComponents.push_back(std::make_shared<TComponent>());
 		}
 
 		template<typename TComponent>
 		void RemoveComponent()
 		{
-			//second c++ stdandard implementation
-
-			std::erase_if(m_pComponents, [](std::unique_ptr<dae::BaseComponent>& component) 
+			std::erase_if(m_pComponents, [](std::shared_ptr<dae::BaseComponent>& component) 
 											{ 
 												return dynamic_cast<TComponent*>(component.get());
 											});
@@ -54,35 +51,30 @@ namespace dae
 		template<typename TComponent>
 		bool HasComponent()
 		{
-			for (auto& comp : m_pComponents)
-			{
-				
-				if (typeid(*comp.get()) == typeid(TComponent))
-				{
-					return true;
-				}
-			}
-			return false;
+			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](std::shared_ptr<dae::BaseComponent>& component)
+																							{
+																								return dynamic_cast<TComponent*>(component.get());
+																							});
+
+			return (find != std::cend(m_pComponents));
 		}
 
 		template<typename TComponent>
 		BaseComponent* GetComponent()
 		{
-			for (auto& comp : m_pComponents)
-			{
+			if (!HasComponent<TComponent>()) return nullptr;
 
-				if (typeid(*comp.get()) == typeid(TComponent))
+			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](std::shared_ptr<dae::BaseComponent>& component)
 				{
-					return comp.get();
-				}
-			}
-			return nullptr;
+					return dynamic_cast<TComponent*>(component.get());
+				});
+			return *find;
 		}
 
 
 
 	private:
 		Transform m_transform{};
-		std::vector<std::unique_ptr<BaseComponent>>m_pComponents{};
+		std::vector<std::shared_ptr<BaseComponent>>m_pComponents{};
 	};
 }

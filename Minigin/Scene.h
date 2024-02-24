@@ -15,7 +15,7 @@ namespace dae
 		void Update(const float deltaTime);
 		void Render() const;
 
-		~Scene();
+		~Scene() = default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
@@ -29,5 +29,4 @@ namespace dae
 
 		static unsigned int m_idCounter; 
 	};
-
 }

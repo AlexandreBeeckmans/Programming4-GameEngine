@@ -1,5 +1,5 @@
 #include "Scene.h"
-#include "TextObject.h"
+#include "GameObject.h"
 
 #include <algorithm>
 #include <iostream>
@@ -14,8 +14,6 @@ using namespace dae;
 unsigned int Scene::m_idCounter = 0;
 
 Scene::Scene(const std::string& name) : m_name(name) {}
-
-Scene::~Scene() = default;
 
 void Scene::Add(std::shared_ptr<GameObject> object)
 {
