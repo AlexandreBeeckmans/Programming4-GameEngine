@@ -20,7 +20,6 @@ namespace dae
 		ImageComponent& operator=(const ImageComponent& other) = default;
 		ImageComponent& operator=(ImageComponent&& other) = default;
 
-		void virtual Update(const float deltaTime) override;
 		void virtual Render() const override;
 
 	private:

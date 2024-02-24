@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "Time.h"
 
 #include <chrono>
 #define MS_PER_FRAME 8
@@ -88,6 +89,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& time{ Time::GetInstance() };
 
 	// todo: this update loop could use some work.
 	bool doContinue = true;
@@ -100,22 +102,20 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		const float deltaTime{ std::chrono::duration<float>(currentTime - lastTime).count() };
 		lastTime = currentTime;
 		lag += deltaTime;
+		time.Update(deltaTime);
 
 		doContinue = input.ProcessInput();
 
-		//Future Implementation of fixedUpdate
-		//(not needed yet)
-		// 
-		while (lag >= FIXED_TIME_STEP)
+		while (lag >= time.GetFixedStep())
 		{
-			//scene.fixedUpdate(FIXED_TIME_STEP);
-			lag -= FIXED_TIME_STEP;
+			sceneManager.FixedUpdate();
+			lag -= time.GetFixedStep();
 		}
 
-		sceneManager.Update(deltaTime);
+		sceneManager.Update();
 		renderer.Render();
 
-		const auto sleepTime{ currentTime + std::chrono::milliseconds(MS_PER_FRAME) - std::chrono::high_resolution_clock::now() };
+		const auto sleepTime{ currentTime + std::chrono::milliseconds(time.GetMsPerFrame()) - std::chrono::high_resolution_clock::now() };
 		std::this_thread::sleep_for(sleepTime);
 	}
 }

@@ -13,7 +13,8 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		virtual void Update(const float deltaTime);
+		virtual void Update();
+		virtual void FixedUpdate();
 		virtual void Render() const;
 
 		void SetPosition(float x, float y);
@@ -67,7 +68,7 @@ namespace dae
 			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](std::shared_ptr<dae::BaseComponent>& component)
 				{
 					return dynamic_cast<TComponent*>(component.get());
-				});
+				}); 
 			return *find;
 		}
 

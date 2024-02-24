@@ -6,11 +6,9 @@ namespace dae
 	class BaseComponent
 	{
 	public:
-		virtual void Update(const float deltaTime) = 0;
-		virtual void Render() const
-		{
-
-		}
+		virtual void Update() {};
+		virtual void FixedUpdate() {};
+		virtual void Render() const {};
 
 		BaseComponent(GameObject* m_pParent);
 		virtual ~BaseComponent() = default;

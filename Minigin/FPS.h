@@ -19,7 +19,7 @@ namespace dae
 		FPSComponent& operator=(FPSComponent&& other) = default;
 
 
-		void Update(const float deltaTime) override;
+		void Update() override;
 		float GetFPS() { return m_Fps; };
 
 	private:

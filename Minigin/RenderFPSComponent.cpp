@@ -3,6 +3,8 @@
 #include "TextComponent.h"
 #include "ResourceManager.h"
 
+#include "Time.h"
+
 #include<sstream>
 #include <iomanip>
 
@@ -15,15 +17,15 @@ dae::RenderFPSComponent::RenderFPSComponent(GameObject* pGameObject) :
 	m_pTextComponent = std::make_shared<dae::TextComponent>(pGameObject, "0", font);
 }
 
-void dae::RenderFPSComponent::Update(const float deltaTime)
+void dae::RenderFPSComponent::Update()
 {
-	m_AccumulatedTime += deltaTime;
+	m_AccumulatedTime += Time::GetInstance().GetDeltaTime();
 
 	if (m_AccumulatedTime >= m_TimeToRender)
 	{
 		m_AccumulatedTime = 0.0f;
 
-		m_pFPSComponent->Update(deltaTime);
+		m_pFPSComponent->Update();
 
 		std::stringstream stream;
 		stream << std::fixed << std::setprecision(1) << m_pFPSComponent->GetFPS();

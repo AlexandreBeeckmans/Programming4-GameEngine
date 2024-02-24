@@ -13,12 +13,6 @@ dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& 
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filePath);
 }
 
-void dae::ImageComponent::Update(const float deltaTime)
-{
-	if(false)
-		std::cout << deltaTime << std::endl;
-}
-
 void dae::ImageComponent::Render() const
 {
 	const auto& pos = m_pParent->GetPosition();

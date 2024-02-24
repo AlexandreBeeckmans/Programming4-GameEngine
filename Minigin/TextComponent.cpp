@@ -23,10 +23,6 @@ dae::TextComponent::~TextComponent()
 	m_pTextTexture = nullptr;
 }
 
-void dae::TextComponent::Update(const float deltaTime)
-{
-	std::cout << "Text Component Update : " << deltaTime << std::endl;
-}
 void dae::TextComponent::Render() const
 {
 	if (m_pTextTexture != nullptr)

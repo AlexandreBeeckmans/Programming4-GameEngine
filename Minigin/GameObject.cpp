@@ -6,11 +6,19 @@
 #include <iostream>
 
 
-void dae::GameObject::Update(const float deltaTime)
+void dae::GameObject::Update()
 {
 	for (auto& pComp : m_pComponents)
 	{
-		pComp->Update(deltaTime);
+		pComp->Update();
+	}
+}
+
+void dae::GameObject::FixedUpdate()
+{
+	for (auto& pComp : m_pComponents)
+	{
+		pComp->FixedUpdate();
 	}
 }
 

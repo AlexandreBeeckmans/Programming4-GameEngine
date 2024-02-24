@@ -15,7 +15,7 @@ namespace dae
 
 		RenderFPSComponent(GameObject* pGameObject);
 		~RenderFPSComponent() = default;
-		void virtual Update(const float deltaTime) override;
+		void virtual Update() override;
 		void virtual Render() const override;
 
 		RenderFPSComponent(const RenderFPSComponent& other) = default;
