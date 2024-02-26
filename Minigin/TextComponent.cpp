@@ -10,7 +10,7 @@
 
 
 dae::TextComponent::TextComponent(GameObject* pGameObject, const std::string& text, std::shared_ptr<dae::Font> font):
-	BaseComponent::BaseComponent(pGameObject),
+	BaseComponent(pGameObject),
 	m_Text(text),
 	m_pFont(std::move(font)),
 	m_pTextTexture{nullptr}

@@ -10,8 +10,8 @@
 
 
 dae::RenderFPSComponent::RenderFPSComponent(GameObject* pGameObject) :
-	BaseComponent::BaseComponent(pGameObject),
-	m_pFPSComponent{ std::make_shared<dae::FPSComponent>(FPSComponent{pGameObject}) }
+	BaseComponent(pGameObject),
+	m_pFPSComponent{ std::make_shared<dae::FPSComponent>(pGameObject) }
 {
 	auto font{ dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36) };
 	m_pTextComponent = std::make_shared<dae::TextComponent>(pGameObject, "0", font);

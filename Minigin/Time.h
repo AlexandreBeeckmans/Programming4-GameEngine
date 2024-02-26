@@ -20,7 +20,7 @@ namespace dae
 		float m_AccumulatedTime{};
 
 		const float m_FixedTimeStep{ 0.25f };
-		const int m_MinMsPerFrame{ 17 };
+		const int m_MinMsPerFrame{ 1000/60 };
 
 	};
 }

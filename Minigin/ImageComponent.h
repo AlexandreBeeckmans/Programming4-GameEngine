@@ -21,7 +21,6 @@ namespace dae
 		ImageComponent& operator=(ImageComponent&& other) = default;
 
 		void virtual Render() const override;
-
 	private:
 		std::shared_ptr<Texture2D> m_pTexture{};
 		Transform m_RelativePosition{};

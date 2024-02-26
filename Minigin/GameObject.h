@@ -28,17 +28,17 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		template<typename TComponent>
-		void AddComponent(TComponent componentToAdd)
+		template<typename TComponent, typename ...Args>
+		void AddComponent(Args&&... args)
 		{
-			m_pComponents.push_back(std::make_shared<TComponent>(componentToAdd));
+			m_pComponents.push_back(std::make_shared<TComponent>(args...));
 		}
 
-		template<typename TComponent>
+		/*template<typename TComponent>
 		void AddComponent()
 		{
 			m_pComponents.push_back(std::make_shared<TComponent>());
-		}
+		}*/
 
 		template<typename TComponent>
 		void RemoveComponent()

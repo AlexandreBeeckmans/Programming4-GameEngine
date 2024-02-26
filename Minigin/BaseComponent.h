@@ -12,10 +12,10 @@ namespace dae
 
 		BaseComponent(GameObject* m_pParent);
 		virtual ~BaseComponent() = default;
-		BaseComponent(const BaseComponent& other) = default;
-		BaseComponent(BaseComponent&& other) = default;
-		BaseComponent& operator=(const BaseComponent& other) = default;
-		BaseComponent& operator=(BaseComponent&& other) = default;
+		BaseComponent(const BaseComponent& other) = delete;
+		BaseComponent(BaseComponent&& other) = delete;
+		BaseComponent& operator=(const BaseComponent& other) = delete;
+		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 	protected:
 		dae::GameObject* m_pParent{};
