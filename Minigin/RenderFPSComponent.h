@@ -1,22 +1,20 @@
 #pragma once
-#include "BaseComponent.h"
+#include "TextComponent.h"
 
 #include <memory>
 
 namespace dae
 {
 	class FPSComponent;
-	class TextComponent;
 
 
-	class RenderFPSComponent final : public BaseComponent
+	class RenderFPSComponent final : public TextComponent
 	{
 	public:
 
-		RenderFPSComponent(GameObject* pGameObject);
+		RenderFPSComponent(GameObject* pGameObject, std::shared_ptr<Font> pFont);
 		~RenderFPSComponent() = default;
 		void virtual Update() override;
-		void virtual Render() const override;
 
 		RenderFPSComponent(const RenderFPSComponent& other) = default;
 		RenderFPSComponent(RenderFPSComponent&& other) = default;
@@ -25,8 +23,7 @@ namespace dae
 
 
 	private:
-		std::shared_ptr<FPSComponent> m_pFPSComponent{};
-		std::shared_ptr<TextComponent> m_pTextComponent{};
+		FPSComponent* m_pFPSComponent{};
 
 		const float m_TimeToRender{ 0.5f };
 		float m_AccumulatedTime{ 0.4f };

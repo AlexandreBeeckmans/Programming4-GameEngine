@@ -12,20 +12,20 @@ namespace dae
 	class Texture2D;
 	class GameObject;
 
-	class TextComponent final : public BaseComponent
+	class TextComponent : public BaseComponent
 	{
 	public:
-		TextComponent(GameObject* pGameObject, const std::string& text, std::shared_ptr<Font> font);
+		TextComponent(GameObject* pGameObject, const std::string& text, std::shared_ptr<Font> pFont);
 		~TextComponent();
 
 		virtual void Render() const override;
 
 		void SetText(const std::string& text);
 
-		TextComponent(const TextComponent& other) = default;
-		TextComponent(TextComponent&& other) = default;
-		TextComponent& operator=(const TextComponent& other) = default;
-		TextComponent& operator=(TextComponent&& other) = default;
+		TextComponent(const TextComponent& other) = delete;
+		TextComponent(TextComponent&& other) = delete;
+		TextComponent& operator=(const TextComponent& other) = delete;
+		TextComponent& operator=(TextComponent&& other) = delete;
 
 	private:
 

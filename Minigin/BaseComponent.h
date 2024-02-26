@@ -21,7 +21,7 @@ namespace dae
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 	protected:
-		const GameObject* GetOwner() const;
+		GameObject* GetOwner() const;
 
 	private:
 		GameObject* m_pOwnerObject{};

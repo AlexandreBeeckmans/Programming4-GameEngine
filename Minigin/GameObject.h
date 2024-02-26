@@ -45,9 +45,9 @@ namespace dae
 		}
 
 		template<typename TComponent>
-		bool HasComponent()
+		bool HasComponent() const
 		{
-			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](std::shared_ptr<dae::BaseComponent>& component)
+			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](const std::shared_ptr<dae::BaseComponent>& component)
 																							{
 																								return dynamic_cast<TComponent*>(component.get());
 																							});
@@ -56,15 +56,18 @@ namespace dae
 		}
 
 		template<typename TComponent>
-		BaseComponent* GetComponent()
+		TComponent* GetComponent()
 		{
 			if (!HasComponent<TComponent>()) return nullptr;
 
-			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](std::shared_ptr<dae::BaseComponent>& component)
+
+
+			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](const std::shared_ptr<BaseComponent>& component)
 				{
 					return dynamic_cast<TComponent*>(component.get());
 				}); 
-			return *find;
+
+			return dynamic_cast<TComponent*>(find->get());
 		}
 
 

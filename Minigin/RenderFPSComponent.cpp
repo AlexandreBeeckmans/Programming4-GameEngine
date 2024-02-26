@@ -3,39 +3,39 @@
 #include "TextComponent.h"
 #include "ResourceManager.h"
 
+#include "GameObject.h"
+#include "Font.h"
+
 #include "Time.h"
 
 #include<sstream>
 #include <iomanip>
 
 
-dae::RenderFPSComponent::RenderFPSComponent(GameObject* pGameObject) :
-	BaseComponent(pGameObject),
-	m_pFPSComponent{ std::make_shared<dae::FPSComponent>(pGameObject) }
+dae::RenderFPSComponent::RenderFPSComponent(GameObject* pGameObject, std::shared_ptr<Font> pFont) :
+	TextComponent::TextComponent(pGameObject, "Hello", pFont)
 {
-	auto font{ dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36) };
-	m_pTextComponent = std::make_shared<dae::TextComponent>(pGameObject, "0", font);
+	if (!GetOwner()->HasComponent<FPSComponent>())
+	{
+		GetOwner()->AddComponent<FPSComponent>(pGameObject);
+	}
+
+	m_pFPSComponent = GetOwner()->GetComponent<FPSComponent>();
 }
 
 void dae::RenderFPSComponent::Update()
 {
+	if (!m_pFPSComponent) return;
 	m_AccumulatedTime += Time::GetInstance().GetDeltaTime();
 
 	if (m_AccumulatedTime >= m_TimeToRender)
 	{
 		m_AccumulatedTime = 0.0f;
 
-		m_pFPSComponent->Update();
-
 		std::stringstream stream;
-		stream << std::fixed << std::setprecision(1) << m_pFPSComponent->GetFPS();
+		stream << std::fixed << std::setprecision(1) << m_pFPSComponent->GetFPS() << "FPS";
 
-		std::string fpsString{ stream.str() + "FPS" };
-		m_pTextComponent->SetText(fpsString);
+		std::string fpsString{ stream.str() };
+		SetText(fpsString);
 	}
-}
-
-void dae::RenderFPSComponent::Render() const
-{
-	m_pTextComponent->Render();
 }
