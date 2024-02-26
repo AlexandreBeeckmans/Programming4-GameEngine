@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 
 namespace dae
 {
@@ -19,7 +21,10 @@ namespace dae
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 	protected:
-		dae::GameObject* m_pParent{};
+		const GameObject* GetOwner() const;
+
+	private:
+		GameObject* m_pOwnerObject{};
 	};
 }
 

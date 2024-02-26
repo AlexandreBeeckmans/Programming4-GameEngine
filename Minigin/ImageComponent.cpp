@@ -15,6 +15,6 @@ dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& 
 
 void dae::ImageComponent::Render() const
 {
-	const auto& pos = m_pParent->GetPosition();
+	const auto& pos = GetOwner()->GetPosition();
 	Renderer::GetInstance().RenderTexture(*m_pTexture.get(), pos.x + m_RelativePosition.GetPosition().x, pos.y + m_RelativePosition.GetPosition().y);
 }

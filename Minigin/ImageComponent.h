@@ -12,7 +12,7 @@ namespace dae
 	class ImageComponent final : public BaseComponent
 	{
 	public:
-		ImageComponent(GameObject* pGameObject, const std::string& filePath, const float relativeX, const float relativeY);
+		ImageComponent(GameObject*, const std::string& filePath, const float relativeX, const float relativeY);
 		~ImageComponent() { m_pTexture = nullptr; };
 
 		ImageComponent(const ImageComponent& other) = default;
