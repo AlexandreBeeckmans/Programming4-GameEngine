@@ -14,6 +14,7 @@ namespace dae
 
 		void Update();
 		void FixedUpdate();
+		void LateUpdate();
 		void Render() const;
 
 		~Scene() = default;

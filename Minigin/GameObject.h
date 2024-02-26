@@ -13,9 +13,10 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		virtual void Update();
-		virtual void FixedUpdate();
-		virtual void Render() const;
+		void Update();
+		void FixedUpdate();
+		void LateUpdate();
+		void Render() const;
 
 		void SetPosition(float x, float y);
 
@@ -33,12 +34,6 @@ namespace dae
 		{
 			m_pComponents.push_back(std::make_shared<TComponent>(args...));
 		}
-
-		/*template<typename TComponent>
-		void AddComponent()
-		{
-			m_pComponents.push_back(std::make_shared<TComponent>());
-		}*/
 
 		template<typename TComponent>
 		void RemoveComponent()

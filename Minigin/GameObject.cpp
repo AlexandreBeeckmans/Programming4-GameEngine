@@ -22,6 +22,14 @@ void dae::GameObject::FixedUpdate()
 	}
 }
 
+void dae::GameObject::LateUpdate()
+{
+	for (auto& pComp : m_pComponents)
+	{
+		pComp->LateUpdate();
+	}
+}
+
 
 void dae::GameObject::Render() const
 {
