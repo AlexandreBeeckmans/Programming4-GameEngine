@@ -17,6 +17,8 @@ namespace dae
 		void LateUpdate();
 		void Render() const;
 
+		void RemoveAllDeadComponent();
+
 		~Scene() = default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

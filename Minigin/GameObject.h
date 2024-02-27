@@ -29,6 +29,8 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		void RemoveAllDeadComponent();
+
 		template<typename TComponent, typename ...Args>
 		void AddComponent(Args&&... args)
 		{
@@ -38,10 +40,11 @@ namespace dae
 		template<typename TComponent>
 		void RemoveComponent()
 		{
-			std::erase_if(m_pComponents, [](std::shared_ptr<dae::BaseComponent>& component) 
-											{ 
-												return dynamic_cast<TComponent*>(component.get());
-											});
+			for (auto& component : m_pComponents)
+			{
+				if (dynamic_cast<TComponent*>(component.get()))
+					component->Kill();
+			}
 		}
 
 		template<typename TComponent>
