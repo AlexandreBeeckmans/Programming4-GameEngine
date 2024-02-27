@@ -17,7 +17,7 @@ dae::RenderFPSComponent::RenderFPSComponent(GameObject* pGameObject, std::shared
 {
 	if (!GetOwner()->HasComponent<FPSComponent>())
 	{
-		GetOwner()->AddComponent<FPSComponent>(pGameObject);
+		GetOwner()->AddComponent<FPSComponent>();
 	}
 
 	m_pFPSComponent = GetOwner()->GetComponent<FPSComponent>();

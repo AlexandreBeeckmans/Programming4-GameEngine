@@ -21,7 +21,7 @@ dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& 
 void dae::ImageComponent::Render() const
 {
 	if (!m_pTexture) return; 
-	const auto& pos = GetOwner()->GetPosition();
+	const auto& pos = GetOwner()->GetWorldPosition();
 	Renderer::GetInstance().RenderTexture(*m_pTexture.get(), pos.x + m_RelativePosition.GetPosition().x, pos.y + m_RelativePosition.GetPosition().y);
 }
 

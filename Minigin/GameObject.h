@@ -8,6 +8,8 @@
 #include "BaseComponent.h"
 #include <string>
 
+#include<glm/glm.hpp>
+
 namespace dae
 {
 	class GameObject final
@@ -19,8 +21,6 @@ namespace dae
 		void Render() const;
 
 		void SetPosition(float x, float y);
-
-		auto GetPosition() const { return m_transform.GetPosition(); };
 
 		GameObject() = default;
 		virtual ~GameObject() = default;
@@ -34,7 +34,7 @@ namespace dae
 		template<typename TComponent, typename ...Args>
 		void AddComponent(Args&&... args)
 		{
-			m_pComponents.push_back(std::make_shared<TComponent>(args...));
+			m_pComponents.push_back(std::make_shared<TComponent>(this, args...));
 		}
 
 		template<typename TComponent>
@@ -73,10 +73,36 @@ namespace dae
 			return dynamic_cast<TComponent*>(find->get());
 		}
 
+		GameObject* GetParent() const;
+		void SetParent(GameObject* pParent, const bool keepWorldPosition);
+		//int GetChildrenCount() const;
+		//GameObject* GetChildAt(const int index) const;
+
+
+		//Position
+		glm::vec3 GetLocalPosition() const;
+		glm::vec3 GetWorldPosition();
 
 
 	private:
 		Transform m_transform{};
 		std::vector<std::shared_ptr<BaseComponent>>m_pComponents{};
+
+
+
+		//Scenegraph
+		GameObject* m_pParent{nullptr};
+		std::vector<GameObject*> m_pChildren{};
+
+		void AddChild(GameObject* pChild);
+		void RemoveChild(GameObject* pChild);
+
+
+		void SetLocalPosition(const glm::vec3& pos);
+		void UpdateWorldPosition();
+		void SetPositionDirty();
+
+		bool m_IsPositionDirty{ false };
+		glm::vec3 m_WorldPosition{};
 	};
 }
