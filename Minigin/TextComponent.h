@@ -1,10 +1,7 @@
 #pragma once
-#include "BaseComponent.h"
+#include "ImageComponent.h"
 #include <string>
 #include <memory>
-
-
-//#include "Font.h"
 
 namespace dae
 {
@@ -12,13 +9,10 @@ namespace dae
 	class Texture2D;
 	class GameObject;
 
-	class TextComponent : public BaseComponent
+	class TextComponent : public ImageComponent
 	{
 	public:
 		TextComponent(GameObject* pGameObject, const std::string& text, std::shared_ptr<Font> pFont);
-		~TextComponent();
-
-		virtual void Render() const override;
 
 		void SetText(const std::string& text);
 
@@ -33,7 +27,6 @@ namespace dae
 
 		std::string m_Text{};
 		std::shared_ptr<Font> m_pFont{};
-		std::shared_ptr<Texture2D>m_pTextTexture{};
 	};
 }
 

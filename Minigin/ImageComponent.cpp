@@ -4,17 +4,28 @@
 #include "GameObject.h"
 #include "Texture2D.h"
 
-#include "iostream"
+#include <SDL_ttf.h>
 
 dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& filePath, const float relativeX, const float relativeY) :
 	BaseComponent::BaseComponent(pGameObject)
 {
 	m_RelativePosition.SetPosition(relativeX, relativeY, 0);
-	m_pTexture = ResourceManager::GetInstance().LoadTexture(filePath);
+
+	if (filePath.length() > 0)
+	{
+		m_pTexture = ResourceManager::GetInstance().LoadTexture(filePath);
+	}
+	
 }
 
 void dae::ImageComponent::Render() const
 {
 	const auto& pos = GetOwner()->GetPosition();
 	Renderer::GetInstance().RenderTexture(*m_pTexture.get(), pos.x + m_RelativePosition.GetPosition().x, pos.y + m_RelativePosition.GetPosition().y);
+}
+
+void dae::ImageComponent::SetTexture(SDL_Texture* pTexture)
+{
+	m_pTexture = nullptr;
+	m_pTexture = std::make_shared<Texture2D>(pTexture);
 }

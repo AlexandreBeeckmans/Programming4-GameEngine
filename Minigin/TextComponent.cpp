@@ -10,26 +10,11 @@
 
 
 dae::TextComponent::TextComponent(GameObject* pGameObject, const std::string& text, std::shared_ptr<Font> pFont):
-	BaseComponent(pGameObject),
+	ImageComponent(pGameObject),
 	m_Text(text),
-	m_pFont(std::move(pFont)),
-	m_pTextTexture{nullptr}
+	m_pFont(std::move(pFont))
 {
 	InitTexture();
-}
-
-dae::TextComponent::~TextComponent()
-{
-	m_pTextTexture = nullptr;
-}
-
-void dae::TextComponent::Render() const
-{
-	if (m_pTextTexture != nullptr)
-	{
-		const auto& pos = GetOwner()->GetPosition();
-		Renderer::GetInstance().RenderTexture(*m_pTextTexture, pos.x, pos.y);
-	}
 }
 
 void dae::TextComponent::SetText(const std::string& text)
@@ -53,5 +38,5 @@ void dae::TextComponent::InitTexture()
 	}
 	SDL_FreeSurface(surf);
 
-	m_pTextTexture = std::make_shared<Texture2D>(texture);
+	SetTexture(texture);
 }
