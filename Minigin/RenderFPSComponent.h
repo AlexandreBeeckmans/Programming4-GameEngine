@@ -26,7 +26,10 @@ namespace dae
 		FPSComponent* m_pFPSComponent{};
 
 		const float m_TimeToRender{ 0.5f };
-		float m_AccumulatedTime{ 0.4f };
+
+		float m_AccumulatedTime{ 0.0f };
+		float m_AccumulatedFPS{ 0.0f };
+		int m_IterationCount{ 0 };
 	};
 }
 

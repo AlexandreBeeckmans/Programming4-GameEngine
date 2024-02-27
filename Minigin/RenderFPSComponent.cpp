@@ -26,16 +26,24 @@ dae::RenderFPSComponent::RenderFPSComponent(GameObject* pGameObject, std::shared
 void dae::RenderFPSComponent::Update()
 {
 	if (!m_pFPSComponent) return;
+
+
+
+
 	m_AccumulatedTime += Time::GetInstance().GetDeltaTime();
+	m_AccumulatedFPS += m_pFPSComponent->GetFPS();
+	++m_IterationCount;
 
 	if (m_AccumulatedTime >= m_TimeToRender)
 	{
-		m_AccumulatedTime = 0.0f;
-
 		std::stringstream stream;
-		stream << std::fixed << std::setprecision(1) << m_pFPSComponent->GetFPS() << "FPS";
+		stream << std::fixed << std::setprecision(1) << m_AccumulatedFPS / m_IterationCount << "FPS";
 
 		std::string fpsString{ stream.str() };
 		SetText(fpsString);
+
+		m_AccumulatedTime = 0.0f;
+		m_AccumulatedFPS = 0.0f;
+		m_IterationCount = 0;
 	}
 }
