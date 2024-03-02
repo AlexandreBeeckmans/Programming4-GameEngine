@@ -20,7 +20,8 @@ namespace dae
 		void LateUpdate();
 		void Render() const;
 
-		void SetPosition(float x, float y);
+		void SetLocalPosition(float x, float y);
+		void SetLocalPosition(const glm::vec3& pos);
 
 		GameObject() = default;
 		virtual ~GameObject() = default;
@@ -74,9 +75,8 @@ namespace dae
 		}
 
 		GameObject* GetParent() const;
-		void SetParent(GameObject* pParent, const bool keepWorldPosition);
-		//int GetChildrenCount() const;
-		//GameObject* GetChildAt(const int index) const;
+		void SetParent(GameObject* pParent, const bool keepWorldPosition = false);
+		void DetachFromParent();
 
 
 		//Position
@@ -97,8 +97,8 @@ namespace dae
 		void AddChild(GameObject* pChild);
 		void RemoveChild(GameObject* pChild);
 
+		bool IsChild(GameObject* pParent) const;
 
-		void SetLocalPosition(const glm::vec3& pos);
 		void UpdateWorldPosition();
 		void SetPositionDirty();
 

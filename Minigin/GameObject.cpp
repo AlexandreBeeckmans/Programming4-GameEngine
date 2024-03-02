@@ -39,7 +39,7 @@ void dae::GameObject::Render() const
 	}
 }
 
-void dae::GameObject::SetPosition(float x, float y)
+void dae::GameObject::SetLocalPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
 	SetPositionDirty();
@@ -64,13 +64,20 @@ void dae::GameObject::RemoveAllDeadComponent()
 
 dae::GameObject* dae::GameObject::GetParent() const
 {
+	if (!m_pParent) return nullptr;
 	return m_pParent;
+}
+
+bool dae::GameObject::IsChild(GameObject* pParent) const
+{
+	if (pParent == nullptr) return false;
+	return pParent->GetParent() == this;
 }
 
 void dae::GameObject::SetParent(GameObject* pParent, const bool keepWorldPosition)
 {
 	//Check if valid
-	if (pParent == this || pParent == m_pParent || pParent->GetParent() == this) return;
+	if (pParent == this || pParent == m_pParent || IsChild(pParent) ) return;
 
 	if (pParent == nullptr)
 		SetLocalPosition(GetWorldPosition());
@@ -90,7 +97,12 @@ void dae::GameObject::SetParent(GameObject* pParent, const bool keepWorldPositio
 	m_pParent = pParent;
 
 	//Add himself to the new parent
-	pParent->AddChild(this);
+	if(pParent)
+		pParent->AddChild(this);
+}
+void dae::GameObject::DetachFromParent()
+{
+	SetParent(nullptr);
 }
 
 
