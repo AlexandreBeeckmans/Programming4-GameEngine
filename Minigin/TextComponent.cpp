@@ -4,15 +4,13 @@
 #include <stdexcept>
 #include <SDL_ttf.h>
 #include "Renderer.h"
-#include "Font.h"
-#include "Texture2D.h"
 #include "GameObject.h"
 
 
-dae::TextComponent::TextComponent(GameObject* pGameObject, const std::string& text, std::shared_ptr<Font> pFont):
+dae::TextComponent::TextComponent(GameObject* pGameObject, const std::string& text,const Font& font):
 	ImageComponent(pGameObject),
 	m_Text(text),
-	m_pFont(std::move(pFont))
+	m_pFont{std::make_unique<Font>(font)}
 {
 	InitTexture();
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include "Transform.h"
+#include "Texture2D.h"
 
 #include <memory>
 #include <string>
@@ -9,13 +10,10 @@ struct SDL_Texture;
 
 namespace dae
 {
-	class Texture2D;
-	
-
 	class ImageComponent : public BaseComponent
 	{
 	public:
-		ImageComponent(GameObject*, const std::string& filePath = "", const float relativeX = 0, const float relativeY = 0);
+		ImageComponent(GameObject* owner, const std::string& filePath = "", const float relativeX = 0, const float relativeY = 0);
 		~ImageComponent() { m_pTexture = nullptr; };
 
 
@@ -30,7 +28,7 @@ namespace dae
 		void SetTexture(SDL_Texture* pTexture);
 
 	private:
-		std::shared_ptr<Texture2D> m_pTexture{};
+		std::unique_ptr<Texture2D> m_pTexture{};
 		Transform m_RelativePosition{};
 	};
 }

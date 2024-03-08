@@ -2,17 +2,17 @@
 #include "ImageComponent.h"
 #include <string>
 #include <memory>
+#include "Font.h"
 
 namespace dae
 {
-	class Font;
-	class Texture2D;
+	//class Font;
 	class GameObject;
 
 	class TextComponent : public ImageComponent
 	{
 	public:
-		TextComponent(GameObject* pGameObject, const std::string& text, std::shared_ptr<Font> pFont);
+		TextComponent(GameObject* pGameObject, const std::string& text, const Font& font);
 
 		void SetText(const std::string& text);
 
@@ -26,7 +26,7 @@ namespace dae
 		void InitTexture();
 
 		std::string m_Text{};
-		std::shared_ptr<Font> m_pFont{};
+		std::unique_ptr<Font> m_pFont{};
 	};
 }
 

@@ -28,5 +28,5 @@ void dae::ImageComponent::Render() const
 void dae::ImageComponent::SetTexture(SDL_Texture* pTexture)
 {
 	m_pTexture = nullptr;
-	m_pTexture = std::make_shared<Texture2D>(pTexture);
+	m_pTexture = std::make_unique<Texture2D>(pTexture);
 }

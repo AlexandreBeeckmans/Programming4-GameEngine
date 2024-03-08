@@ -35,7 +35,7 @@ namespace dae
 		template<typename TComponent, typename ...Args>
 		void AddComponent(Args&&... args)
 		{
-			m_pComponents.push_back(std::make_shared<TComponent>(this, args...));
+			m_pComponents.push_back(std::make_unique<TComponent>(this, args...));
 		}
 
 		template<typename TComponent>
@@ -51,7 +51,7 @@ namespace dae
 		template<typename TComponent>
 		bool HasComponent() const
 		{
-			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](const std::shared_ptr<dae::BaseComponent>& component)
+			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](const std::unique_ptr<dae::BaseComponent>& component)
 																							{
 																								return dynamic_cast<TComponent*>(component.get());
 																							});
@@ -66,7 +66,7 @@ namespace dae
 
 
 
-			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](const std::shared_ptr<BaseComponent>& component)
+			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](const std::unique_ptr<BaseComponent>& component)
 				{
 					return dynamic_cast<TComponent*>(component.get());
 				}); 
@@ -86,7 +86,7 @@ namespace dae
 
 	private:
 		Transform m_transform{};
-		std::vector<std::shared_ptr<BaseComponent>>m_pComponents{};
+		std::vector<std::unique_ptr<BaseComponent>>m_pComponents{};
 
 
 

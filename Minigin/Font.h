@@ -14,11 +14,17 @@ namespace dae
 		explicit Font(const std::string& fullPath, unsigned int size);
 		~Font();
 
-		Font(const Font &) = delete;
+		Font(const Font& font);
 		Font(Font &&) = delete;
 		Font & operator= (const Font &) = delete;
 		Font & operator= (const Font &&) = delete;
+
+		/*std::string GetPath() const { return m_Path; };
+		unsigned int m_Size*/
 	private:
 		_TTF_Font* m_font;
+
+		std::string m_Path;
+		unsigned int m_Size;
 	};
 }

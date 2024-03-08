@@ -12,7 +12,7 @@ namespace dae
 	{
 	public:
 
-		RenderFPSComponent(GameObject* pGameObject, std::shared_ptr<Font> pFont);
+		RenderFPSComponent(GameObject* pGameObject,const Font& font);
 		~RenderFPSComponent() = default;
 		void virtual Update() override;
 

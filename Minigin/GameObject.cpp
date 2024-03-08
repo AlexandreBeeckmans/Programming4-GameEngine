@@ -56,7 +56,7 @@ void dae::GameObject::RemoveAllDeadComponent()
 		}
 	}
 
-	std::erase_if(m_pComponents, [](std::shared_ptr<dae::BaseComponent>& component)
+	std::erase_if(m_pComponents, [](std::unique_ptr<dae::BaseComponent>& component)
 		{
 			return !component;
 		});

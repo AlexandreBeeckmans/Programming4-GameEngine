@@ -12,8 +12,8 @@
 #include <format>
 
 
-dae::RenderFPSComponent::RenderFPSComponent(GameObject* pGameObject, std::shared_ptr<Font> pFont) :
-	TextComponent::TextComponent(pGameObject, "Hello", pFont)
+dae::RenderFPSComponent::RenderFPSComponent(GameObject* pGameObject, const Font& font) :
+	TextComponent::TextComponent(pGameObject, "Hello", font)
 {
 	if (!GetOwner()->HasComponent<FPSComponent>())
 	{
