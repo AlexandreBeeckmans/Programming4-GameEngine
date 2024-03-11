@@ -13,38 +13,6 @@
 #include "TrashTheCache.h"
 
 
-
-//template <class T>
-//void dae::Graph::Render()
-//{
-//	//if (canCompute)
-//	//{
-//		//canCompute = false;
-//		const size_t samples{ 100000 };
-//		T* integerOperations{ new T[samples]{} };
-//		dae::TrashCache<T>(integerOperations, samples, times);
-//		delete[] integerOperations;
-//	//}
-//
-//
-//	ImGui::PlotConfig testConfig{};
-//
-//	float xValues[11]{ 1,2,3,4,5,6,7,8,9,10,11 };
-//	float* yValues{ times };
-//
-//	testConfig.values = { xValues, yValues, 11 };
-//	testConfig.scale = { -1, times[0] };
-//
-//	testConfig.tooltip.show = true;
-//	testConfig.tooltip.format = "x=%.2f, y=%.2f";
-//	testConfig.grid_x.show = true;
-//	testConfig.grid_y.show = true;
-//	testConfig.frame_size = ImVec2(200, 100);
-//	testConfig.line_thickness = 2.f;
-//
-//	ImGui::Plot("test", testConfig);
-//}
-
 int GetOpenGLDriverIndex()
 {
 	auto openglIndex = -1;
@@ -139,35 +107,7 @@ void dae::Renderer::Render() const
 	//Combined graph
 	if (m_GOAltGraph->hasComputedOnce && m_GOGraph->hasComputedOnce)
 	{
-		ImGui::PlotConfig testConfig{};
-
-		float xValues[11]{ 1,2,3,4,5,6,7,8,9,10,11 };
-		//float* yValues{ m_GOGraph->times };
-
-		testConfig.values.xs = xValues;
-		testConfig.values.count = 11;
-
-		float* yValues1{ m_GOAltGraph->times };
-		float* yValues2{ m_GOGraph->times };
-
-		const float** yValues{ new const float* [2] {yValues1, yValues2} };
-		testConfig.values.ys_list = yValues;
-		testConfig.values.ys_count = 2;
-
-		ImU32 colors[2]{ 0,0 };
-		testConfig.values.colors = { colors };
-
-
-		testConfig.scale = { -1, m_GOAltGraph->times[0] };
-
-		testConfig.tooltip.show = true;
-		testConfig.tooltip.format = "x=%.2f, y=%.2f";
-		testConfig.grid_x.show = true;
-		testConfig.grid_y.show = true;
-		testConfig.frame_size = ImVec2(200, 100);
-		testConfig.line_thickness = 2.f;
-
-		ImGui::Plot("combined", testConfig);
+		DisplayCombinedGraph();
 	}
 
 	ImGui::End();
@@ -212,6 +152,40 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 }
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
+
+void dae::Renderer::DisplayCombinedGraph() const
+{
+	ImGui::PlotConfig testConfig{};
+
+	float xValues[11]{ 1,2,3,4,5,6,7,8,9,10,11 };
+
+	testConfig.values.xs = xValues;
+	testConfig.values.count = 11;
+
+	float* yValues1{ m_GOAltGraph->times };
+	float* yValues2{ m_GOGraph->times };
+
+	const float** yValues{ new const float* [2] {yValues1, yValues2} };
+	testConfig.values.ys_list = yValues;
+	testConfig.values.ys_count = 2;
+
+	ImU32 colors[2]{ 0,0 };
+	testConfig.values.colors = { colors };
+
+
+	testConfig.scale = { -1, m_GOAltGraph->times[0] };
+
+	testConfig.tooltip.show = true;
+	testConfig.tooltip.format = "x=%.2f, y=%.2f";
+	testConfig.grid_x.show = true;
+	testConfig.grid_y.show = true;
+	testConfig.frame_size = ImVec2(200, 100);
+	testConfig.line_thickness = 2.f;
+
+	ImGui::Plot("combined", testConfig);
+
+	delete[] yValues;
+}
 
 
 
