@@ -42,7 +42,7 @@ namespace dae
     };
 
     template<class T>
-    void TrashCache(T* buffer, size_t size, float* timeSamples)
+    void TrashCache(T* buffer, size_t size, std::vector<std::vector<float>>& timeSamples)
     {
 
         for (size_t step{ 1 }; step <= 1024; step *= 2)
@@ -62,7 +62,7 @@ namespace dae
             const float arrayPositionF{ std::log2f(castedStep) };
             const int placeInArray{ static_cast<int>(arrayPositionF) };
 
-            timeSamples[placeInArray] += float(total);
+            timeSamples[placeInArray].emplace_back(static_cast<float>(total));
         }
     }
 

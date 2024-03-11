@@ -69,8 +69,8 @@ void dae::GuiEx2Component::DisplayCombinedGraph(ImU32* colors) const
 	testConfig.values.xs = xValues;
 	testConfig.values.count = 11;
 
-	float* yValues1{ m_GOAltGraph->times };
-	float* yValues2{ m_GOGraph->times };
+	float* yValues1{ m_GOAltGraph->averageTimes.data() };
+	float* yValues2{ m_GOGraph->averageTimes.data() };
 
 	const float** yValues{ new const float* [2] {yValues1, yValues2} };
 	testConfig.values.ys_list = yValues;
@@ -79,7 +79,7 @@ void dae::GuiEx2Component::DisplayCombinedGraph(ImU32* colors) const
 	testConfig.values.colors = colors;
 
 
-	testConfig.scale = { -1, m_GOAltGraph->times[0] };
+	testConfig.scale = { -1, m_GOAltGraph->averageTimes[0] };
 
 	testConfig.tooltip.show = true;
 	testConfig.tooltip.format = "x=%.2f, y=%.2f";

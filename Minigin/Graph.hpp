@@ -1,5 +1,9 @@
 #pragma once
 #include <imgui_plot.h>
+#include <algorithm>
+#include <numeric>
+
+#include <vector>
 
 #include "TrashTheCache.h"
 
@@ -11,7 +15,9 @@ namespace dae
     {
         bool canCompute = false;
         bool hasComputedOnce = false;
-        float times[11];
+        std::vector<std::vector<float>> times{};
+
+        std::vector<float> averageTimes{};
 
         int samples{ 100 };
 
@@ -23,10 +29,13 @@ namespace dae
                 canCompute = false;
 
                 //reset
-                for (int i{ 0 }; i < 11; ++i)
+                for (std::vector<float>& curr : times)
                 {
-                    times[i] = 0;
+                    curr.clear();
                 }
+                times.clear();
+                times.resize(11);
+                averageTimes.clear();
 
                 //do calculation with the number of samples
                 for (int i{ 0 }; i < samples; ++i)
@@ -37,10 +46,16 @@ namespace dae
                     delete[] integerOperations;
                 }
 
-                //divide result by nbr of samples
-                for (int i{ 0 }; i < 11; ++i)
+                //calculate average time
+                for (const std::vector<float>& currVec : times)
                 {
-                    times[i] /= samples;
+                    auto minmax = std::minmax_element(std::begin(currVec), std::end(currVec));
+
+
+                    float sum = static_cast<float>(std::accumulate(std::begin(currVec), std::end(currVec), 0.0f) - (*minmax.first) - (*minmax.second));
+                    auto averageDuration = static_cast<float>(sum) / (currVec.size() - 2);
+
+                    averageTimes.push_back(averageDuration);
                 }
                 
             }
@@ -49,10 +64,10 @@ namespace dae
             ImGui::PlotConfig testConfig{};
 
             float xValues[11]{ 1,2,3,4,5,6,7,8,9,10,11 };
-            float* yValues{ times };
+            float* yValues{ averageTimes.data() };
 
             testConfig.values = { xValues, yValues, 11 };
-            testConfig.scale = { -1, times[0] };
+            testConfig.scale = { -1, averageTimes[0] };
 
             testConfig.values.color = color;
 
