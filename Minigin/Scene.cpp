@@ -62,6 +62,14 @@ void Scene::Render() const
 	}
 }
 
+void Scene::RenderGui() const
+{
+	for (const auto& object : m_objects)
+	{
+		object->RenderGui();
+	}
+}
+
 void Scene::RemoveAllDeadComponent()
 {
 	for (auto& object : m_objects)

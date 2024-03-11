@@ -19,6 +19,7 @@ namespace dae
 		void RemoveAllDeadComponents();
 
 		void Render() const;
+		void RenderGui() const;
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

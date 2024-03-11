@@ -1,5 +1,4 @@
 #pragma once
-//#include <imgui.h>
 #include <imgui_plot.h>
 
 #include "TrashTheCache.h"
@@ -14,9 +13,9 @@ namespace dae
         bool hasComputedOnce = false;
         float times[11];
 
-        static inline  int samples{ 100 };
+        int samples{ 100 };
 
-        void Render()
+        void Render(const ImColor& color)
         {
             if (canCompute)
             {
@@ -32,7 +31,7 @@ namespace dae
                 //do calculation with the number of samples
                 for (int i{ 0 }; i < samples; ++i)
                 {
-                    static size_t iterations{ 100000 };
+                    static size_t iterations{ 1'000'000 };
                     T* integerOperations{ new T[iterations]{} };
                     dae::TrashCache<T>(integerOperations, iterations, times);
                     delete[] integerOperations;
@@ -54,6 +53,8 @@ namespace dae
 
             testConfig.values = { xValues, yValues, 11 };
             testConfig.scale = { -1, times[0] };
+
+            testConfig.values.color = color;
 
             testConfig.tooltip.show = true;
             testConfig.tooltip.format = "x=%.2f, y=%.2f";

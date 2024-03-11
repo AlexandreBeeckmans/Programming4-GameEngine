@@ -11,7 +11,9 @@ namespace dae
 		virtual void Update() {};
 		virtual void FixedUpdate() {};
 		virtual void LateUpdate() {};
+
 		virtual void Render() const {};
+		virtual void RenderGui() const {};
 
 		BaseComponent(GameObject* m_pParent);
 		virtual ~BaseComponent() = default;

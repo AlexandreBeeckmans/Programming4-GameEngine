@@ -108,6 +108,15 @@
     <ClInclude Include="Command.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BaseGuiComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiEx1Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiEx2Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -189,6 +198,15 @@
       <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseGuiComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiEx1Component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiEx2Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
