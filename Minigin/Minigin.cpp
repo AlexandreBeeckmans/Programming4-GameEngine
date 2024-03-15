@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Minigin.h"
+#include <thread>
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -15,7 +16,7 @@
 #define MS_PER_FRAME 8
 #define FIXED_TIME_STEP 0.25f
 
-#include <thread>
+
 
 SDL_Window* g_window{};
 

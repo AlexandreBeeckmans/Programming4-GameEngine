@@ -9,7 +9,10 @@ namespace dae
 	{
 	public:
 		virtual ~Command() = default;
+
 		virtual void Execute() = 0;
+		virtual void Undo() = 0;
+
 	};
 
 
@@ -29,11 +32,13 @@ namespace dae
 	{
 	public:
 
-		Move(dae::GameObject* pActor, const glm::vec2& speed);
+		Move(dae::GameObject* pActor, const glm::vec2& direction, const bool isXAxis = true);
 		virtual void Execute() override;
+		virtual void Undo() override;
 
 	private:
-		glm::vec2 m_Speed;
+		glm::vec2 m_Direction;
+		bool m_IsXAxis;
 	};
 }
 
