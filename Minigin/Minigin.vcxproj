@@ -189,6 +189,7 @@
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BaseGuiComponent.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BaseGuiComponent.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
