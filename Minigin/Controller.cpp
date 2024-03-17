@@ -1,6 +1,10 @@
 #include "Controller.h"
 #include <glm/vec2.hpp>
 
+#include <windows.h>
+#include <Xinput.h>
+#include <SDL_syswm.h>
+
 
 class dae::GamepadController::GamepadControllerImpl
 {

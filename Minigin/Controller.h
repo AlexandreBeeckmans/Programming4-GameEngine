@@ -3,9 +3,7 @@
 #include <SDL.h>
 #include <memory>
 
-#include <windows.h>
-#include <Xinput.h>
-#include <SDL_syswm.h>
+
 
 #include "Command.h"
 
