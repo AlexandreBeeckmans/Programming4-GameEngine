@@ -12,20 +12,29 @@ public:
 	GamepadControllerImpl(GamepadController* pOwner);
 
 	void DoProcessInput();
-	void DoBind(GameObject* pActor);
+	void DoBindMove(GameObject* pActor);
+
+
+
+
+	//template <typename T, typename = std::enable_if<std::is_base_of<Command, T>::value>::type>
+	void DoBind(const unsigned int input, std::unique_ptr<Command> pCommand)
+	{
+		m_pOwner->AddToBind(input, std::move(pCommand));
+	}
 private:
 	bool IsDownThisFrame(unsigned int button) const;
 	bool IsUpThisFrame(unsigned int button) const;
 
-	XINPUT_STATE m_PreviousState;
-	XINPUT_STATE m_CurrentState;
-	unsigned int m_ButtonsPressedThisFrame;
-	unsigned int m_ButtonsReleasedThisFrame;
+	XINPUT_STATE m_PreviousState{};
+	XINPUT_STATE m_CurrentState{};
+	unsigned int m_ButtonsPressedThisFrame{};
+	unsigned int m_ButtonsReleasedThisFrame{};
 	int m_Index = 0;
 
 	static int m_GlobalIndex;
 
-	GamepadController* m_pOwner;
+	GamepadController* m_pOwner{ nullptr };
 
 };
 
@@ -42,9 +51,15 @@ dae::GamepadController::~GamepadController()
 dae::GamepadController::GamepadControllerImpl::GamepadControllerImpl(GamepadController* pOwner)
 {
 	m_pOwner = pOwner;
+
+	//Set the index
+	m_Index = m_GlobalIndex;
+	++m_GlobalIndex;
 }
 
 int dae::GamepadController::GamepadControllerImpl::m_GlobalIndex = 0;
+
+
 
 void dae::GamepadController::GamepadControllerImpl::DoProcessInput()
 {
@@ -75,25 +90,27 @@ void dae::GamepadController::ProcessInput()
 	m_pImpl->DoProcessInput();
 }
 
-void dae::GamepadController::GamepadControllerImpl::DoBind(GameObject* pActor)
+void dae::GamepadController::Bind(const unsigned int input, std::unique_ptr<Command> pCommand)
+{
+	m_pImpl->DoBind(input, std::move(pCommand));
+}
+
+void dae::GamepadController::GamepadControllerImpl::DoBindMove(GameObject* pActor)
 {
 	Move up{ pActor, glm::vec2{ 0.0f, -1.0f } };
 	Move left{ pActor, glm::vec2{ -1.0f, 0.0f } };
 	Move down{ pActor, glm::vec2{ 0.0f, 1.0f } };
 	Move right{ pActor, glm::vec2{ 1.0f, 0.0f } };
 
-	m_pOwner->AddToBind(XINPUT_GAMEPAD_DPAD_UP, up);
-	m_pOwner->AddToBind(XINPUT_GAMEPAD_DPAD_LEFT, left);
-	m_pOwner->AddToBind(XINPUT_GAMEPAD_DPAD_DOWN, down);
-	m_pOwner->AddToBind(XINPUT_GAMEPAD_DPAD_RIGHT, right);
 
-	//Set the index
-	m_Index = m_GlobalIndex;
-	++m_GlobalIndex;
+	DoBind(XINPUT_GAMEPAD_DPAD_UP, std::make_unique<Move>(up));
+	DoBind(XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<Move>(left));
+	DoBind(XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<Move>(down));
+	DoBind(XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<Move>(right));
 }
-void dae::GamepadController::Bind(GameObject* pActor)
+void dae::GamepadController::BindMoveInput(GameObject* pActor)
 {
-	m_pImpl->DoBind(pActor);
+	m_pImpl->DoBindMove(pActor);
 }
 
 bool dae::GamepadController::GamepadControllerImpl::IsDownThisFrame(unsigned int button) const

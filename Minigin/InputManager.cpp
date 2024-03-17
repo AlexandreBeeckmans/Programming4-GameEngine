@@ -56,8 +56,8 @@ void dae::InputManager::SetMoveKeyboardCommandActor(dae::GameObject* pActor)
 	Move dKey{ pActor, glm::vec2{ 1.0f, 0.0f } };
 
 
-	m_KeyboardBindings.push_back({ SDLK_w, std::make_unique<Move>(wKey) });
-	m_KeyboardBindings.push_back({ SDLK_a, std::make_unique<Move>(aKey) });
-	m_KeyboardBindings.push_back({ SDLK_s, std::make_unique<Move>(sKey) });
-	m_KeyboardBindings.push_back({ SDLK_d, std::make_unique<Move>(dKey) });
+	BindKeyboardInput(SDLK_w, wKey);
+	BindKeyboardInput(SDLK_a, aKey);
+	BindKeyboardInput(SDLK_s, sKey);
+	BindKeyboardInput(SDLK_d, dKey);
 }

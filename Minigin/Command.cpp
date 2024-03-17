@@ -17,14 +17,12 @@ dae::Move::Move(dae::GameObject* pActor, const glm::vec2& direction) :
 void dae::Move::Execute()
 {
 	if (m_IsMoving) return;
-
 	GetGameActor()->GetComponent<dae::MoveComponent>()->SetMovement(m_Direction);
 	m_IsMoving = true;
 }
 
 void dae::Move::Undo()
 {
-
 	GetGameActor()->GetComponent<dae::MoveComponent>()->SetMovement(-m_Direction);
 	m_IsMoving = false;
 }

@@ -3,8 +3,6 @@
 #include <SDL.h>
 #include <memory>
 
-
-
 #include "Command.h"
 
 
@@ -26,20 +24,19 @@ namespace dae
 		virtual ~Controller() = default;
 
 		virtual void ProcessInput() = 0;
-		virtual void Bind(GameObject* pActor) = 0;
+
+		virtual void Bind(const unsigned int input, std::unique_ptr<Command> pCommand) = 0;
 
 
 	protected:
 
-		template <typename T, typename = std::enable_if<std::is_base_of<Command, T>::value>::type>
-		void AddToBind(const unsigned int newInput, T& newCommand)
+		//template <typename T, typename = std::enable_if<std::is_base_of<Command, T>::value>::type>
+		void AddToBind(const unsigned int newInput, std::unique_ptr<Command> pNewCommand)
 		{
-			m_Bindings.push_back({ newInput, std::make_unique<T>(newCommand) });
+			m_Bindings.push_back({ newInput, std::move(pNewCommand) });
 		}
 
 		std::vector<Binding> m_Bindings;
-
-	private:
 		
 	};
 
@@ -50,24 +47,12 @@ namespace dae
 		virtual ~GamepadController() override;
 
 		virtual void ProcessInput() override;
-		virtual void Bind(GameObject* pActor) override;
+		virtual void Bind(const unsigned int input, std::unique_ptr<Command> pCommand) override;
+
+		virtual void BindMoveInput(GameObject* pActor);
 	private:
-
-
 		class GamepadControllerImpl;
 		GamepadControllerImpl* m_pImpl;
-
-
-		/*bool IsDownThisFrame(unsigned int button) const;
-		bool IsUpThisFrame(unsigned int button) const;
-
-		XINPUT_STATE m_PreviousState;
-		XINPUT_STATE m_CurrentState;
-		unsigned int m_ButtonsPressedThisFrame;
-		unsigned int m_ButtonsReleasedThisFrame;
-		int m_Index = 0;
-
-		static int m_GlobalIndex;*/
 	};
 }
 

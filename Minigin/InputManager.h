@@ -27,6 +27,8 @@ namespace dae
 	{
 	public:
 		bool ProcessInput();
+
+		//Helper function to make move bindning easier
 		void SetMoveKeyboardCommandActor(GameObject* pActor);
 
 
@@ -35,10 +37,16 @@ namespace dae
 		void AddController(GameObject* pActor)
 		{
 			std::unique_ptr <T> controllerToAdd{std::make_unique<T>()};
-			controllerToAdd->Bind(pActor);
+			controllerToAdd->BindMoveInput(pActor);
 
 			m_Controllers.push_back(std::move(controllerToAdd));
 
+		}
+
+		template <typename T, typename = std::enable_if<std::is_base_of<Command, T>::value>::type>
+		void BindKeyboardInput(const SDL_Keycode& input, const T& command)
+		{
+			m_KeyboardBindings.push_back({ input, std::make_unique<T>(command) });
 		}
 
 	private:
