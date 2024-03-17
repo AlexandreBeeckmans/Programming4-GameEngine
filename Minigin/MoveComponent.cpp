@@ -16,39 +16,7 @@ void dae::MoveComponent::Update()
 	GetOwner()->SetLocalPosition(currentPos);
 }
 
-void dae::MoveComponent::SetMovement(const glm::vec2& movement, const bool isXAxis)
+void dae::MoveComponent::SetMovement(const glm::vec2& movement)
 {
-	if (isXAxis)
-	{
-		if (movement.x > 0)
-		{
-			m_Movement.x = 1;
-			return;
-		}
-			
-		if (movement.x < 0)
-		{
-			m_Movement.x = -1;
-			return;
-		}
-
-		m_Movement.x = 0;
-		return;
-	}
-	
-
-	if (movement.y > 0)
-	{
-		m_Movement.y = 1;
-		return;
-	}
-		
-	if (movement.y < 0)
-	{
-		m_Movement.y = -1;
-		return;
-	}
-		
-	m_Movement.y = 0;
-
+	m_Movement += movement;
 }

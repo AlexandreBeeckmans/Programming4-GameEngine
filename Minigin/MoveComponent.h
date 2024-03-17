@@ -16,7 +16,7 @@ namespace dae
 		MoveComponent& operator=(const MoveComponent& other) = default;
 		MoveComponent& operator=(MoveComponent&& other) = default;
 
-		void SetMovement(const glm::vec2& movement, const bool isXAxis);
+		void SetMovement(const glm::vec2& movement);
 		float GetSpeed() const { return m_Speed; };
 	private:
 

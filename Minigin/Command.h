@@ -32,13 +32,13 @@ namespace dae
 	{
 	public:
 
-		Move(dae::GameObject* pActor, const glm::vec2& direction, const bool isXAxis = true);
+		Move(dae::GameObject* pActor, const glm::vec2& direction);
 		virtual void Execute() override;
 		virtual void Undo() override;
 
 	private:
 		glm::vec2 m_Direction;
-		bool m_IsXAxis;
+		bool m_IsMoving = false;
 	};
 }
 

@@ -77,9 +77,9 @@ void dae::GamepadController::ProcessInput()
 
 void dae::GamepadController::GamepadControllerImpl::DoBind(GameObject* pActor)
 {
-	Move up{ pActor, glm::vec2{ 0.0f, -1.0f }, false };
+	Move up{ pActor, glm::vec2{ 0.0f, -1.0f } };
 	Move left{ pActor, glm::vec2{ -1.0f, 0.0f } };
-	Move down{ pActor, glm::vec2{ 0.0f, 1.0f }, false };
+	Move down{ pActor, glm::vec2{ 0.0f, 1.0f } };
 	Move right{ pActor, glm::vec2{ 1.0f, 0.0f } };
 
 	m_pOwner->AddToBind(XINPUT_GAMEPAD_DPAD_UP, up);

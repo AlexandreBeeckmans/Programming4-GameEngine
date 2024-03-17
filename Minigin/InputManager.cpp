@@ -50,9 +50,9 @@ bool dae::InputManager::ProcessInput()
 
 void dae::InputManager::SetMoveKeyboardCommandActor(dae::GameObject* pActor)
 { 
-	Move wKey{ pActor, glm::vec2{ 0.0f, -1.0f }, false };
+	Move wKey{ pActor, glm::vec2{ 0.0f, -1.0f } };
 	Move aKey{ pActor, glm::vec2{ -1.0f, 0.0f } };
-	Move sKey{ pActor, glm::vec2{ 0.0f, 1.0f }, false };
+	Move sKey{ pActor, glm::vec2{ 0.0f, 1.0f } };
 	Move dKey{ pActor, glm::vec2{ 1.0f, 0.0f } };
 
 
