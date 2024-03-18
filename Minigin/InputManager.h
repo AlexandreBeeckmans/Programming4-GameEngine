@@ -33,21 +33,9 @@ namespace dae
 
 
 		//Add a controller of any type deriving from a base controller
-		template <typename T, typename = std::enable_if<std::is_base_of<Controller, T>::value>::type>
-		void AddController(GameObject* pActor)
-		{
-			std::unique_ptr <T> controllerToAdd{std::make_unique<T>()};
-			controllerToAdd->BindMoveInput(pActor);
+		void AddController(std::unique_ptr<Controller> controller);
 
-			m_Controllers.push_back(std::move(controllerToAdd));
-
-		}
-
-		template <typename T, typename = std::enable_if<std::is_base_of<Command, T>::value>::type>
-		void BindKeyboardInput(const SDL_Keycode& input, const T& command)
-		{
-			m_KeyboardBindings.push_back({ input, std::make_unique<T>(command) });
-		}
+		void BindKeyboardInput(const SDL_Keycode& input, std::unique_ptr<Command> command);
 
 	private:
 		std::vector<InputBinding> m_KeyboardBindings;
