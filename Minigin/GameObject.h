@@ -10,6 +10,8 @@
 
 #include<glm/glm.hpp>
 
+#include "Observer.h"
+
 namespace dae
 {
 	class GameObject final
@@ -86,6 +88,22 @@ namespace dae
 		glm::vec3 GetWorldPosition();
 
 
+		//Observers
+		void AddObserver(std::unique_ptr<Observer> observer) {
+			// code to add an observer
+		}
+		void RemoveObserver(std::unique_ptr<Observer> observer) {
+			// code to remove an observer
+		}
+
+
+	protected:
+		/*void NotifyObservers(Event event) {
+			for (auto& observer : m_Observers)
+				observer->Notify(event, this);
+		}*/
+
+
 	private:
 		Transform m_transform{};
 		std::vector<std::unique_ptr<BaseComponent>>m_pComponents{};
@@ -106,5 +124,10 @@ namespace dae
 
 		bool m_IsPositionDirty{ false };
 		glm::vec3 m_WorldPosition{};
+
+
+
+		//Events
+		std::vector<std::unique_ptr<Observer>> m_Observers;
 	};
 }
