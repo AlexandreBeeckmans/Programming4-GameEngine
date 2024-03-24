@@ -56,6 +56,11 @@ void dae::Score::Execute()
 	const int valueToIncrement{ 15 };
 	GetGameActor()->GetComponent<ScoreComponent>()->IncrementScore(valueToIncrement);
 	GetGameActor()->GetDieEvent()->NotifyObservers({ EventType::PLAYER_SCORED, 1, {m_pScoreText} }, GetGameActor());
+
+	if (GetGameActor()->GetComponent<ScoreComponent>()->GetScore() > 500)
+	{
+		GetGameActor()->GetDieEvent()->NotifyObservers({ EventType::PLAYER_WIN }, GetGameActor());
+	}
 }
 void dae::Score::Undo() {}
 

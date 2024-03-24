@@ -38,6 +38,13 @@ void dae::GameActionsObserver::Notify(Event event, dae::GameObject* pObject)
 		}
 		break;
 
+		case EventType::PLAYER_WIN:
+		{
+			//CSteamAchievements achievement{ g_Achievements, 0};
+			
+			CSteamAchievements::g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+		}
+		break;
 	}
 }
 
