@@ -11,6 +11,7 @@
 #include<glm/glm.hpp>
 
 #include "Observer.h"
+#include "Subject.h"
 
 namespace dae
 {
@@ -28,6 +29,8 @@ namespace dae
 		void SetLocalPosition(const glm::vec3& pos);
 
 		GameObject() = default;
+		GameObject(std::unique_ptr<BaseObserver> pObserver);
+
 		virtual ~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -87,22 +90,10 @@ namespace dae
 		glm::vec3 GetLocalPosition() const;
 		glm::vec3 GetWorldPosition();
 
+		//Event
+		void Notify(const Event& event);
 
-		//Observers
-		void AddObserver(std::unique_ptr<Observer> observer) {
-			// code to add an observer
-		}
-		void RemoveObserver(std::unique_ptr<Observer> observer) {
-			// code to remove an observer
-		}
-
-
-	protected:
-		/*void NotifyObservers(Event event) {
-			for (auto& observer : m_Observers)
-				observer->Notify(event, this);
-		}*/
-
+		Subject* GetDieEvent() { return m_pDieEvent.get(); };
 
 	private:
 		Transform m_transform{};
@@ -128,6 +119,6 @@ namespace dae
 
 
 		//Events
-		std::vector<std::unique_ptr<Observer>> m_Observers;
+		std::unique_ptr<Subject> m_pDieEvent;
 	};
 }

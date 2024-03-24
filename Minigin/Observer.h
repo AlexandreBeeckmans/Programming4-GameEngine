@@ -2,43 +2,59 @@
 #include <cstdint>
 #include <iostream>
 
-enum EventType {
+enum EventType 
+{
 	PLAYER_DIED
-	//...
 };
 
-struct Event {
+struct Event 
+{
 	static const uint8_t MAX_ARGS = 8;
 
 	EventType m_type;
-	uint8_t m_numArgs;
+	//uint8_t m_numArgs;
 	//EventArg m_args[MAX_ARGS];
 };
 
 
 namespace dae
 {
+	class Subject;
+	class TextComponent;
 	class GameObject;
 
-	class Observer
+	class BaseObserver
 	{
 	public:
-		virtual ~Observer() = default;
-		//virtual void Notify(Event event, GameObject* pObject) = 0;
+		BaseObserver() = default;
+		virtual ~BaseObserver() = default;
+
+		BaseObserver(const BaseObserver& other) = delete;
+		BaseObserver(BaseObserver&& other) = delete;
+		BaseObserver& operator=(const BaseObserver& other) = delete;
+		BaseObserver& operator=(BaseObserver&& other) = delete;
+
+
+		virtual void Notify(Event event, GameObject* pObject) = 0;
 	};
 
-	class GameActions : public Observer
+	class GameActionsObserver final : public BaseObserver
 	{
 	public:
-		//void Notify(Event event, GameObject* pObject) override
-		//{
-		//	switch (event.m_type) {
-		//	case EventType::PLAYER_DIED:
-		//		//Decrement Lives
-		//		std::cout << "Player died" << std::endl;
-		//		break;
-		//	}
-		//}
+
+		GameActionsObserver() = default;
+		GameActionsObserver(TextComponent* pTextComponent);
+		virtual ~GameActionsObserver() = default;
+
+		GameActionsObserver(const GameActionsObserver& other) = default;
+		GameActionsObserver(GameActionsObserver&& other) = default;
+		GameActionsObserver& operator=(const GameActionsObserver& other) = default;
+		GameActionsObserver& operator=(GameActionsObserver&& other) = default;
+
+		virtual void Notify(Event event, GameObject* pObject) override;
+
+	private:
+		TextComponent* m_pRelatedTextComponent{};
 	};
 
 }

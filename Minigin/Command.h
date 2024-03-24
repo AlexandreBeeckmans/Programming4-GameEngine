@@ -40,5 +40,13 @@ namespace dae
 		glm::vec2 m_Direction;
 		bool m_IsMoving = false;
 	};
+
+	class Die final : public GameObjectCommand
+	{
+	public:
+		Die(dae::GameObject* pObject);
+		virtual void Execute() override;
+		virtual void Undo() override;
+	};
 }
 
