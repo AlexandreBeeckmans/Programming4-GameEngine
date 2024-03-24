@@ -1,9 +1,11 @@
 #pragma once
 #include <glm/vec2.hpp>
 
+
 namespace dae
 {
 	class GameObject;
+	class TextComponent;
 
 	class Command
 	{
@@ -44,9 +46,23 @@ namespace dae
 	class Die final : public GameObjectCommand
 	{
 	public:
-		Die(dae::GameObject* pObject);
+		Die(dae::GameObject* pObject, TextComponent* pLivesText = nullptr);
 		virtual void Execute() override;
 		virtual void Undo() override;
+
+	private:
+		TextComponent* m_pLivesText{ nullptr };
+	};
+
+	class Score final : public GameObjectCommand
+	{
+	public:
+		Score(GameObject* pObject, TextComponent* pLivesText = nullptr);
+		virtual void Execute() override;
+		virtual void Undo() override;
+
+	private:
+		TextComponent* m_pScoreText{ nullptr };
 	};
 }
 

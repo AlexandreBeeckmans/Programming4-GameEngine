@@ -2,18 +2,22 @@
 #include <cstdint>
 #include <iostream>
 
+#include "BaseComponent.h"
+
 enum EventType 
 {
-	PLAYER_DIED
+	PLAYER_DIED,
+	PLAYER_SCORED
 };
+
 
 struct Event 
 {
 	static const uint8_t MAX_ARGS = 8;
 
 	EventType m_type;
-	//uint8_t m_numArgs;
-	//EventArg m_args[MAX_ARGS];
+	uint8_t m_numArgs;
+	dae::BaseComponent* m_args[MAX_ARGS];
 };
 
 
@@ -43,7 +47,6 @@ namespace dae
 	public:
 
 		GameActionsObserver() = default;
-		GameActionsObserver(TextComponent* pTextComponent);
 		virtual ~GameActionsObserver() = default;
 
 		GameActionsObserver(const GameActionsObserver& other) = default;
@@ -52,9 +55,6 @@ namespace dae
 		GameActionsObserver& operator=(GameActionsObserver&& other) = default;
 
 		virtual void Notify(Event event, GameObject* pObject) override;
-
-	private:
-		TextComponent* m_pRelatedTextComponent{};
 	};
 
 }

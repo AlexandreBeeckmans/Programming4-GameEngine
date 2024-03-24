@@ -93,7 +93,7 @@ namespace dae
 		//Event
 		void Notify(const Event& event);
 
-		Subject* GetDieEvent() { return m_pDieEvent.get(); };
+		Subject* GetDieEvent() { return m_pEventSubject.get(); };
 
 	private:
 		Transform m_transform{};
@@ -119,6 +119,6 @@ namespace dae
 
 
 		//Events
-		std::unique_ptr<Subject> m_pDieEvent;
+		std::unique_ptr<Subject> m_pEventSubject;
 	};
 }

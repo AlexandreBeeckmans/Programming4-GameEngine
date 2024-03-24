@@ -8,8 +8,8 @@
 
 dae::GameObject::GameObject(std::unique_ptr<BaseObserver> pObserver)
 {
-	m_pDieEvent = std::make_unique<Subject>();
-	m_pDieEvent->AddObserver(std::move(pObserver));
+	m_pEventSubject = std::make_unique<Subject>();
+	m_pEventSubject->AddObserver(std::move(pObserver));
 }
 
 void dae::GameObject::Update()
@@ -177,5 +177,5 @@ void dae::GameObject::SetPositionDirty()
 
 void dae::GameObject::Notify(const Event& event)
 {
-	m_pDieEvent->NotifyObservers(event, this);
+	m_pEventSubject->NotifyObservers(event, this);
 }
