@@ -15,6 +15,7 @@ namespace dae
 		void Update();
 		void FixedUpdate();
 		void LateUpdate();
+		void Init();
 
 		void RemoveAllDeadComponents();
 

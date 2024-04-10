@@ -19,8 +19,9 @@ namespace dae
 
 	struct InputBinding
 	{
-		SDL_Keycode input;
+		SDL_Scancode input;
 		std::unique_ptr<Command> command;
+		InputType inputType{};
 	};
 
 	class InputManager final : public Singleton<InputManager>
@@ -35,7 +36,7 @@ namespace dae
 		//Add a controller of any type deriving from a base controller
 		void AddController(std::unique_ptr<Controller> controller);
 
-		void BindKeyboardInput(const SDL_Keycode& input, std::unique_ptr<Command> command);
+		void BindKeyboardInput(SDL_Scancode input, std::unique_ptr<Command> command, InputType inputType);
 
 	private:
 		std::vector<InputBinding> m_KeyboardBindings;

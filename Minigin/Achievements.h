@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <memory>
 
+#include "Observer.h"
+
 
 #define _ACH_ID( id, name ) { id, #id, name, "", 0, 0 }
 struct Achievement_t
@@ -16,7 +18,7 @@ struct Achievement_t
 };
 
 
-class CSteamAchievements
+class CSteamAchievements : public dae::Observer
 {
 private:
 	int64 m_iAppID; // Our current AppID
@@ -27,6 +29,8 @@ private:
 public:
 	CSteamAchievements(Achievement_t* Achievements, int NumAchievements);
 	~CSteamAchievements() = default;
+
+	void UpdateObserver() override;
 
 	bool RequestStats();
 	bool SetAchievement(const char* ID);

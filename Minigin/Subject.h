@@ -6,7 +6,7 @@
 
 namespace dae
 {
-	class BaseObserver;
+	class Observer;
 	class GameObject;
 
 	class Subject
@@ -14,12 +14,12 @@ namespace dae
 	public:
 
 		//Observers
-		void AddObserver(std::unique_ptr<BaseObserver> pObserver);
-		void RemoveObserver(BaseObserver* pObserver);
-		void NotifyObservers(const Event& event, GameObject* pObject);
+		void AddObserver(Observer* pObserver);
+		void RemoveObserver(Observer* pObserver);
+		void NotifyObservers();
 
 	private:
-		std::vector<std::unique_ptr<BaseObserver>> m_pObservers{};
+		std::vector<Observer*> m_pObservers{};
 	};
 }
 

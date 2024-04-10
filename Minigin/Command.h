@@ -13,8 +13,6 @@ namespace dae
 		virtual ~Command() = default;
 
 		virtual void Execute() = 0;
-		virtual void Undo() = 0;
-
 	};
 
 
@@ -36,7 +34,6 @@ namespace dae
 
 		Move(dae::GameObject* pActor, const glm::vec2& direction);
 		virtual void Execute() override;
-		virtual void Undo() override;
 
 	private:
 		glm::vec2 m_Direction;
@@ -48,7 +45,6 @@ namespace dae
 	public:
 		Die(dae::GameObject* pObject, TextComponent* pLivesText = nullptr);
 		virtual void Execute() override;
-		virtual void Undo() override;
 
 	private:
 		TextComponent* m_pLivesText{ nullptr };
@@ -59,7 +55,6 @@ namespace dae
 	public:
 		Score(GameObject* pObject, TextComponent* pLivesText = nullptr);
 		virtual void Execute() override;
-		virtual void Undo() override;
 
 	private:
 		TextComponent* m_pScoreText{ nullptr };

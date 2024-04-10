@@ -22,15 +22,8 @@ dae::Move::Move(dae::GameObject* pActor, const glm::vec2& direction) :
 
 void dae::Move::Execute()
 {
-	if (m_IsMoving) return;
-	GetGameActor()->GetComponent<dae::MoveComponent>()->SetMovement(m_Direction);
-	m_IsMoving = true;
-}
-
-void dae::Move::Undo()
-{
-	GetGameActor()->GetComponent<dae::MoveComponent>()->SetMovement(-m_Direction);
-	m_IsMoving = false;
+	const float speed = GetGameActor()->GetComponent<MoveComponent>()->GetSpeed();
+	GetGameActor()->Translate(m_Direction * speed);
 }
 
 
@@ -42,9 +35,7 @@ dae::Die::Die(dae::GameObject* pActor, TextComponent* pLivesText):
 void dae::Die::Execute()
 {
 	GetGameActor()->GetComponent<dae::HealthComponent>()->RemoveLive();
-	GetGameActor()->GetDieEvent()->NotifyObservers({ EventType::PLAYER_DIED, 1, {m_pLivesText} }, GetGameActor());
 }
-void dae::Die::Undo(){}
 
 dae::Score::Score(GameObject* pActor, TextComponent* pScoreText) :
 	GameObjectCommand::GameObjectCommand{ pActor },
@@ -55,12 +46,5 @@ void dae::Score::Execute()
 {
 	const int valueToIncrement{ 15 };
 	GetGameActor()->GetComponent<ScoreComponent>()->IncrementScore(valueToIncrement);
-	GetGameActor()->GetDieEvent()->NotifyObservers({ EventType::PLAYER_SCORED, 1, {m_pScoreText} }, GetGameActor());
-
-	if (GetGameActor()->GetComponent<ScoreComponent>()->GetScore() > 500)
-	{
-		GetGameActor()->GetDieEvent()->NotifyObservers({ EventType::PLAYER_WIN }, GetGameActor());
-	}
 }
-void dae::Score::Undo() {}
 

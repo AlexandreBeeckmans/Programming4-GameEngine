@@ -5,13 +5,6 @@
 
 #include <iostream>
 
-
-dae::GameObject::GameObject(std::unique_ptr<BaseObserver> pObserver)
-{
-	m_pEventSubject = std::make_unique<Subject>();
-	m_pEventSubject->AddObserver(std::move(pObserver));
-}
-
 void dae::GameObject::Update()
 {
 	for (auto& pComp : m_pComponents)
@@ -145,10 +138,23 @@ glm::vec3 dae::GameObject::GetWorldPosition()
 	return m_WorldPosition;
 }
 
+void dae::GameObject::Translate(const glm::vec2& discplacement)
+{
+	SetLocalPosition(m_transform.GetPosition() + glm::vec3{ discplacement.x, discplacement.y, 0 });
+}
+
 void dae::GameObject::SetLocalPosition(const glm::vec3& pos)
 {
 	m_transform.SetPosition(pos.x, pos.y, pos.z);
 	SetPositionDirty();
+}
+
+void dae::GameObject::Init()
+{
+	for (auto& pComp : m_pComponents)
+	{
+		pComp->Init();
+	}
 }
 
 
@@ -172,10 +178,4 @@ void dae::GameObject::SetPositionDirty()
 	{
 		child->SetPositionDirty();
 	}
-}
-
-
-void dae::GameObject::Notify(const Event& event)
-{
-	m_pEventSubject->NotifyObservers(event, this);
 }

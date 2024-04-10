@@ -2,22 +2,22 @@
 
 #include "GameObject.h"
 
-void dae::Subject::AddObserver(std::unique_ptr<BaseObserver> pObserver)
+void dae::Subject::AddObserver(Observer* pObserver)
 {
-	m_pObservers.push_back(std::move(pObserver));
+	m_pObservers.push_back(pObserver);
 }
 
-void dae::Subject::RemoveObserver(BaseObserver* pObserver)
+void dae::Subject::RemoveObserver(Observer* pObserver)
 {
-	std::erase_if(m_pObservers, [=](std::unique_ptr<dae::BaseObserver>& observer)
+	std::erase_if(m_pObservers, [=](dae::Observer* observer)
 		{
-			return observer.get() == pObserver;
+			return observer == pObserver;
 		});
 }
 
 
-void dae::Subject::NotifyObservers(const Event& event, GameObject* pObject)
+void dae::Subject::NotifyObservers()
 {
 	for (auto& observer : m_pObservers)
-		observer->Notify(event, pObject);
+		observer->UpdateObserver();
 }

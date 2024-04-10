@@ -22,6 +22,7 @@ namespace dae
 		void RemoveAllDeadComponent();
 
 		~Scene() = default;
+		void Init();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;

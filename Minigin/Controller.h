@@ -10,11 +10,20 @@ namespace dae
 {
 	class GameObject;
 
+	enum class InputType
+	{
+		DOWN,
+		UP,
+		TRIGGERED,
+		THUMBSTICK
+	};
+
 
 	struct Binding
 	{
 		unsigned int input{};
 		std::unique_ptr<Command> command{};
+		InputType inputType{};
 	};
 
 	class Controller
@@ -25,15 +34,15 @@ namespace dae
 
 		virtual void ProcessInput() = 0;
 
-		virtual void Bind(const unsigned int input, std::unique_ptr<Command> pCommand) = 0;
+		virtual void Bind(const unsigned int input, std::unique_ptr<Command> pCommand, InputType inputType) = 0;
 
 
 	protected:
 
 		//template <typename T, typename = std::enable_if<std::is_base_of<Command, T>::value>::type>
-		void AddToBind(const unsigned int newInput, std::unique_ptr<Command> pNewCommand)
+		void AddToBind(const unsigned int newInput, std::unique_ptr<Command> pNewCommand, InputType inputType)
 		{
-			m_Bindings.push_back({ newInput, std::move(pNewCommand) });
+			m_Bindings.push_back({ newInput, std::move(pNewCommand), inputType });
 		}
 
 		std::vector<Binding> m_Bindings;
@@ -47,7 +56,7 @@ namespace dae
 		virtual ~GamepadController() override;
 
 		virtual void ProcessInput() override;
-		virtual void Bind(const unsigned int input, std::unique_ptr<Command> pCommand) override;
+		virtual void Bind(const unsigned int input, std::unique_ptr<Command> pCommand, InputType inputType) override;
 
 		virtual void BindMoveInput(GameObject* pActor);
 	private:

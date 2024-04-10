@@ -29,36 +29,19 @@ namespace dae
 	class TextComponent;
 	class GameObject;
 
-	class BaseObserver
+	class Observer
 	{
 	public:
-		BaseObserver() = default;
-		virtual ~BaseObserver() = default;
+		Observer() = default;
+		virtual ~Observer() = default;
 
-		BaseObserver(const BaseObserver& other) = delete;
-		BaseObserver(BaseObserver&& other) = delete;
-		BaseObserver& operator=(const BaseObserver& other) = delete;
-		BaseObserver& operator=(BaseObserver&& other) = delete;
+		Observer(const Observer& other) = delete;
+		Observer(Observer&& other) = delete;
+		Observer& operator=(const Observer& other) = delete;
+		Observer& operator=(Observer&& other) = delete;
 
-
-		virtual void Notify(Event event, GameObject* pObject) = 0;
+		virtual void UpdateObserver() {}
 	};
-
-	class GameActionsObserver final : public BaseObserver
-	{
-	public:
-
-		GameActionsObserver() = default;
-		virtual ~GameActionsObserver() = default;
-
-		GameActionsObserver(const GameActionsObserver& other) = default;
-		GameActionsObserver(GameActionsObserver&& other) = default;
-		GameActionsObserver& operator=(const GameActionsObserver& other) = default;
-		GameActionsObserver& operator=(GameActionsObserver&& other) = default;
-
-		virtual void Notify(Event event, GameObject* pObject) override;
-	};
-
 }
 
 

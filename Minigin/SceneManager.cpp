@@ -25,6 +25,14 @@ void dae::SceneManager::LateUpdate()
 	}
 }
 
+void dae::SceneManager::Init()
+{
+	for (auto& scene : m_scenes)
+	{
+		scene->Init();
+	}
+}
+
 void dae::SceneManager::RemoveAllDeadComponents()
 {
 	for (auto& scene : m_scenes)

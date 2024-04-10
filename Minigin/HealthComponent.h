@@ -1,9 +1,10 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Subject.h"
 
 namespace dae
 {
-	class HealthComponent final : public BaseComponent
+	class HealthComponent final : public BaseComponent, public Subject
 	{
 	public:
 
@@ -14,7 +15,7 @@ namespace dae
 		HealthComponent& operator=(const HealthComponent& other) = default;
 		HealthComponent& operator=(HealthComponent&& other) = default;
 
-
+		void Init() override;
 		void RemoveLive();
 		int GetLivesRemaining()const { return m_CurrentLives; };
 

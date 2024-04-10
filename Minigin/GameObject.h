@@ -27,9 +27,10 @@ namespace dae
 
 		void SetLocalPosition(float x, float y);
 		void SetLocalPosition(const glm::vec3& pos);
+		void Init();
 
 		GameObject() = default;
-		GameObject(std::unique_ptr<BaseObserver> pObserver);
+		GameObject(std::unique_ptr<Observer> pObserver);
 
 		virtual ~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
@@ -89,6 +90,7 @@ namespace dae
 		//Position
 		glm::vec3 GetLocalPosition() const;
 		glm::vec3 GetWorldPosition();
+		void Translate(const glm::vec2& discplacement);
 
 		//Event
 		void Notify(const Event& event);

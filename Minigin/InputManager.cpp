@@ -11,6 +11,8 @@
 bool dae::InputManager::ProcessInput()
 {
 	SDL_Event e;
+	const Uint8* pStates = SDL_GetKeyboardState(nullptr);
+
 	while (SDL_PollEvent(&e)) 
 	{
 		if (e.type == SDL_QUIT) 
@@ -21,7 +23,7 @@ bool dae::InputManager::ProcessInput()
 		{
 			for (auto& binding : m_KeyboardBindings)
 			{
-				if (e.key.keysym.sym == binding.input)
+				if (pStates[binding.input] && binding.inputType == InputType::DOWN)
 					binding.command->Execute();
 			}
 
@@ -30,13 +32,21 @@ bool dae::InputManager::ProcessInput()
 		{
 			for (auto& binding : m_KeyboardBindings)
 			{
-				if (e.key.keysym.sym == binding.input)
-					binding.command->Undo();
+				if (pStates[binding.input] && binding.inputType == InputType::UP)
+					binding.command->Execute();
 			}
 		}
 		
 		//ImGui
 		ImGui_ImplSDL2_ProcessEvent(&e);
+
+	}
+	for (const InputBinding& action : m_KeyboardBindings)
+	{
+		if (pStates[action.input] && action.inputType == dae::InputType::TRIGGERED)
+		{
+			action.command->Execute();
+		}
 	}
 
 	//Gamepads
@@ -54,9 +64,9 @@ void dae::InputManager::AddController(std::unique_ptr<Controller> controller)
 
 }
 
-void dae::InputManager::BindKeyboardInput(const SDL_Keycode& input, std::unique_ptr<Command> command)
+void dae::InputManager::BindKeyboardInput(SDL_Scancode input, std::unique_ptr<Command> command, InputType inputType)
 {
-	m_KeyboardBindings.push_back({ input, std::move(command) });
+	m_KeyboardBindings.push_back({ input, std::move(command), inputType });
 }
 void dae::InputManager::SetMoveKeyboardCommandActor(dae::GameObject* pActor)
 { 
@@ -66,8 +76,8 @@ void dae::InputManager::SetMoveKeyboardCommandActor(dae::GameObject* pActor)
 	std::unique_ptr<Move> dKey{ std::make_unique<Move>(pActor, glm::vec2{ 1.0f, 0.0f }) };
 
 
-	BindKeyboardInput(SDLK_w, std::move(wKey));
-	BindKeyboardInput(SDLK_a, std::move(aKey));
-	BindKeyboardInput(SDLK_s, std::move(sKey));
-	BindKeyboardInput(SDLK_d, std::move(dKey));
+	BindKeyboardInput(SDL_SCANCODE_W, std::move(wKey), InputType::TRIGGERED);
+	BindKeyboardInput(SDL_SCANCODE_A, std::move(aKey), InputType::TRIGGERED);
+	BindKeyboardInput(SDL_SCANCODE_S, std::move(sKey), InputType::TRIGGERED);
+	BindKeyboardInput(SDL_SCANCODE_D, std::move(dKey), InputType::TRIGGERED);
 }

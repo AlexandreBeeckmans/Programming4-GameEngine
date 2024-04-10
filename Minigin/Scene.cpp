@@ -78,3 +78,11 @@ void Scene::RemoveAllDeadComponent()
 	}
 }
 
+void Scene::Init()
+{
+	for (const auto& object : m_objects)
+	{
+		object->Init();
+	}
+}
+

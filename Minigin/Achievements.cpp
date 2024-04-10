@@ -18,12 +18,6 @@ CSteamAchievements::CSteamAchievements(Achievement_t* Achievements, int NumAchie
     RequestStats();
 }
 
-//CSteamAchievements::~CSteamAchievements()
-//{
-//	if (m_pAchievements)
-//		delete m_pAchievements;
-//}
-
 bool CSteamAchievements::RequestStats()
 {
 	// Is Steam loaded? If not we can't get stats.
@@ -110,4 +104,9 @@ void CSteamAchievements::OnAchievementStored(UserAchievementStored_t* pCallback)
 	{
 		OutputDebugString("Stored Achievement for Steam\n");
 	}
+}
+
+void CSteamAchievements::UpdateObserver()
+{
+	
 }
