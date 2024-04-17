@@ -3,12 +3,9 @@
 #include "SceneManager.h"
 #include "Texture2D.h"
 
-//#include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl2.h>
 #include <imgui_plot.h>
-
-//#include <memory>
 
 #include "TrashTheCache.h"
 
@@ -83,8 +80,17 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
+	dst.w = texture.GetSize().x / 6;
+	dst.h = texture.GetSize().y / 3;
+
+	SDL_Rect src{};
+	src.x = 0;
+	src.y = 0;
+	src.w = texture.GetSize().x / 6;
+	src.h = texture.GetSize().y / 3;
+
 	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
@@ -95,6 +101,11 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+}
+
+void dae::Renderer::RenderTexture(Texture2D* pTexture, const SDL_Rect& dst, const SDL_Rect& src) const
+{
+	SDL_RenderCopy(GetSDLRenderer(), pTexture->GetSDLTexture(), &src, &dst);
 }
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }

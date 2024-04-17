@@ -1,12 +1,10 @@
 #pragma once
 #include <steam_api.h>
 #include <windows.h>
-#include <memory>
-
-#include "Observer.h"
 
 
 #define _ACH_ID( id, name ) { id, #id, name, "", 0, 0 }
+
 struct Achievement_t
 {
 	int m_eAchievementID;
@@ -18,7 +16,7 @@ struct Achievement_t
 };
 
 
-class CSteamAchievements : public dae::Observer
+class CSteamAchievements
 {
 private:
 	int64 m_iAppID; // Our current AppID
@@ -30,7 +28,7 @@ public:
 	CSteamAchievements(Achievement_t* Achievements, int NumAchievements);
 	~CSteamAchievements() = default;
 
-	void UpdateObserver() override;
+	//void UpdateObserver() override;
 
 	bool RequestStats();
 	bool SetAchievement(const char* ID);

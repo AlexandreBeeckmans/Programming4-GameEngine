@@ -105,8 +105,3 @@ void CSteamAchievements::OnAchievementStored(UserAchievementStored_t* pCallback)
 		OutputDebugString("Stored Achievement for Steam\n");
 	}
 }
-
-void CSteamAchievements::UpdateObserver()
-{
-	
-}
