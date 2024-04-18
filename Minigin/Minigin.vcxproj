@@ -227,6 +227,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Out
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="QbertMoveComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderFPSComponent.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -270,6 +271,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Out
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="QbertMoveComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderFPSComponent.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

@@ -9,6 +9,7 @@
 
 
 #include "Observer.h"
+#include "QbertMoveComponent.h"
 
 dae::GameObjectCommand::GameObjectCommand(dae::GameObject* pActor) :
 	m_pActor{pActor}
@@ -27,9 +28,9 @@ void dae::Move::Execute()
 }
 
 
-dae::Die::Die(dae::GameObject* pActor, TextComponent* pLivesText):
-	GameObjectCommand::GameObjectCommand{ pActor },
-	m_pLivesText{pLivesText}
+dae::Die::Die(dae::GameObject* pActor):
+	GameObjectCommand::GameObjectCommand{ pActor }
+	//m_pLivesText{pLivesText}
 {}
 
 void dae::Die::Execute()
@@ -37,9 +38,9 @@ void dae::Die::Execute()
 	GetGameActor()->GetComponent<dae::HealthComponent>()->RemoveLive();
 }
 
-dae::Score::Score(GameObject* pActor, TextComponent* pScoreText) :
-	GameObjectCommand::GameObjectCommand{ pActor },
-	m_pScoreText{pScoreText}
+dae::Score::Score(GameObject* pActor) :
+	GameObjectCommand::GameObjectCommand{ pActor }
+	//m_pScoreText{pScoreText}
 {}
 
 void dae::Score::Execute()
@@ -48,3 +49,14 @@ void dae::Score::Execute()
 	GetGameActor()->GetComponent<ScoreComponent>()->IncrementScore(valueToIncrement);
 }
 
+qbert::QbertMoveCommand::QbertMoveCommand(dae::GameObject* pObject, const glm::vec2& direction) :
+	GameObjectCommand{ pObject },
+	m_Direction(direction)
+{
+
+}
+
+void qbert::QbertMoveCommand::Execute()
+{
+	GetGameActor()->GetComponent<QbertMoveComponent>()->SetDirection(m_Direction);
+}

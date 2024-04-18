@@ -31,6 +31,7 @@ namespace dae
 
 		
 		void UpdateRow();
+		void SetColumn(int col);
 		
 
 

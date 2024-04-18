@@ -43,21 +43,32 @@ namespace dae
 	class Die final : public GameObjectCommand
 	{
 	public:
-		Die(dae::GameObject* pObject, TextComponent* pLivesText = nullptr);
+		Die(dae::GameObject* pObject);
 		virtual void Execute() override;
 
 	private:
-		TextComponent* m_pLivesText{ nullptr };
+		//TextComponent* m_pLivesText{ nullptr };
 	};
 
 	class Score final : public GameObjectCommand
 	{
 	public:
-		Score(GameObject* pObject, TextComponent* pLivesText = nullptr);
+		Score(GameObject* pObject);
 		virtual void Execute() override;
 
 	private:
-		TextComponent* m_pScoreText{ nullptr };
+		//TextComponent* m_pScoreText{ nullptr };
 	};
 }
 
+namespace qbert
+{
+	class QbertMoveCommand : public dae::GameObjectCommand
+	{
+	public:
+		QbertMoveCommand(dae::GameObject* pObject, const glm::vec2& direction);
+		virtual void Execute() override;
+	private:
+		glm::vec2 m_Direction;
+	};
+}

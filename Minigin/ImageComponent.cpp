@@ -71,3 +71,9 @@ void dae::ImageComponent::UpdateRow()
 	++m_Row %= m_MaxRow;
 	UpdateSource();
 }
+
+void dae::ImageComponent::SetColumn(int col)
+{
+	m_Col = col;
+	UpdateSource();
+}
