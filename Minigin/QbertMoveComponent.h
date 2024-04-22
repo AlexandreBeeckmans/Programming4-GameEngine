@@ -5,6 +5,7 @@
 
 namespace qbert
 {
+	class MapComponent;
 	enum class QbertDirection
 	{
 		TOPLEFT,
@@ -15,8 +16,8 @@ namespace qbert
 	class QbertMoveComponent final : public dae::BaseComponent
 	{
 	public:
-		QbertMoveComponent(dae::GameObject* owner);
-		~QbertMoveComponent() = default;
+		QbertMoveComponent(dae::GameObject* owner, qbert::MapComponent* pMap);
+		virtual ~QbertMoveComponent() override = default;
 
 
 		QbertMoveComponent(const QbertMoveComponent& other) = default;
@@ -25,6 +26,29 @@ namespace qbert
 		QbertMoveComponent& operator=(QbertMoveComponent&& other) = default;
 
 		void SetDirection(const glm::vec2& direction);
+		void Update() override;
+
+
+
+
+	private:
+		void Bounce();
+		QbertDirection m_directionState{QbertDirection::TOPRIGHT};
+		glm::vec2 m_Direction{0.5f,-0.75f};
+
+		bool m_IsWaiting{ true };
+		const float m_WaitingTime{ 0.5f };
+		float m_AccumulatedWaitingTime{ 0.0f };
+
+		const float m_MaxDistanceX{ 16.0f };
+		float m_AccumulatedDistanceX{ 0.0f };
+
+		float m_AdditionalY{ 0.0f };
+
+		//TileComponent* pCurrentTile{ nullptr };
+		MapComponent* m_pMap{ nullptr };
+
+		bool m_IsDead{ false };
 	};
 }
 

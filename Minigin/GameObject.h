@@ -26,6 +26,7 @@ namespace dae
 		void RenderGui() const;
 
 		void SetLocalPosition(float x, float y);
+		void SetLocalPosition(const glm::vec2& pos);
 		void SetLocalPosition(const glm::vec3& pos);
 		void Init();
 

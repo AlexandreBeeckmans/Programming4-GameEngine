@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "ImageComponent.h"
+
 void dae::GameObject::Update()
 {
 	for (auto& pComp : m_pComponents)
@@ -50,6 +52,11 @@ void dae::GameObject::SetLocalPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
 	SetPositionDirty();
+}
+
+void dae::GameObject::SetLocalPosition(const glm::vec2& pos)
+{
+	SetLocalPosition(pos.x, pos.y);
 }
 
 void dae::GameObject::RemoveAllDeadComponent()
@@ -141,6 +148,10 @@ glm::vec3 dae::GameObject::GetWorldPosition()
 void dae::GameObject::Translate(const glm::vec2& discplacement)
 {
 	SetLocalPosition(m_transform.GetPosition() + glm::vec3{ discplacement.x, discplacement.y, 0 });
+	if(GetComponent<ImageComponent>())
+	{
+		GetComponent<ImageComponent>()->UpdateShape();
+	}
 }
 
 void dae::GameObject::SetLocalPosition(const glm::vec3& pos)

@@ -34,11 +34,11 @@ namespace dae
 		void SetColumn(int col);
 		
 
-
+		void UpdateShape();
 	protected:
 		void SetTexture(SDL_Texture* pTexture);
 		void UpdateSource();
-		void UpdateShape();
+		
 		
 
 	private:

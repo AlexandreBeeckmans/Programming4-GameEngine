@@ -21,3 +21,14 @@ void qbert::TileComponent::UpdateTile()
 	}
 }
 
+glm::vec2 qbert::TileComponent::GetStartPoint() const
+{
+	dae::ImageComponent* pImageComp = GetOwner()->GetComponent<dae::ImageComponent>();
+	glm::vec2 posToReturn
+	{
+		GetOwner()->GetWorldPosition().x + static_cast<float>(pImageComp->GetShape().w) / 4.0f,
+		GetOwner()->GetWorldPosition().y - static_cast<float>(pImageComp->GetShape().h) / 4.0f
+	};
+	return posToReturn;
+}
+

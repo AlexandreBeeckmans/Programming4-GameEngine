@@ -1,4 +1,6 @@
 #pragma once
+#include <glm/vec2.hpp>
+
 #include "BaseComponent.h"
 
 namespace qbert
@@ -15,6 +17,8 @@ namespace qbert
 
 		bool IsCompleted() const;
 		void UpdateTile();
+
+		glm::vec2 GetStartPoint() const;
 
 	private:
 		int m_CurrentState{ 0 };
