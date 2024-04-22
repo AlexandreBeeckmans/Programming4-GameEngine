@@ -23,7 +23,6 @@ namespace qbert
 	private:
 		int m_CurrentState{ 0 };
 		const int m_MaxState{ 2 };
-
 	};
 }
 

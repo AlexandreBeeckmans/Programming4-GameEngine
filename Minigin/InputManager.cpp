@@ -68,16 +68,3 @@ void dae::InputManager::BindKeyboardInput(SDL_Scancode input, std::unique_ptr<Co
 {
 	m_KeyboardBindings.push_back({ input, std::move(command), inputType });
 }
-void dae::InputManager::SetMoveKeyboardCommandActor(dae::GameObject* pActor)
-{ 
-	std::unique_ptr<Move> wKey{ std::make_unique<Move>(pActor, glm::vec2{ 0.0f, -1.0f }) };
-	std::unique_ptr<Move> aKey{ std::make_unique<Move>(pActor, glm::vec2{ -1.0f, 0.0f }) };
-	std::unique_ptr<Move> sKey{ std::make_unique<Move>(pActor, glm::vec2{ 0.0f, 1.0f }) };
-	std::unique_ptr<Move> dKey{ std::make_unique<Move>(pActor, glm::vec2{ 1.0f, 0.0f }) };
-
-
-	BindKeyboardInput(SDL_SCANCODE_W, std::move(wKey), InputType::TRIGGERED);
-	BindKeyboardInput(SDL_SCANCODE_A, std::move(aKey), InputType::TRIGGERED);
-	BindKeyboardInput(SDL_SCANCODE_S, std::move(sKey), InputType::TRIGGERED);
-	BindKeyboardInput(SDL_SCANCODE_D, std::move(dKey), InputType::TRIGGERED);
-}

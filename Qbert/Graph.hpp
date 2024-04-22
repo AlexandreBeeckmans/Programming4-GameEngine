@@ -80,7 +80,6 @@ namespace dae
 
             ImGui::Plot("test", testConfig);
         }
-
     };
 }
 

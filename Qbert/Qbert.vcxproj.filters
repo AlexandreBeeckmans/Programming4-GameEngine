@@ -13,10 +13,105 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Test Files">
+      <UniqueIdentifier>{ca531461-27c4-4f2e-b190-06f74fc1c323}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MapComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QbertMoveComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QbertCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSComponent.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFPSComponent.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiEx1Component.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiEx2Component.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCommand.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIComponent.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreComponent.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TileComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatingComponent.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveComponent.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MapComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertMoveComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSComponent.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFPSComponent.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiEx1Component.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiEx2Component.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCommand.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIComponent.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreComponent.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RotatingComponent.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveComponent.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TrashTheCache.h">
+      <Filter>Test Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.hpp">
+      <Filter>Test Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

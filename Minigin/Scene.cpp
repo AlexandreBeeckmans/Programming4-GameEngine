@@ -2,11 +2,6 @@
 #include "GameObject.h"
 
 #include <algorithm>
-#include <iostream>
-#include "FPS.h"
-#include "TextComponent.h"
-
-#include <sstream>
 #include <iomanip>
 
 using namespace dae;

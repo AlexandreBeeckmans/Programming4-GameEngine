@@ -1,7 +1,4 @@
 #pragma once
-#include <glm/vec2.hpp>
-
-
 namespace dae
 {
 	class GameObject;
@@ -26,49 +23,5 @@ namespace dae
 
 		GameObjectCommand(GameObject* pActor);
 		virtual ~GameObjectCommand() = default;
-	};
-
-	class Move final : public GameObjectCommand
-	{
-	public:
-
-		Move(dae::GameObject* pActor, const glm::vec2& direction);
-		virtual void Execute() override;
-
-	private:
-		glm::vec2 m_Direction;
-		bool m_IsMoving = false;
-	};
-
-	class Die final : public GameObjectCommand
-	{
-	public:
-		Die(dae::GameObject* pObject);
-		virtual void Execute() override;
-
-	private:
-		//TextComponent* m_pLivesText{ nullptr };
-	};
-
-	class Score final : public GameObjectCommand
-	{
-	public:
-		Score(GameObject* pObject);
-		virtual void Execute() override;
-
-	private:
-		//TextComponent* m_pScoreText{ nullptr };
-	};
-}
-
-namespace qbert
-{
-	class QbertMoveCommand : public dae::GameObjectCommand
-	{
-	public:
-		QbertMoveCommand(dae::GameObject* pObject, const glm::vec2& direction);
-		virtual void Execute() override;
-	private:
-		glm::vec2 m_Direction;
 	};
 }

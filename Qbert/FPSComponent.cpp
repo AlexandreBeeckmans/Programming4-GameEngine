@@ -1,4 +1,4 @@
-#include "FPS.h"
+#include "FPSComponent.h"
 #include "GameObject.h"
 #include "EngineTime.h"
 

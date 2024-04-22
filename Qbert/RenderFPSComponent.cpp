@@ -1,14 +1,12 @@
 #include "RenderFPSComponent.h"
-#include "FPS.h"
+#include "FPSComponent.h"
 #include "TextComponent.h"
-#include "ResourceManager.h"
 
 #include "GameObject.h"
 #include "Font.h"
 
 #include "EngineTime.h"
 
-#include<sstream>
 #include <format>
 
 

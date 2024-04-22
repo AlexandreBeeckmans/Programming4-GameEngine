@@ -2,13 +2,6 @@
 #include <SDL.h>
 #include "Singleton.h"
 
-#include <memory>
-
-//#include "TrashTheCache.h"
-
-
-#include "Graph.hpp"
-
 namespace dae
 {
 

@@ -57,8 +57,6 @@ namespace dae
 
 		virtual void ProcessInput() override;
 		virtual void Bind(const unsigned int input, std::unique_ptr<Command> pCommand, InputType inputType) override;
-
-		virtual void BindMoveInput(GameObject* pActor);
 	private:
 		class GamepadControllerImpl;
 		GamepadControllerImpl* m_pImpl;

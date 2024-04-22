@@ -13,7 +13,6 @@ public:
 	GamepadControllerImpl(GamepadController* pOwner);
 
 	void DoProcessInput();
-	void DoBindMove(GameObject* pActor);
 
 
 
@@ -94,24 +93,6 @@ void dae::GamepadController::ProcessInput()
 void dae::GamepadController::Bind(const unsigned int input, std::unique_ptr<Command> pCommand, InputType inputType)
 {
 	m_pImpl->DoBind(input, std::move(pCommand), inputType);
-}
-
-void dae::GamepadController::GamepadControllerImpl::DoBindMove(GameObject* pActor)
-{
-	Move up{ pActor, glm::vec2{ 0.0f, -1.0f } };
-	Move left{ pActor, glm::vec2{ -1.0f, 0.0f } };
-	Move down{ pActor, glm::vec2{ 0.0f, 1.0f } };
-	Move right{ pActor, glm::vec2{ 1.0f, 0.0f } };
-
-
-	DoBind(XINPUT_GAMEPAD_DPAD_UP, std::make_unique<Move>(up), InputType::TRIGGERED);
-	DoBind(XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<Move>(left), InputType::TRIGGERED);
-	DoBind(XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<Move>(down), InputType::TRIGGERED);
-	DoBind(XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<Move>(right), InputType::TRIGGERED);
-}
-void dae::GamepadController::BindMoveInput(GameObject* pActor)
-{
-	m_pImpl->DoBindMove(pActor);
 }
 
 bool dae::GamepadController::GamepadControllerImpl::IsDownThisFrame(unsigned int button) const
