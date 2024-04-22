@@ -135,9 +135,6 @@
     <ClInclude Include="ScoreComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Achievements.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -258,9 +255,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScoreComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Achievements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UIComponent.cpp">
