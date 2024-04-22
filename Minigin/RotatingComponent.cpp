@@ -1,7 +1,7 @@
 #include "RotatingComponent.h"
 
 #include "GameObject.h"
-#include "Time.h"
+#include "EngineTime.h"
 
 #include <numbers>
 
@@ -15,7 +15,7 @@ dae::RotatingComponent::RotatingComponent(GameObject* pGameObject, const float s
 
 void dae::RotatingComponent::Update()
 {
-	m_Angle += m_Speed * Time::GetInstance().GetDeltaTime();
+	m_Angle += m_Speed * EngineTime::GetInstance().GetDeltaTime();
 	if (m_Angle >= 2 * std::numbers::pi_v<decltype(m_Angle)>)
 		m_Angle -= 2 * std::numbers::pi_v<decltype(m_Angle)>;
 

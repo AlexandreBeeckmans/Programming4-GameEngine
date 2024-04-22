@@ -1,5 +1,5 @@
 #include "MoveComponent.h"
-#include "Time.h"
+#include "EngineTime.h"
 #include "GameObject.h"
 
 dae::MoveComponent::MoveComponent(GameObject* pParent, const float speed) :
@@ -10,8 +10,8 @@ dae::MoveComponent::MoveComponent(GameObject* pParent, const float speed) :
 void dae::MoveComponent::Update()
 {
 	glm::vec3 currentPos{ GetOwner()->GetLocalPosition()};
-	currentPos.x += Time::GetInstance().GetDeltaTime() * m_Speed * m_Movement.x;
-	currentPos.y += Time::GetInstance().GetDeltaTime() * m_Speed * m_Movement.y;
+	currentPos.x += EngineTime::GetInstance().GetDeltaTime() * m_Speed * m_Movement.x;
+	currentPos.y += EngineTime::GetInstance().GetDeltaTime() * m_Speed * m_Movement.y;
 
 	GetOwner()->SetLocalPosition(currentPos);
 }

@@ -241,7 +241,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Out
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TileComponent.h" />
-    <ClInclude Include="Time.h" />
+    <ClInclude Include="EngineTime.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TrashTheCache.h" />
     <ClInclude Include="UIComponent.h" />
@@ -285,7 +285,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Out
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TileComponent.cpp" />
-    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UIComponent.cpp" />
   </ItemGroup>

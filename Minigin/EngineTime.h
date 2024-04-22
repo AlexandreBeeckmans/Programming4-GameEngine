@@ -3,7 +3,7 @@
 
 namespace dae
 {
-	class Time final : public Singleton<Time>
+	class EngineTime final : public Singleton<EngineTime>
 	{
 	public:
 		void Update(const float deltaTime);
@@ -12,8 +12,8 @@ namespace dae
 		float GetFixedStep() const { return m_FixedTimeStep; };
 		int GetMsPerFrame() const { return m_MinMsPerFrame; };
 	private:
-		friend class Singleton<Time>;
-		Time() = default;
+		friend class Singleton<EngineTime>;
+		EngineTime() = default;
 
 
 		float m_DeltaTime{};

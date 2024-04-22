@@ -1,8 +1,6 @@
 #include "FPS.h"
 #include "GameObject.h"
-#include "Time.h"
-
-#include <iostream>
+#include "EngineTime.h"
 
 
 dae::FPSComponent::FPSComponent(GameObject* pGameObject) :
@@ -12,5 +10,5 @@ dae::FPSComponent::FPSComponent(GameObject* pGameObject) :
 
 void dae::FPSComponent::Update()
 {
-	m_Fps = 1 / Time::GetInstance().GetDeltaTime();
+	m_Fps = 1 / EngineTime::GetInstance().GetDeltaTime();
 }

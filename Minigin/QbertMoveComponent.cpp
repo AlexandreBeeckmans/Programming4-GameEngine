@@ -4,7 +4,7 @@
 #include "ImageComponent.h"
 #include "MapComponent.h"
 #include "TileComponent.h"
-#include "Time.h"
+#include "EngineTime.h"
 
 qbert::QbertMoveComponent::QbertMoveComponent(dae::GameObject* owner, qbert::MapComponent* pMap):
 BaseComponent(owner),
@@ -58,8 +58,8 @@ void qbert::QbertMoveComponent::Update()
 		Bounce();
 		constexpr float speed{ 35.0f };
 
-		GetOwner()->Translate(speed * dae::Time::GetInstance().GetDeltaTime() * m_Direction);
-		m_AccumulatedDistanceX += speed * dae::Time::GetInstance().GetDeltaTime() * std::abs(m_Direction.x);
+		GetOwner()->Translate(speed * dae::EngineTime::GetInstance().GetDeltaTime() * m_Direction);
+		m_AccumulatedDistanceX += speed * dae::EngineTime::GetInstance().GetDeltaTime() * std::abs(m_Direction.x);
 
 		
 
@@ -87,7 +87,7 @@ void qbert::QbertMoveComponent::Update()
 		return;
 	}
 
-	m_AccumulatedWaitingTime += dae::Time::GetInstance().GetDeltaTime();
+	m_AccumulatedWaitingTime += dae::EngineTime::GetInstance().GetDeltaTime();
 	if(m_AccumulatedWaitingTime >= m_WaitingTime)
 	{
 		m_AccumulatedWaitingTime = 0.0f;
@@ -99,7 +99,7 @@ void qbert::QbertMoveComponent::Update()
 void qbert::QbertMoveComponent::Bounce()
 {
 	constexpr float jumpSpeed{ 50.0f };
-	m_AdditionalY = jumpSpeed * dae::Time::GetInstance().GetDeltaTime();
+	m_AdditionalY = jumpSpeed * dae::EngineTime::GetInstance().GetDeltaTime();
 
 	if (m_AccumulatedDistanceX > m_MaxDistanceX / 2.0f)
 	{
@@ -112,6 +112,6 @@ void qbert::QbertMoveComponent::Bounce()
 		-m_AdditionalY
 	};
 
-	GetOwner()->Translate(jumpSpeed * dae::Time::GetInstance().GetDeltaTime() * jumpDirection);
+	GetOwner()->Translate(jumpSpeed * dae::EngineTime::GetInstance().GetDeltaTime() * jumpDirection);
 
 }

@@ -6,7 +6,7 @@
 #include "GameObject.h"
 #include "Font.h"
 
-#include "Time.h"
+#include "EngineTime.h"
 
 #include<sstream>
 #include <format>
@@ -27,7 +27,7 @@ void dae::RenderFPSComponent::Update()
 {
 	if (!m_pFPSComponent) return;
 
-	m_AccumulatedTime += Time::GetInstance().GetDeltaTime();
+	m_AccumulatedTime += EngineTime::GetInstance().GetDeltaTime();
 	m_AccumulatedFPS += m_pFPSComponent->GetFPS();
 	++m_IterationCount;
 
