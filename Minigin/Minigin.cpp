@@ -14,8 +14,6 @@
 #include "EngineTime.h"
 
 #include <chrono>
-#define MS_PER_FRAME 8
-#define FIXED_TIME_STEP 0.25f
 
 
 

@@ -80,7 +80,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\3rdParty\steamworks\public\steam;C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\3rdParty\imgui-1.90.4;C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\steamworks\public\steam;$(SolutionDir)3rdParty\imgui-1.90.4;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\3rdParty\steamworks\public\steam;C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\3rdParty\imgui-1.90.4;C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\steamworks\public\steam;$(SolutionDir)3rdParty\imgui-1.90.4;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\3rdParty\steamworks\public\steam;C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\3rdParty\imgui-1.90.4;C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\steamworks\public\steam;$(SolutionDir)3rdParty\imgui-1.90.4;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -137,7 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\3rdParty\steamworks\public\steam;C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\3rdParty\imgui-1.90.4;C:\DAE\2023-2024\2nd_Semester\Programming_4\Project\Programming4-GameEngine\Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\steamworks\public\steam;$(SolutionDir)3rdParty\imgui-1.90.4;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
