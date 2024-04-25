@@ -33,21 +33,19 @@ namespace qbert
 
 	private:
 		void Bounce();
+		void SetMovementDirection();
+
 		QbertDirection m_directionState{QbertDirection::TOPRIGHT};
 		glm::vec2 m_Direction{0.5f,-0.75f};
 
 		bool m_IsWaiting{ true };
-		const float m_WaitingTime{ 0.5f };
-		float m_AccumulatedWaitingTime{ 0.0f };
 
-		const float m_MaxDistanceX{ 16.0f };
+		float m_MaxDistanceX{ 0.0f };
 		float m_AccumulatedDistanceX{ 0.0f };
 
 		float m_AdditionalY{ 0.0f };
 
-		//TileComponent* pCurrentTile{ nullptr };
 		MapComponent* m_pMap{ nullptr };
-
 		bool m_IsDead{ false };
 	};
 }

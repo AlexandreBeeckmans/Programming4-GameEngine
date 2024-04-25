@@ -11,6 +11,7 @@ BaseComponent(owner),
 m_pMap(pMap)
 {
 	GetOwner()->SetLocalPosition(pMap->GetCurrentTile()->GetStartPoint());
+	m_MaxDistanceX = static_cast<float>(m_pMap->GetCurrentTile()->GetWidth())/2.0f;
 }
 
 void qbert::QbertMoveComponent::SetDirection(const glm::vec2& direction)
@@ -21,33 +22,32 @@ void qbert::QbertMoveComponent::SetDirection(const glm::vec2& direction)
 	if(direction.x > 0)
 	{
 		m_directionState = QbertDirection::BOTTOMRIGHT;
-		m_Direction = { 0.5f,0.75f };
 		GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(2);
-		return;
 	}
 
 	if (direction.y < 0)
 	{
 		m_directionState = QbertDirection::BOTTOMLEFT;
-		m_Direction = { -0.5f,0.75f };
 		GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(3);
-		return;
 	}
 
 	if (direction.x < 0)
 	{
 		m_directionState = QbertDirection::TOPLEFT;
-		m_Direction = { -0.5f,-0.75f };
 		GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(1);
-		return;
 	}
 
 	if (direction.y > 0)
 	{
 		m_directionState = QbertDirection::TOPRIGHT;
-		m_Direction = { 0.5f,-0.75f };
 		GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(0);
+		
 	}
+
+	
+	m_IsWaiting = false;
+	m_pMap->SetNextTile(m_directionState);
+	SetMovementDirection();
 }
 
 void qbert::QbertMoveComponent::Update()
@@ -56,24 +56,23 @@ void qbert::QbertMoveComponent::Update()
 	if(!m_IsWaiting)
 	{
 		Bounce();
-		constexpr float speed{ 35.0f };
+		constexpr float speed{ 55.0f };
 
 		GetOwner()->Translate(speed * dae::EngineTime::GetInstance().GetDeltaTime() * m_Direction);
 		m_AccumulatedDistanceX += speed * dae::EngineTime::GetInstance().GetDeltaTime() * std::abs(m_Direction.x);
 
 		
 
-		if(m_AccumulatedDistanceX >= m_MaxDistanceX)
+		if (m_AccumulatedDistanceX >= m_MaxDistanceX)
 		{
 			m_AccumulatedDistanceX = 0;
 			m_AdditionalY = 0;
 			m_IsWaiting = true;
+			if(m_pMap->GetCurrentTile())GetOwner()->SetLocalPosition(m_pMap->GetCurrentTile()->GetStartPoint());
 
 			if (m_pMap)
 			{
-				m_pMap->SetNextTile(m_directionState);
-
-				if(m_pMap->GetCurrentTile())
+				if (m_pMap->GetCurrentTile())
 				{
 					m_pMap->ActivateCurrentTile();
 				}
@@ -81,19 +80,9 @@ void qbert::QbertMoveComponent::Update()
 				{
 					m_IsDead = true;
 				}
-				
 			}
 		}
-		return;
 	}
-
-	m_AccumulatedWaitingTime += dae::EngineTime::GetInstance().GetDeltaTime();
-	if(m_AccumulatedWaitingTime >= m_WaitingTime)
-	{
-		m_AccumulatedWaitingTime = 0.0f;
-		m_IsWaiting = false;
-	}
-	
 }
 
 void qbert::QbertMoveComponent::Bounce()
@@ -114,4 +103,42 @@ void qbert::QbertMoveComponent::Bounce()
 
 	GetOwner()->Translate(jumpSpeed * dae::EngineTime::GetInstance().GetDeltaTime() * jumpDirection);
 
+}
+
+void qbert::QbertMoveComponent::SetMovementDirection()
+{
+	if (m_pMap->GetCurrentTile())
+	{
+		const glm::vec2 target{ m_pMap->GetCurrentTile()->GetStartPoint() };
+		const glm::vec2 from{ GetOwner()->GetWorldPosition() };
+
+		m_Direction = normalize(target - from);
+		return;
+	}
+
+	switch(m_directionState)
+	{
+	case QbertDirection::TOPRIGHT:
+	{
+		m_Direction = { 0.5f, -0.75f };
+		break;
+	}
+	case QbertDirection::TOPLEFT:
+	{
+		m_Direction = { -0.5f, -0.75f };
+		break;
+	}
+	case QbertDirection::BOTTOMRIGHT:
+	{
+		m_Direction = { 0.5f, 0.75f };
+		break;
+	}
+	case QbertDirection::BOTTOMLEFT:
+	{
+		m_Direction = { -0.5f, 0.75f };
+		break;
+	}
+
+	}
+	
 }

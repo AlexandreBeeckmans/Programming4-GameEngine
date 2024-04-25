@@ -19,6 +19,7 @@ namespace qbert
 		void UpdateTile();
 
 		glm::vec2 GetStartPoint() const;
+		int GetWidth() const;
 
 	private:
 		int m_CurrentState{ 0 };

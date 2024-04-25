@@ -32,3 +32,8 @@ glm::vec2 qbert::TileComponent::GetStartPoint() const
 	return posToReturn;
 }
 
+int qbert::TileComponent::GetWidth() const
+{
+	return GetOwner()->GetComponent<dae::ImageComponent>()->GetShape().w;
+}
+
