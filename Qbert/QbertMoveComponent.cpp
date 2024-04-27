@@ -5,6 +5,7 @@
 #include "MapComponent.h"
 #include "TileComponent.h"
 #include "EngineTime.h"
+#include "ServiceLocator.h"
 
 qbert::QbertMoveComponent::QbertMoveComponent(dae::GameObject* owner, qbert::MapComponent* pMap):
 BaseComponent(owner),
@@ -41,10 +42,10 @@ void qbert::QbertMoveComponent::SetDirection(const glm::vec2& direction)
 	{
 		m_directionState = QbertDirection::TOPRIGHT;
 		GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(0);
-		
 	}
 
-	
+	auto& soundSystem{ dae::ServiceLocator::GetSoundSystem() };
+	soundSystem.Play(0, 100.0f);
 	m_IsWaiting = false;
 	m_pMap->SetNextTile(m_directionState);
 	SetMovementDirection();

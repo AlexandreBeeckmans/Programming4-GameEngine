@@ -22,6 +22,9 @@
     <Filter Include="BaseEngine">
       <UniqueIdentifier>{a9436527-6c0e-4c49-8d42-09812d090537}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sounds">
+      <UniqueIdentifier>{b6eb352a-1494-43e5-ad14-f3a1fcf2a420}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imconfig.h">
@@ -111,6 +114,15 @@
     <ClInclude Include="Singleton.h">
       <Filter>BaseEngine</Filter>
     </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>Sounds</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Sounds</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLSoundSystem.h">
+      <Filter>Sounds</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui.cpp">
@@ -193,6 +205,15 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>BaseEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystem.cpp">
+      <Filter>Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLSoundSystem.cpp">
+      <Filter>Sounds</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

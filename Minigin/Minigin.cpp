@@ -15,6 +15,8 @@
 
 #include <chrono>
 
+#include "SDLSoundSystem.h"
+#include "ServiceLocator.h"
 
 
 SDL_Window* g_window{};
@@ -70,8 +72,10 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	}
 
 	Renderer::GetInstance().Init(g_window);
-
 	ResourceManager::GetInstance().Init(dataPath);
+
+	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDLSoundSystem>());
+	dae::ServiceLocator::Init();
 }
 
 dae::Minigin::~Minigin()

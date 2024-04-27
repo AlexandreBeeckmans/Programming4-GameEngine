@@ -25,6 +25,8 @@
 #include "TileComponent.h"
 #include "MapComponent.h"
 
+//#include "SDLSoundSystem.h"
+//#include "ServiceLocator.h"
 
 
 void InitQbertScene()
@@ -113,7 +115,8 @@ void Load()
 }
 
 
-int main(int, char* []) {
+int main(int, char* [])
+{
 	dae::Minigin engine("../Data/");
 	engine.Run(Load);
 	return 0;
