@@ -6,7 +6,7 @@
 void dae::SDLSoundSystem::Play(const soundId id, const float volume)
 {
     // Load sound
-    std::cout << "start to play sound !\n";
+    //std::cout << "start to play sound !\n";
     Mix_Chunk* sound = m_AudioClips[id];
     if (sound != nullptr) 
     {
@@ -16,7 +16,7 @@ void dae::SDLSoundSystem::Play(const soundId id, const float volume)
     {
         std::cerr << "Failed to play sound for ID: " << id << "\n";
     }
-    std::cout << "Sound played !\n";
+    //std::cout << "Sound played !\n";
 }
 
 void dae::SDLSoundSystem::Init()
@@ -32,7 +32,7 @@ void dae::SDLSoundSystem::Init()
     }
 
     //Load all the clips
-    std::cout << "Load a sound..." << std::endl;
+    //std::cout << "Load a sound..." << std::endl;
     Mix_Chunk* sound = Mix_LoadWAV("../Data/qbert/Sounds/QBert Jump.wav");
     if (sound == NULL) 
     {

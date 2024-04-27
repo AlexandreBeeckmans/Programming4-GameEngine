@@ -123,6 +123,12 @@
     <ClInclude Include="SDLSoundSystem.h">
       <Filter>Sounds</Filter>
     </ClInclude>
+    <ClInclude Include="NullSoundSystem.h">
+      <Filter>Sounds</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingSoundSystem.h">
+      <Filter>Sounds</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui.cpp">
@@ -213,6 +219,12 @@
       <Filter>Sounds</Filter>
     </ClCompile>
     <ClCompile Include="SDLSoundSystem.cpp">
+      <Filter>Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="NullSoundSystem.cpp">
+      <Filter>Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggingSoundSystem.cpp">
       <Filter>Sounds</Filter>
     </ClCompile>
   </ItemGroup>
