@@ -113,5 +113,8 @@
     <ClInclude Include="Graph.hpp">
       <Filter>Test Files</Filter>
     </ClInclude>
+    <ClInclude Include="SoundTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

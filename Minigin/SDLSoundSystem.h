@@ -14,6 +14,7 @@ namespace dae
 		virtual ~SDLSoundSystem() override = default;
 		void Play(const soundId id, const float volume) override;
 		virtual void Init() override;
+		virtual void LoadSound(const std::string& path) override;
 
 	private:
 		void PlaySoundOnThread(Mix_Chunk* sound, const float volume);

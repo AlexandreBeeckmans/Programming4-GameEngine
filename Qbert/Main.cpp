@@ -24,6 +24,7 @@
 #include "QbertMoveComponent.h"
 #include "TileComponent.h"
 #include "MapComponent.h"
+#include "ServiceLocator.h"
 
 //#include "SDLSoundSystem.h"
 //#include "ServiceLocator.h"
@@ -31,7 +32,7 @@
 
 void InitQbertScene()
 {
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level");
 
 	auto backgroundObject = std::make_unique<dae::GameObject>();
 
@@ -109,8 +110,15 @@ void InitQbertScene()
 
 
 }
+void LoadSounds()
+{
+	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/QBert Jump.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/QBert Fall.wav");
+}
+
 void Load()
 {
+	LoadSounds();
 	InitQbertScene();
 }
 

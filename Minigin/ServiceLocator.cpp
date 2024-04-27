@@ -23,9 +23,9 @@ void dae::ServiceLocator::RegisterSoundSystem(std::unique_ptr<SoundSystem>&& sou
 		
 }
 
-void dae::ServiceLocator::Init()
-{
-	std::cout << "SDL Mixer initializing...\n";
-	m_Instance->Init();
-	std::cout << "SDL Mixer initialized...\n";
-}
+//void dae::ServiceLocator::Init()
+//{
+//	std::cout << "SDL Mixer initializing...\n";
+//	m_Instance->Init();
+//	std::cout << "SDL Mixer initialized...\n";
+//}

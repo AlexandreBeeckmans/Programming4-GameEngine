@@ -17,3 +17,9 @@ void dae::LoggingSoundSystem::Init()
 	std::cout << "Init sound system\n";
 	m_RealSoundSystem->Init();
 }
+
+void dae::LoggingSoundSystem::LoadSound(const std::string& path)
+{
+	std::cout << "Load sound: " << path <<" \n";
+	m_RealSoundSystem->LoadSound(path);
+}

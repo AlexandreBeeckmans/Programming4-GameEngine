@@ -6,6 +6,7 @@
 #include "TileComponent.h"
 #include "EngineTime.h"
 #include "ServiceLocator.h"
+#include "SoundTypes.h"
 
 qbert::QbertMoveComponent::QbertMoveComponent(dae::GameObject* owner, qbert::MapComponent* pMap):
 BaseComponent(owner),
@@ -45,7 +46,7 @@ void qbert::QbertMoveComponent::SetDirection(const glm::vec2& direction)
 	}
 
 	auto& soundSystem{ dae::ServiceLocator::GetSoundSystem() };
-	soundSystem.Play(0, 100.0f);
+	soundSystem.Play(static_cast<int>(SoundType::JUMP), 100.0f);
 	m_IsWaiting = false;
 	m_pMap->SetNextTile(m_directionState);
 	SetMovementDirection();
@@ -80,6 +81,8 @@ void qbert::QbertMoveComponent::Update()
 				else
 				{
 					m_IsDead = true;
+					dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
+
 				}
 			}
 		}

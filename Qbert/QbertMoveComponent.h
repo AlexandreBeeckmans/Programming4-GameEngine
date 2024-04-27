@@ -20,10 +20,10 @@ namespace qbert
 		virtual ~QbertMoveComponent() override = default;
 
 
-		QbertMoveComponent(const QbertMoveComponent& other) = default;
-		QbertMoveComponent(QbertMoveComponent&& other) = default;
-		QbertMoveComponent& operator=(const QbertMoveComponent& other) = default;
-		QbertMoveComponent& operator=(QbertMoveComponent&& other) = default;
+		QbertMoveComponent(const QbertMoveComponent& other) = delete;
+		QbertMoveComponent(QbertMoveComponent&& other) = delete;
+		QbertMoveComponent& operator=(const QbertMoveComponent& other) = delete;
+		QbertMoveComponent& operator=(QbertMoveComponent&& other) = delete;
 
 		void SetDirection(const glm::vec2& direction);
 		void Update() override;
