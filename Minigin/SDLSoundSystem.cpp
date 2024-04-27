@@ -6,21 +6,17 @@
 void dae::SDLSoundSystem::Play(const soundId id, const float volume)
 {
     // Load sound
-    std::cout << "start to play sound !" << std::endl;
+    std::cout << "start to play sound !\n";
     Mix_Chunk* sound = m_AudioClips[id];
     if (sound != nullptr) 
     {
-        // Adjust volume
-        Mix_VolumeChunk(sound, static_cast<int>(volume * MIX_MAX_VOLUME));
-
-        // Play the sound
-        Mix_PlayChannel(-1, sound, 0); // -1 for any available channel, 0 for no loop
+        m_Thread = std::jthread{ &SDLSoundSystem::PlaySoundOnThread, this, sound, volume };
     }
     else 
     {
-        std::cerr << "Failed to play sound for ID: " << id << std::endl;
+        std::cerr << "Failed to play sound for ID: " << id << "\n";
     }
-    std::cout << "Sound played !" << std::endl;
+    std::cout << "Sound played !\n";
 }
 
 void dae::SDLSoundSystem::Init()
@@ -47,4 +43,14 @@ void dae::SDLSoundSystem::Init()
         m_AudioClips.emplace_back(sound);
     }
     
+}
+
+void dae::SDLSoundSystem::PlaySoundOnThread(Mix_Chunk* sound, const float volume)
+{
+    std::lock_guard soundLock{m_SoundMutex};
+    // Adjust volume
+    Mix_VolumeChunk(sound, static_cast<int>(volume * MIX_MAX_VOLUME));
+
+    // Play the sound
+    Mix_PlayChannel(-1, sound, 0);
 }
