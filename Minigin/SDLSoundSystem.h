@@ -17,6 +17,7 @@ namespace dae
 
 	private:
 		void PlaySoundOnThread(Mix_Chunk* sound, const float volume);
+		void LoadOnThread(const std::string& path);
 
 		std::vector<Mix_Chunk*> m_AudioClips;
 		std::jthread m_Thread;

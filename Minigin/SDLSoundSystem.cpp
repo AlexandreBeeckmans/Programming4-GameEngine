@@ -32,17 +32,7 @@ void dae::SDLSoundSystem::Init()
     }
 
     //Load all the clips
-    //std::cout << "Load a sound..." << std::endl;
-    Mix_Chunk* sound = Mix_LoadWAV("../Data/qbert/Sounds/QBert Jump.wav");
-    if (sound == NULL) 
-    {
-        printf("Unable to load sound: %s\n", Mix_GetError());
-    }
-    else
-    {
-        m_AudioClips.emplace_back(sound);
-    }
-    
+    m_Thread = std::jthread(&SDLSoundSystem::LoadOnThread, this, "../Data/qbert/Sounds/QBert Jump.wav");
 }
 
 void dae::SDLSoundSystem::PlaySoundOnThread(Mix_Chunk* sound, const float volume)
@@ -53,4 +43,18 @@ void dae::SDLSoundSystem::PlaySoundOnThread(Mix_Chunk* sound, const float volume
 
     // Play the sound
     Mix_PlayChannel(-1, sound, 0);
+}
+
+void dae::SDLSoundSystem::LoadOnThread(const std::string& path)
+{
+    std::lock_guard loadLock{m_SoundMutex};
+    Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
+    if (sound == NULL)
+    {
+        printf("Unable to load sound: %s\n", Mix_GetError());
+    }
+    else
+    {
+        m_AudioClips.emplace_back(sound);
+    }
 }
