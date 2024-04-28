@@ -18,10 +18,6 @@ m_pMap(pMap)
 
 void qbert::QbertMoveComponent::SetDirection(const glm::vec2& direction)
 {
-	//delete this sounds afterward
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
-
-
 	if (!m_IsWaiting) return;
 	if (m_IsDead) return;
 

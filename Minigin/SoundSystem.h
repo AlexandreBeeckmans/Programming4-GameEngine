@@ -24,7 +24,7 @@ namespace dae
 
 
 	protected:
-		static std::deque<PlayMessageEvent> GetPendingEvents() { return m_PendingEvents; }
+		static std::deque<PlayMessageEvent>& GetPendingEvents() { return m_PendingEvents; }
 
 	private:
 		static std::deque<PlayMessageEvent> m_PendingEvents;
