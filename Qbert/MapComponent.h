@@ -23,6 +23,8 @@ namespace qbert
 		void ActivateCurrentTile() const;
 
 		TileComponent* GetCurrentTile() const;
+		void SetCurrentIndexToLast();
+		bool IsComplete() const;
 
 	private:
 		std::vector<TileComponent*> m_pTiles{};
@@ -32,6 +34,8 @@ namespace qbert
 		void SetTopRightTile();
 		void SetBottomLeft();
 		void SetBottomRight();
+
+		
 	};
 }
 

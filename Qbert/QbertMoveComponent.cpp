@@ -18,6 +18,10 @@ m_pMap(pMap)
 
 void qbert::QbertMoveComponent::SetDirection(const glm::vec2& direction)
 {
+	//delete this sounds afterward
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
+
+
 	if (!m_IsWaiting) return;
 	if (m_IsDead) return;
 
@@ -77,16 +81,28 @@ void qbert::QbertMoveComponent::Update()
 				if (m_pMap->GetCurrentTile())
 				{
 					m_pMap->ActivateCurrentTile();
+					if(m_pMap->IsComplete())
+					{
+						m_IsWaiting = true;
+						m_IsDead = true;
+						dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
+					}
 				}
 				else
 				{
 					m_IsDead = true;
 					dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
+					ShowBubble();
 
 				}
 			}
 		}
 	}
+}
+
+void qbert::QbertMoveComponent::SetBubbleImage(dae::ImageComponent* pImageComponent)
+{
+	m_pBubbleImage = pImageComponent;
 }
 
 void qbert::QbertMoveComponent::Bounce()
@@ -145,4 +161,11 @@ void qbert::QbertMoveComponent::SetMovementDirection()
 
 	}
 	
+}
+
+void qbert::QbertMoveComponent::ShowBubble()
+{
+	if (!m_pBubbleImage) return;
+	m_pBubbleImage->SetVisible(true);
+
 }

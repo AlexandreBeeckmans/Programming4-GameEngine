@@ -10,6 +10,7 @@ namespace dae
 		void Play(const soundId, const float) override{}
 		void Init() override{}
 		void LoadSound(const std::string&) override{}
+		virtual void Update() override{}
 
 	};
 }

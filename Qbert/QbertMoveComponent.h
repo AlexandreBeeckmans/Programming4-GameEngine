@@ -2,6 +2,7 @@
 #include <glm/vec2.hpp>
 
 #include "BaseComponent.h"
+#include "ImageComponent.h"
 
 namespace qbert
 {
@@ -27,6 +28,7 @@ namespace qbert
 
 		void SetDirection(const glm::vec2& direction);
 		void Update() override;
+		void SetBubbleImage(dae::ImageComponent* pImageComponent);
 
 
 
@@ -34,6 +36,7 @@ namespace qbert
 	private:
 		void Bounce();
 		void SetMovementDirection();
+		void ShowBubble();
 
 		QbertDirection m_directionState{QbertDirection::TOPRIGHT};
 		glm::vec2 m_Direction{0.5f,-0.75f};
@@ -47,6 +50,8 @@ namespace qbert
 
 		MapComponent* m_pMap{ nullptr };
 		bool m_IsDead{ false };
+
+		dae::ImageComponent* m_pBubbleImage{ nullptr };
 	};
 }
 

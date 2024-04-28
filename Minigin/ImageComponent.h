@@ -14,14 +14,14 @@ namespace dae
 	class ImageComponent : public BaseComponent
 	{
 	public:
-		ImageComponent(GameObject* owner, const std::string& filePath = "", const float relativeX = 0, const float relativeY = 0, const int nbRows = 1, const int nbCols = 1, const int rowNb = 0, const int colNb = 0);
-		~ImageComponent() { m_pTexture = nullptr; };
+		ImageComponent(GameObject* owner, const std::string& filePath = "", const bool isVisible = true, const float relativeX = 0, const float relativeY = 0, const int nbRows = 1, const int nbCols = 1, const int rowNb = 0, const int colNb = 0);
+		~ImageComponent() override { m_pTexture = nullptr; }
 
 
-		ImageComponent(const ImageComponent& other) = default;
-		ImageComponent(ImageComponent&& other) = default;
-		ImageComponent& operator=(const ImageComponent& other) = default;
-		ImageComponent& operator=(ImageComponent&& other) = default;
+		ImageComponent(const ImageComponent& other) = delete;
+		ImageComponent(ImageComponent&& other) = delete;
+		ImageComponent& operator=(const ImageComponent& other) = delete;
+		ImageComponent& operator=(ImageComponent&& other) = delete;
 
 		virtual void Update() override;
 
@@ -35,6 +35,8 @@ namespace dae
 		
 
 		void UpdateShape();
+
+		void SetVisible(const bool isVisible);
 	protected:
 		void SetTexture(SDL_Texture* pTexture);
 		void UpdateSource();
@@ -52,6 +54,8 @@ namespace dae
 		const int m_MaxRow{ 1 };
 		int m_Col{ 0 };
 		int m_Row{ 0 };
+
+		bool m_IsVisible{ true };
 	};
 }
 

@@ -36,8 +36,8 @@ void InitQbertScene()
 
 	auto backgroundObject = std::make_unique<dae::GameObject>();
 
-	backgroundObject->AddComponent<dae::ImageComponent>("background.tga", 0.0f, 0.0f);
-	backgroundObject->AddComponent<dae::ImageComponent>("logo.tga", 220.0f, 200.0f);
+	backgroundObject->AddComponent<dae::ImageComponent>("background.tga", true, 0.0f, 0.0f);
+	backgroundObject->AddComponent<dae::ImageComponent>("logo.tga", true, 220.0f, 200.0f);
 	backgroundObject->SetLocalPosition(0, 0);
 	scene.Add(std::move(backgroundObject));
 
@@ -60,7 +60,7 @@ void InitQbertScene()
 		{
 			auto tileObject = std::make_unique<dae::GameObject>();
 			tileObject->AddComponent<qbert::TileComponent>();
-			tileObject->AddComponent<dae::ImageComponent>("qbert/Qbert Cubes.png", 0.0f, 0.0f, 3, 6);
+			tileObject->AddComponent<dae::ImageComponent>("qbert/Qbert Cubes.png", true, 0.0f, 0.0f, 3, 6);
 			tileObject->SetParent(pMapObject.get(), true);
 			tileObject->SetLocalPosition(baseTileX + i * tileObject->GetComponent<dae::ImageComponent>()->GetShape().w, baseTileY);
 
@@ -73,12 +73,14 @@ void InitQbertScene()
 		baseTileY -= 3 * tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().h / 4.0f;
 	}
 
+	pMapObject->GetComponent<qbert::MapComponent>()->SetCurrentIndexToLast();
+
 
 
 #pragma endregion
 
 	auto playerObject = std::make_unique<dae::GameObject>();
-	playerObject->AddComponent<dae::ImageComponent>("qbert/Qbert P1 Spritesheet.png", 0.0f, 0.0f, 1, 4);
+	playerObject->AddComponent<dae::ImageComponent>("qbert/Qbert P1 Spritesheet.png", true, 0.0f, 0.0f, 1, 4);
 	playerObject->AddComponent<qbert::QbertMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>());
 
 	qbert::QbertMoveCommand qbertMoveRightCommand{ playerObject.get(),  glm::vec2{1,0} };
@@ -93,6 +95,13 @@ void InitQbertScene()
 	qbert::QbertMoveCommand qbertMoveDownCommand{ playerObject.get(),  glm::vec2{0,-1} };
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_S, std::make_unique<qbert::QbertMoveCommand>(qbertMoveDownCommand), dae::InputType::DOWN);
 
+	auto bubbleObject = std::make_unique<dae::GameObject>();
+	bubbleObject->AddComponent<dae::ImageComponent>("qbert/Qbert Curses.png", false);
+	bubbleObject->SetParent(playerObject.get());
+	bubbleObject->SetLocalPosition(-15.0f, -35.0f);
+
+	playerObject->GetComponent<qbert::QbertMoveComponent>()->SetBubbleImage(bubbleObject->GetComponent<dae::ImageComponent>());
+
 
 
 
@@ -104,7 +113,7 @@ void InitQbertScene()
 	}
 	scene.Add(std::move(pMapObject));
 
-
+	scene.Add(std::move(bubbleObject));
 	scene.Add(std::move(playerObject));
 
 

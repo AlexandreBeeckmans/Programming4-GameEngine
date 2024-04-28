@@ -23,3 +23,8 @@ void dae::LoggingSoundSystem::LoadSound(const std::string& path)
 	std::cout << "Load sound: " << path <<" \n";
 	m_RealSoundSystem->LoadSound(path);
 }
+
+void dae::LoggingSoundSystem::Update()
+{
+	m_RealSoundSystem->Update();
+}

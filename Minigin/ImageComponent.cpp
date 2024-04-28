@@ -6,8 +6,9 @@
 
 #include <SDL_ttf.h>
 
-dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& filePath, const float relativeX, const float relativeY, const int nbRows, const int nbCols, const int rowNb, const int colNb) :
+dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& filePath, const bool isVisible, const float relativeX, const float relativeY, const int nbRows, const int nbCols, const int rowNb, const int colNb) :
 	BaseComponent(pGameObject),
+	m_IsVisible(isVisible),
 	m_MaxCol(nbCols),
 	m_MaxRow(nbRows),
 	m_Col(colNb),
@@ -42,6 +43,7 @@ void dae::ImageComponent::Update()
 void dae::ImageComponent::Render() const
 {
 	if (!m_pTexture) return;
+	if (!m_IsVisible) return;
 	
 	/*const auto& pos = GetOwner()->GetWorldPosition();
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x + m_RelativePosition.GetPosition().x, pos.y + m_RelativePosition.GetPosition().y);*/
@@ -64,6 +66,11 @@ void dae::ImageComponent::UpdateShape()
 {
 	m_ImageShape.x = static_cast<int>(GetOwner()->GetWorldPosition().x + m_RelativePosition.GetPosition().x);
 	m_ImageShape.y = static_cast<int>(GetOwner()->GetWorldPosition().y + m_RelativePosition.GetPosition().y);
+}
+
+void dae::ImageComponent::SetVisible(const bool isVisible)
+{
+	m_IsVisible = isVisible;
 }
 
 void dae::ImageComponent::UpdateRow()

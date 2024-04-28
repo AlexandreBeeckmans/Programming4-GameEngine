@@ -114,6 +114,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lastTime = currentTime;
 		lag += deltaTime;
 		time.Update(deltaTime);
+		ServiceLocator::Update();
 
 		doContinue = input.ProcessInput();
 

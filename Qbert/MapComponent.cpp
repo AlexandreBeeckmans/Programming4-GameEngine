@@ -52,6 +52,11 @@ qbert::TileComponent* qbert::MapComponent::GetCurrentTile() const
 	return nullptr;
 }
 
+void qbert::MapComponent::SetCurrentIndexToLast()
+{
+	m_CurrentTileIndex = static_cast<int>(m_pTiles.size()) - 1;
+}
+
 void qbert::MapComponent::SetTopRightTile()
 {
 	if (m_CurrentTileIndex >= 0 && m_CurrentTileIndex <= 5)
@@ -165,6 +170,15 @@ void qbert::MapComponent::SetBottomRight()
 	}
 
 	m_CurrentTileIndex = -1;
+}
+
+bool qbert::MapComponent::IsComplete() const
+{
+	for(const TileComponent* tile : m_pTiles)
+	{
+		if (!tile->IsCompleted()) return false;
+	}
+	return true;
 }
 
 void qbert::MapComponent::SetTopLeftTile()

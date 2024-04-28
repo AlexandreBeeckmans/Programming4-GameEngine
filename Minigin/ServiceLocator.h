@@ -14,6 +14,7 @@ namespace dae
 	
 		static SoundSystem& GetSoundSystem();
 		static void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& soundSystem);
+		static void Update();
 		
 		//static void Init();
 
