@@ -159,7 +159,7 @@ void qbert::QbertMoveComponent::SetMovementDirection()
 	
 }
 
-void qbert::QbertMoveComponent::ShowBubble()
+void qbert::QbertMoveComponent::ShowBubble() const
 {
 	if (!m_pBubbleImage) return;
 	m_pBubbleImage->SetVisible(true);

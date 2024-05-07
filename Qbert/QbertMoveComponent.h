@@ -36,7 +36,7 @@ namespace qbert
 	private:
 		void Bounce();
 		void SetMovementDirection();
-		void ShowBubble();
+		void ShowBubble() const;
 
 		QbertDirection m_directionState{QbertDirection::TOPRIGHT};
 		glm::vec2 m_Direction{0.5f,-0.75f};

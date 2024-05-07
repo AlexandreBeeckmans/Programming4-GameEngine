@@ -1,7 +1,8 @@
 #include "MapComponent.h"
 
-qbert::MapComponent::MapComponent(dae::GameObject* pOwner) :
-BaseComponent(pOwner)
+qbert::MapComponent::MapComponent(dae::GameObject* pOwner, const int rows) :
+BaseComponent(pOwner),
+m_Rows(rows)
 {
 }
 
@@ -42,14 +43,48 @@ void qbert::MapComponent::ActivateCurrentTile() const
 {
 	m_pTiles[m_CurrentTileIndex]->UpdateTile();
 }
-
 qbert::TileComponent* qbert::MapComponent::GetCurrentTile() const
 {
-	if(m_CurrentTileIndex >= 0 && m_CurrentTileIndex < static_cast<int>(m_pTiles.size()))
+	return GetTileByIndex(m_CurrentTileIndex);
+}
+
+qbert::TileComponent* qbert::MapComponent::GetTileByIndex(const int index) const
+{
+	if (index < 0 || index >= static_cast<int>(m_pTiles.size())) return nullptr;
+
+	return m_pTiles[index];
+}
+
+int qbert::MapComponent::GetRowFromIndex(const int index) const
+{
+	if (index < 0 || index >= m_pTiles.size()) return -1;
+
+	int startingRowIndex{ 0 };
+	int casesToCheck{ m_Rows };
+
+	for(int i{0}; i < m_Rows; ++i)
 	{
-		return m_pTiles[m_CurrentTileIndex];
+		if (index < startingRowIndex + casesToCheck) return i;
+
+
+		startingRowIndex += casesToCheck;
+		--casesToCheck;
 	}
-	return nullptr;
+
+
+	return -1;
+
+
+}
+
+int qbert::MapComponent::GetColumnFromIndex(const int index) const
+{
+	const int row{ GetRowFromIndex(index) };
+	const int firstIndexOfTheRow{ GetFirstIndexOfTheRow(row) };
+	return row + 2 * (index - firstIndexOfTheRow);
+
+
+
 }
 
 void qbert::MapComponent::SetCurrentIndexToLast()
@@ -59,118 +94,46 @@ void qbert::MapComponent::SetCurrentIndexToLast()
 
 void qbert::MapComponent::SetTopRightTile()
 {
-	if (m_CurrentTileIndex >= 0 && m_CurrentTileIndex <= 5)
-	{
-		m_CurrentTileIndex += 7;
-		return;
-	}
-	if (m_CurrentTileIndex >= 7 && m_CurrentTileIndex <= 11)
-	{
-		m_CurrentTileIndex += 6;
-		return;
-	}
-	if (m_CurrentTileIndex >= 13 && m_CurrentTileIndex <= 16)
-	{
-		m_CurrentTileIndex += 5;
-		return;
-	}
-	if (m_CurrentTileIndex >= 18 && m_CurrentTileIndex <= 20)
-	{
-		m_CurrentTileIndex += 4;
-		return;
-	}
-	if (m_CurrentTileIndex == 22 || m_CurrentTileIndex == 23)
-	{
-		m_CurrentTileIndex += 3;
-		return;
-	}
-	if (m_CurrentTileIndex == 25)
-	{
-		m_CurrentTileIndex += 2;
-		return;
-	}
-	m_CurrentTileIndex = -1;
+	m_CurrentTileIndex = GetTopRightIndex(m_CurrentTileIndex);
 }
-
 void qbert::MapComponent::SetBottomLeft()
 {
-	if (m_CurrentTileIndex >= 7 && m_CurrentTileIndex <= 12)
-	{
-		m_CurrentTileIndex -= 7;
-		return;
-	}
-
-	if (m_CurrentTileIndex >= 13 && m_CurrentTileIndex <= 17)
-	{
-		m_CurrentTileIndex -= 6;
-		return;
-	}
-
-	if (m_CurrentTileIndex >= 18 && m_CurrentTileIndex <= 21)
-	{
-		m_CurrentTileIndex -= 5;
-		return;
-	}
-
-	if (m_CurrentTileIndex >= 22 && m_CurrentTileIndex <= 24)
-	{
-		m_CurrentTileIndex -= 4;
-		return;
-	}
-
-	if (m_CurrentTileIndex == 25 || m_CurrentTileIndex == 26)
-	{
-		m_CurrentTileIndex -= 3;
-		return;
-	}
-	if (m_CurrentTileIndex == 27)
-	{
-		m_CurrentTileIndex -= 2;
-		return;
-	}
-
-	m_CurrentTileIndex = -1;
+	m_CurrentTileIndex = GetBottomLeftIndex(m_CurrentTileIndex);
 }
-
 void qbert::MapComponent::SetBottomRight()
 {
-	if (m_CurrentTileIndex >= 7 && m_CurrentTileIndex <= 12)
-	{
-		m_CurrentTileIndex -= 6;
-		return;
-	}
-
-	if (m_CurrentTileIndex >= 13 && m_CurrentTileIndex <= 17)
-	{
-		m_CurrentTileIndex -= 5;
-		return;
-	}
-
-	if (m_CurrentTileIndex >= 18 && m_CurrentTileIndex <= 21)
-	{
-		m_CurrentTileIndex -= 4;
-		return;
-	}
-
-	if (m_CurrentTileIndex >= 22 && m_CurrentTileIndex <= 24)
-	{
-		m_CurrentTileIndex -= 3;
-		return;
-	}
-
-	if (m_CurrentTileIndex == 25 || m_CurrentTileIndex == 26)
-	{
-		m_CurrentTileIndex -= 2;
-		return;
-	}
-	if (m_CurrentTileIndex == 27)
-	{
-		m_CurrentTileIndex -= 1;
-		return;
-	}
-
-	m_CurrentTileIndex = -1;
+	m_CurrentTileIndex = GetBottomRightIndex(m_CurrentTileIndex);
+	
 }
+
+int qbert::MapComponent::GetFirstIndexOfTheRow(const int row) const
+{
+	if (row < 0 || row >= m_Rows) return -1;
+
+
+
+	int firstIndexOfTheRow{0};
+	int casesToCheck{ m_Rows };
+
+
+	for(int i{0}; i < m_Rows; ++i)
+	{
+		if (row == GetRowFromIndex(firstIndexOfTheRow)) return firstIndexOfTheRow;
+
+		firstIndexOfTheRow += casesToCheck;
+		--casesToCheck;
+	}
+
+	return -1;
+}
+
+void qbert::MapComponent::SetTopLeftTile()
+{
+	m_CurrentTileIndex = GetTopLeftIndex(m_CurrentTileIndex);
+}
+
+
+
 
 bool qbert::MapComponent::IsComplete() const
 {
@@ -181,43 +144,70 @@ bool qbert::MapComponent::IsComplete() const
 	return true;
 }
 
-void qbert::MapComponent::SetTopLeftTile()
+int qbert::MapComponent::GetTopRightIndex(const int currentIndex) const
 {
-	if(m_CurrentTileIndex >= 1 && m_CurrentTileIndex <= 6)
+	int casesToCheck{ m_Rows - 1 };
+	int rowStartingIndex{ 0 };
+	for (int i{ 0 }; i < m_Rows - 1; ++i)
 	{
-		m_CurrentTileIndex += 6;
-		return;
+		if (currentIndex >= rowStartingIndex && currentIndex <= rowStartingIndex + casesToCheck - 1)
+		{
+			return currentIndex + casesToCheck + 1;
+			
+		}
+		rowStartingIndex += casesToCheck + 1;
+		--casesToCheck;
 	}
 
-	if(m_CurrentTileIndex >=8 && m_CurrentTileIndex <= 12)
-	{
-		m_CurrentTileIndex += 5;
-		return;
-	}
-
-	if(m_CurrentTileIndex >= 14 && m_CurrentTileIndex <= 17)
-	{
-		m_CurrentTileIndex += 4;
-		return;
-	}
-
-	if(m_CurrentTileIndex >= 19 && m_CurrentTileIndex <= 21)
-	{
-		m_CurrentTileIndex += 3;
-		return;
-	}
-
-	if(m_CurrentTileIndex == 23 || m_CurrentTileIndex == 24)
-	{
-		m_CurrentTileIndex += 2;
-		return;
-	}
-
-	if(m_CurrentTileIndex == 26)
-	{
-		m_CurrentTileIndex += 1;
-		return;
-	}
-
-	m_CurrentTileIndex = -1;
+	return -1;
 }
+int qbert::MapComponent::GetTopLeftIndex(const int currentIndex) const
+{
+	int casesToCheck{ m_Rows - 1 };
+	int rowStartingIndex{ 0 };
+	for (int i{ 0 }; i < m_Rows - 1; ++i)
+	{
+		if (currentIndex >= rowStartingIndex + 1 && currentIndex <= rowStartingIndex + casesToCheck)
+		{
+			return currentIndex + casesToCheck;
+		}
+		rowStartingIndex += casesToCheck + 1;
+		--casesToCheck;
+	}
+
+	return -1;
+}
+int qbert::MapComponent::GetBottomLeftIndex(const int currentIndex) const
+{
+	int casesToCheck{ m_Rows - 1 };
+	int rowStartingIndex{ m_Rows };
+	for (int i{ 0 }; i < m_Rows - 1; ++i)
+	{
+		if (currentIndex >= rowStartingIndex && currentIndex <= rowStartingIndex + casesToCheck - 1)
+		{
+			return currentIndex - (casesToCheck + 1);
+		}
+		rowStartingIndex += casesToCheck;
+		--casesToCheck;
+	}
+
+	return -1;
+}
+int qbert::MapComponent::GetBottomRightIndex(const int currentIndex) const
+{
+	int casesToCheck{ m_Rows - 1 };
+	int rowStartingIndex{ m_Rows };
+	for (int i{ 0 }; i < m_Rows - 1; ++i)
+	{
+		if (currentIndex >= rowStartingIndex && currentIndex <= rowStartingIndex + casesToCheck - 1)
+		{
+			return currentIndex - casesToCheck;
+		}
+		rowStartingIndex += casesToCheck;
+		--casesToCheck;
+	}
+
+	return -1;
+}
+
+

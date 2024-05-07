@@ -4,6 +4,8 @@
 #endif
 #endif
 
+#include <iostream>
+
 #include "Minigin.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
@@ -26,9 +28,6 @@
 #include "MapComponent.h"
 #include "ServiceLocator.h"
 
-//#include "SDLSoundSystem.h"
-//#include "ServiceLocator.h"
-
 
 void InitQbertScene()
 {
@@ -43,11 +42,11 @@ void InitQbertScene()
 
 #pragma region SET_MAP
 
-	constexpr int nbOfRow{ 7 };
+	constexpr int nbOfRow{7};
 	int nbOfTiles{ nbOfRow };
 	std::unique_ptr<dae::GameObject> pMapObject{ std::make_unique<dae::GameObject>() };
 	pMapObject->SetLocalPosition(250.0f, 300.0f);
-	pMapObject->AddComponent<qbert::MapComponent>();
+	pMapObject->AddComponent<qbert::MapComponent>(nbOfRow);
 	float baseTileX{ 0.0f };
 	float baseTileY{ 0.0f };
 
@@ -101,9 +100,6 @@ void InitQbertScene()
 	bubbleObject->SetLocalPosition(-15.0f, -35.0f);
 
 	playerObject->GetComponent<qbert::QbertMoveComponent>()->SetBubbleImage(bubbleObject->GetComponent<dae::ImageComponent>());
-
-
-
 
 
 
