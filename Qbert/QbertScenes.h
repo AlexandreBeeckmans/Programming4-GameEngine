@@ -18,6 +18,7 @@ namespace qbert
 		static SceneStates* m_pSceneState;
 
 		static bool goNext;
+		static bool gameOver;
 	};
 }
 

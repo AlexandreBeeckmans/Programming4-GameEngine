@@ -58,8 +58,9 @@ namespace qbert
 		void ActivateCurrentTile() const;
 
 		//Die State
-		void Kill() const;
+		void Kill();
 		void Respawn();
+		int GetLives() { return m_Lives; }
 
 		//Win State
 		static void PlayWinSound();
@@ -92,6 +93,7 @@ namespace qbert
 		bool m_IsInputPressedThisFrame{ false };
 		bool m_EnemyEncounteredThisFrame{ false };
 
+		int m_Lives{ 3 };
 	};
 }
 

@@ -12,6 +12,7 @@
 
 qbert::SceneStates* qbert::QbertScenes::m_pSceneState = new qbert::StartMenuSceneState{};
 bool qbert::QbertScenes::goNext = false;
+bool qbert::QbertScenes::gameOver = false;
 
 void qbert::QbertScenes::Init()
 {

@@ -17,6 +17,13 @@ qbert::SceneStates* qbert::StartMenuSceneState::HandleTransitions()
 void qbert::StartMenuSceneState::Enter()
 {
 	QbertScenes::LoadStartMenu();
+	QbertScenes::gameOver = false;
+}
+
+qbert::SceneStates* qbert::LevelSceneState::HandleTransitions()
+{
+	if (QbertScenes::gameOver) return new StartMenuSceneState{};
+	return nullptr;
 }
 
 void qbert::LevelSceneState::Enter()

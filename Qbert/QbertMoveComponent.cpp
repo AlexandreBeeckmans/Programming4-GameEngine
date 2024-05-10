@@ -8,6 +8,7 @@
 #include "ServiceLocator.h"
 #include "SoundTypes.h"
 #include "PlayerState.h"
+#include "QbertScenes.h"
 
 qbert::QbertMoveComponent::QbertMoveComponent(dae::GameObject* owner, qbert::MapComponent* pMap):
 BaseComponent(owner),
@@ -66,10 +67,12 @@ void qbert::QbertMoveComponent::SetBubbleImage(dae::ImageComponent* pImageCompon
 	m_pBubbleImage = pImageComponent;
 }
 
-void qbert::QbertMoveComponent::Kill() const
+void qbert::QbertMoveComponent::Kill()
 {
 	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
 	ShowBubble(true);
+
+	--m_Lives;
 }
 
 void qbert::QbertMoveComponent::Respawn()

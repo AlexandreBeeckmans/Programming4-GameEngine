@@ -27,7 +27,7 @@ namespace qbert
 	{
 	public:
 
-		//virtual SceneStates* HandleTransitions() override;
+		virtual SceneStates* HandleTransitions() override;
 		//virtual void Update() override;
 		virtual void Enter() override;
 	};

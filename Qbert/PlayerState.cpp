@@ -1,6 +1,7 @@
 #include "PlayerState.h"
 
 #include "EngineTime.h"
+#include "QbertScenes.h"
 
 qbert::PlayerState* qbert::WaitingState::HandleTransitions(const QbertMoveComponent& qbert)
 {
@@ -78,6 +79,10 @@ void qbert::DieState::Enter(QbertMoveComponent& qbert)
 void qbert::DieState::Exit(QbertMoveComponent& qbert)
 {
 	qbert.Respawn();
+	if (qbert.GetLives() < 0)
+	{
+		QbertScenes::gameOver = true;
+	}
 }
 
 void qbert::WinState::Enter(QbertMoveComponent& qbert)
