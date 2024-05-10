@@ -12,6 +12,13 @@ namespace qbert
 	private:
 		glm::vec2 m_Direction;
 	};
+
+	class GoNextSceneCommand : public dae::Command
+	{
+	public:
+		GoNextSceneCommand() = default;
+		virtual void Execute() override;
+	};
 }
 
 

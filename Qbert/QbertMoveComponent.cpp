@@ -16,6 +16,7 @@ m_pMap(pMap)
 	GetOwner()->SetLocalPosition(pMap->GetCurrentTile()->GetStartPoint());
 	m_MaxDistanceX = static_cast<float>(m_pMap->GetCurrentTile()->GetWidth())/2.0f;
 	m_CurrentIndex = m_pMap->GetCurrentIndex();
+	m_PlayerState = new WaitingState{};
 }
 
 void qbert::QbertMoveComponent::SetDirection(const glm::vec2& direction)
@@ -58,11 +59,6 @@ void qbert::QbertMoveComponent::Update()
 
 	m_IsInputPressedThisFrame = false;
 	m_EnemyEncounteredThisFrame = false;
-}
-
-void qbert::QbertMoveComponent::Init()
-{
-	m_PlayerState = new WaitingState{};
 }
 
 void qbert::QbertMoveComponent::SetBubbleImage(dae::ImageComponent* pImageComponent)

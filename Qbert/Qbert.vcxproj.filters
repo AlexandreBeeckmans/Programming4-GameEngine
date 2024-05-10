@@ -84,6 +84,12 @@
     <ClCompile Include="CoilyState.cpp">
       <Filter>Coily\FSM</Filter>
     </ClCompile>
+    <ClCompile Include="QbertScenes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenesState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapComponent.h">
@@ -145,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="CoilyState.h">
       <Filter>Coily\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertScenes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenesState.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -163,8 +163,10 @@
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="QbertCommand.cpp" />
     <ClCompile Include="QbertMoveComponent.cpp" />
+    <ClCompile Include="QbertScenes.cpp" />
     <ClCompile Include="RenderFPSComponent.cpp" />
     <ClCompile Include="RotatingComponent.cpp" />
+    <ClCompile Include="ScenesState.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="TestCommand.cpp" />
     <ClCompile Include="TileComponent.cpp" />
@@ -183,8 +185,10 @@
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="QbertCommand.h" />
     <ClInclude Include="QbertMoveComponent.h" />
+    <ClInclude Include="QbertScenes.h" />
     <ClInclude Include="RenderFPSComponent.h" />
     <ClInclude Include="RotatingComponent.h" />
+    <ClInclude Include="ScenesState.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SoundTypes.h" />
     <ClInclude Include="TestCommand.h" />

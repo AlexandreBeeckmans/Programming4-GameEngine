@@ -29,7 +29,6 @@ namespace qbert
 		QbertMoveComponent& operator=(QbertMoveComponent&& other) = delete;
 
 		virtual void Update() override;
-		virtual void Init() override;
 
 
 		

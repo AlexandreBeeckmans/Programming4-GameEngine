@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <memory>
+
+#include "SceneCollection.h"
 #include "Singleton.h"
 
 namespace dae
@@ -11,6 +13,7 @@ namespace dae
 	{
 	public:
 		Scene& CreateScene(const std::string& name);
+		void SetSceneCollection(std::unique_ptr<SceneCollection> collec) { m_pSceneCollection = std::move(collec); }
 
 		void Update();
 		void FixedUpdate();
@@ -21,9 +24,13 @@ namespace dae
 
 		void Render() const;
 		void RenderGui() const;
+
+		void ClearScenes();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
 		std::vector<std::shared_ptr<Scene>> m_scenes;
+
+		std::unique_ptr<SceneCollection> m_pSceneCollection;
 	};
 }

@@ -1,8 +1,11 @@
 #include "SceneManager.h"
 #include "Scene.h"
+#include "../Qbert/QbertScenes.h"
 
 void dae::SceneManager::Update()
 {
+	if(m_pSceneCollection)
+		m_pSceneCollection->Update();
 	for(auto& scene : m_scenes)
 	{
 		scene->Update();
@@ -55,6 +58,11 @@ void dae::SceneManager::RenderGui() const
 	{
 		scene->RenderGui();
 	}
+}
+
+void dae::SceneManager::ClearScenes()
+{
+	m_scenes.clear();
 }
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)

@@ -129,6 +129,7 @@
     <ClInclude Include="LoggingSoundSystem.h">
       <Filter>Sounds</Filter>
     </ClInclude>
+    <ClInclude Include="SceneCollection.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui.cpp">
@@ -227,6 +228,7 @@
     <ClCompile Include="LoggingSoundSystem.cpp">
       <Filter>Sounds</Filter>
     </ClCompile>
+    <ClCompile Include="SceneCollection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
