@@ -63,6 +63,9 @@
     <ClCompile Include="MoveComponent.cpp">
       <Filter>Test Files</Filter>
     </ClCompile>
+    <ClCompile Include="CoilyMoveComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapComponent.h">
@@ -114,6 +117,9 @@
       <Filter>Test Files</Filter>
     </ClInclude>
     <ClInclude Include="SoundTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoilyMoveComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

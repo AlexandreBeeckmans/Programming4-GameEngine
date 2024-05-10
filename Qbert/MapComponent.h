@@ -24,6 +24,7 @@ namespace qbert
 
 		TileComponent* GetCurrentTile() const;
 		TileComponent* GetTileByIndex(const int index) const;
+		int GetCurrentIndex() const { return  m_CurrentTileIndex; }
 
 		int GetRowFromIndex(const int index) const;
 		int GetColumnFromIndex(const int index) const;

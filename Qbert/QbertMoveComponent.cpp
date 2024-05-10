@@ -14,6 +14,9 @@ m_pMap(pMap)
 {
 	GetOwner()->SetLocalPosition(pMap->GetCurrentTile()->GetStartPoint());
 	m_MaxDistanceX = static_cast<float>(m_pMap->GetCurrentTile()->GetWidth())/2.0f;
+
+
+	m_CurrentIndex = m_pMap->GetCurrentIndex();
 }
 
 void qbert::QbertMoveComponent::SetDirection(const glm::vec2& direction)
@@ -86,10 +89,8 @@ void qbert::QbertMoveComponent::Update()
 				}
 				else
 				{
-					m_IsDead = true;
-					dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
-					ShowBubble();
-
+					
+					Kill();
 				}
 			}
 		}
@@ -99,6 +100,15 @@ void qbert::QbertMoveComponent::Update()
 void qbert::QbertMoveComponent::SetBubbleImage(dae::ImageComponent* pImageComponent)
 {
 	m_pBubbleImage = pImageComponent;
+}
+
+void qbert::QbertMoveComponent::Kill()
+{
+	if (m_IsDead) return;
+
+	m_IsDead = true;
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
+	ShowBubble();
 }
 
 void qbert::QbertMoveComponent::Bounce()
@@ -127,6 +137,7 @@ void qbert::QbertMoveComponent::SetMovementDirection()
 	{
 		const glm::vec2 target{ m_pMap->GetCurrentTile()->GetStartPoint() };
 		const glm::vec2 from{ GetOwner()->GetWorldPosition() };
+		m_CurrentIndex = m_pMap->GetCurrentIndex();
 
 		m_Direction = normalize(target - from);
 		return;

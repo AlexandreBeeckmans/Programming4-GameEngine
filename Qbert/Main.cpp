@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "CoilyMoveComponent.h"
 #include "Minigin.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
@@ -102,6 +103,10 @@ void InitQbertScene()
 	playerObject->GetComponent<qbert::QbertMoveComponent>()->SetBubbleImage(bubbleObject->GetComponent<dae::ImageComponent>());
 
 
+	auto coilyObject = std::make_unique<dae::GameObject>();
+	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 3);
+	coilyObject->AddComponent<qbert::CoilyMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>(), playerObject->GetComponent<qbert::QbertMoveComponent>());
+
 
 	for (auto& tile : tiles)
 	{
@@ -111,6 +116,7 @@ void InitQbertScene()
 
 	scene.Add(std::move(bubbleObject));
 	scene.Add(std::move(playerObject));
+	scene.Add(std::move(coilyObject));
 
 
 

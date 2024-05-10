@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CoilyMoveComponent.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GuiEx1Component.cpp" />
     <ClCompile Include="GuiEx2Component.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="UIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CoilyMoveComponent.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="GuiEx1Component.h" />

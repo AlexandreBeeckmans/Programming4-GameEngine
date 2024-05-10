@@ -30,6 +30,11 @@ namespace qbert
 		void Update() override;
 		void SetBubbleImage(dae::ImageComponent* pImageComponent);
 
+		int GetCurrentIndex() const { return m_CurrentIndex; }
+		bool IsWaiting() const { return m_IsWaiting; }
+
+		void Kill();
+
 
 
 
@@ -52,6 +57,8 @@ namespace qbert
 		bool m_IsDead{ false };
 
 		dae::ImageComponent* m_pBubbleImage{ nullptr };
+
+		int m_CurrentIndex{ 0 };
 	};
 }
 
