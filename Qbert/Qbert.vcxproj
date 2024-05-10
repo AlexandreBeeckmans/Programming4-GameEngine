@@ -159,6 +159,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapComponent.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
+    <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="QbertCommand.cpp" />
     <ClCompile Include="QbertMoveComponent.cpp" />
     <ClCompile Include="RenderFPSComponent.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="MapComponent.h" />
     <ClInclude Include="MoveComponent.h" />
+    <ClInclude Include="PlayerState.h" />
     <ClInclude Include="QbertCommand.h" />
     <ClInclude Include="QbertMoveComponent.h" />
     <ClInclude Include="RenderFPSComponent.h" />

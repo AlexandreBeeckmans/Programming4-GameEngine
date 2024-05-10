@@ -16,6 +16,12 @@
     <Filter Include="Test Files">
       <UniqueIdentifier>{ca531461-27c4-4f2e-b190-06f74fc1c323}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{a9e9b1a2-1258-4e74-9e39-fe76a0e636de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\FSM">
+      <UniqueIdentifier>{88cf3bc9-9913-4481-a035-591a42fed915}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -65,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="CoilyMoveComponent.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Player\FSM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="CoilyMoveComponent.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>Player\FSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

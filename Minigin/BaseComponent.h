@@ -8,13 +8,14 @@ namespace dae
 	class BaseComponent
 	{
 	public:
-		virtual void Update() {};
-		virtual void FixedUpdate() {};
-		virtual void LateUpdate() {};
-		virtual void Init() {};
 
-		virtual void Render() const {};
-		virtual void RenderGui() const {};
+		virtual void Update() {}
+		virtual void FixedUpdate() {}
+		virtual void LateUpdate() {}
+		virtual void Init() {}
+
+		virtual void Render() const {}
+		virtual void RenderGui() const {}
 
 		BaseComponent(GameObject* m_pParent);
 		virtual ~BaseComponent() = default;
@@ -23,7 +24,7 @@ namespace dae
 		BaseComponent& operator=(const BaseComponent& other) = delete;
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
-		void Kill() { m_IsDead = true; };
+		void Destroy() { m_IsDead = true; };
 		bool GetIsDead() const { return m_IsDead; };
 
 	protected:

@@ -4,6 +4,7 @@ namespace qbert
 	enum class SoundType
 	{
 		JUMP,
-		FALL
+		FALL,
+		WIN
 	};
 }

@@ -102,9 +102,9 @@ void qbert::CoilyMoveComponent::UpdateMovement()
 
 void qbert::CoilyMoveComponent::UpdateWaitingTimer()
 {
-	if(m_pPlayer->GetCurrentIndex() == m_CurrentIndex && m_pPlayer->IsWaiting())
+	if(m_pPlayer->GetCurrentIndex() == m_CurrentIndex)
 	{
-		m_pPlayer->Kill();
+		m_pPlayer->EncountersEnemy();
 	}
 
 
