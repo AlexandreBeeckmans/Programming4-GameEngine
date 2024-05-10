@@ -30,6 +30,15 @@
 #include "ServiceLocator.h"
 
 
+void InitSplashScreen()
+{
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("StartMenu");
+
+	auto titleObject = std::make_unique<dae::GameObject>();
+	titleObject->AddComponent<dae::ImageComponent>("qbert/Game_Title.png");
+
+	scene.Add(std::move(titleObject));
+}
 void InitQbertScene()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level");
@@ -104,7 +113,7 @@ void InitQbertScene()
 
 
 	auto coilyObject = std::make_unique<dae::GameObject>();
-	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 3);
+	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
 	coilyObject->AddComponent<qbert::CoilyMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>(), playerObject->GetComponent<qbert::QbertMoveComponent>());
 
 
@@ -121,6 +130,9 @@ void InitQbertScene()
 
 
 }
+
+
+
 void LoadSounds()
 {
 	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/QBert Jump.wav");
@@ -130,8 +142,11 @@ void LoadSounds()
 
 void Load()
 {
+
 	LoadSounds();
-	InitQbertScene();
+
+	InitSplashScreen();
+	//InitQbertScene();
 }
 
 

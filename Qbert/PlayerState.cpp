@@ -34,12 +34,8 @@ void qbert::WaitingState::Enter(QbertMoveComponent& qbert)
 
 qbert::PlayerState* qbert::JumpingState::HandleTransitions(const QbertMoveComponent& qbert)
 {
-	//Has reached final position ?
-	//no --> return nullptr
 	if (!qbert.HasReachedFinalPosition()) return nullptr;
 
-
-	//else
 	if (qbert.GetCurrentIndex() >= 0) return new WaitingState{};
 
 	return new DieState{};

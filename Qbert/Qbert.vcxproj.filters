@@ -22,6 +22,12 @@
     <Filter Include="Player\FSM">
       <UniqueIdentifier>{88cf3bc9-9913-4481-a035-591a42fed915}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Coily">
+      <UniqueIdentifier>{56f67396-854d-46b7-bd08-785748a00b00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coily\FSM">
+      <UniqueIdentifier>{c66b907d-e7dd-4713-a353-b460cb103f47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -74,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="PlayerState.cpp">
       <Filter>Player\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CoilyState.cpp">
+      <Filter>Coily\FSM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="PlayerState.h">
       <Filter>Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CoilyState.h">
+      <Filter>Coily\FSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
