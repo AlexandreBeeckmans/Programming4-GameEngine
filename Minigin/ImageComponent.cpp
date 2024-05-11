@@ -4,15 +4,13 @@
 #include "GameObject.h"
 #include "Texture2D.h"
 
-#include <SDL_ttf.h>
-
 dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& filePath, const bool isVisible, const float relativeX, const float relativeY, const int nbRows, const int nbCols, const int rowNb, const int colNb) :
 	BaseComponent(pGameObject),
-	m_IsVisible(isVisible),
 	m_MaxCol(nbCols),
 	m_MaxRow(nbRows),
 	m_Col(colNb),
-	m_Row(rowNb)
+	m_Row(rowNb),
+	m_IsVisible(isVisible)
 {
 	m_RelativePosition.SetPosition(relativeX, relativeY, 0);
 

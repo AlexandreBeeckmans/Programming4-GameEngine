@@ -15,5 +15,13 @@ namespace dae
 		Minigin(Minigin&& other) = delete;
 		Minigin& operator=(const Minigin& other) = delete;
 		Minigin& operator=(Minigin&& other) = delete;
+
+		static int GetWindowWidth() { return m_WindowWidth; }
+		static int GetWindowHeight() { return m_WindowHeight; }
+
+
+	private:
+		static const int m_WindowWidth;
+		static const int m_WindowHeight;
 	};
 }

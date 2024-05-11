@@ -57,7 +57,7 @@ qbert::TileComponent* qbert::MapComponent::GetTileByIndex(const int index) const
 
 int qbert::MapComponent::GetRowFromIndex(const int index) const
 {
-	if (index < 0 || index >= m_pTiles.size()) return -1;
+	if (index < 0 || index >= static_cast<int>(m_pTiles.size())) return -1;
 
 	int startingRowIndex{ 0 };
 	int casesToCheck{ m_Rows };

@@ -4,7 +4,9 @@
 #include "GameObject.h"
 #include "InputManager.h"
 #include "MapComponent.h"
+#include "Minigin.h"
 #include "QbertCommand.h"
+#include "ResourceManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
 
@@ -116,10 +118,26 @@ void qbert::QbertScenes::LoadStartMenu()
 	auto titleObject = std::make_unique<dae::GameObject>();
 	titleObject->AddComponent<dae::ImageComponent>("qbert/Game_Title.png");
 
+	const glm::vec2 titlePos
+	{
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(titleObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 16.0f)
+	};
+	titleObject->SetLocalPosition(titlePos);
+
+	auto font = dae::ResourceManager::GetInstance().LoadFont("qbert/Minecraft.ttf", 36);
+	auto pressSpaceObject = std::make_unique<dae::GameObject>();
+
+	dae::Font actualFont = *font;
+	std::string enterString{ "Press space to continue..." };
+	//pressSpaceObject->AddComponent<dae::TextComponent>(enterString, actualFont);
+
+
 	scene.Add(std::move(titleObject));
+	scene.Add(std::move(pressSpaceObject));
 
 	qbert::GoNextSceneCommand goNextCommand{};
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_T, std::make_unique<qbert::GoNextSceneCommand>(goNextCommand), dae::InputType::DOWN);
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_SPACE, std::make_unique<qbert::GoNextSceneCommand>(goNextCommand), dae::InputType::DOWN);
 }
 
 void qbert::QbertScenes::LoadLevelLoading()

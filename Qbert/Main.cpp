@@ -14,7 +14,10 @@
 #include "ServiceLocator.h"
 
 #include"QbertScenes.h"
+#include "ResourceManager.h"
 #include "SceneManager.h"
+#include "Scene.h"
+#include "GameObject.h"
 
 
 void LoadSounds()
@@ -52,23 +55,23 @@ int main(int, char* [])
 
 //void InitTestScene()
 //{
-//	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
-//
-//	auto backgrounObject = std::make_shared<dae::GameObject>();
-//
-//	backgrounObject->AddComponent<dae::ImageComponent>("background.tga", 0.0f, 0.0f);
-//	backgrounObject->AddComponent<dae::ImageComponent>("logo.tga", 220.0f, 200.0f);
-//	backgrounObject->SetLocalPosition(0, 0);
-//	scene.Add(backgrounObject);
-//
-//
-//	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-//	auto titleObject{ std::make_shared<dae::GameObject>() };
-//
-//	titleObject->AddComponent<dae::TextComponent>("Programming 4 Assignment", *font.get());
-//	titleObject->SetLocalPosition(80, 20);
-//	scene.Add(titleObject);
-//
+	//auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+
+	//auto backgrounObject = std::make_shared<dae::GameObject>();
+
+	//backgrounObject->AddComponent<dae::ImageComponent>("background.tga", 0.0f, 0.0f);
+	//backgrounObject->AddComponent<dae::ImageComponent>("logo.tga", 220.0f, 200.0f);
+	//backgrounObject->SetLocalPosition(0, 0);
+	//scene.Add(backgrounObject);
+
+
+	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	//auto titleObject{ std::make_shared<dae::GameObject>() };
+
+	//titleObject->AddComponent<dae::TextComponent>("Programming 4 Assignment", *font.get());
+	//titleObject->SetLocalPosition(80, 20);
+	//scene.Add(titleObject);
+
 //	auto fontFps = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 //	auto fpsObject = std::make_shared<dae::GameObject>();
 //	fpsObject->AddComponent<dae::RenderFPSComponent>(*fontFps.get());
@@ -162,5 +165,5 @@ int main(int, char* [])
 //	inputText2Object->AddComponent<dae::TextComponent>("Use D-Pad to move yellow QBert, A to remove life, X to earn points", *inputFont.get());
 //	inputText2Object->SetLocalPosition(20, 125);
 //	scene.Add(inputText2Object);
-//
+
 //}

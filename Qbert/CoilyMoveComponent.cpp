@@ -3,6 +3,8 @@
 #include "EngineTime.h"
 #include "MapComponent.h"
 #include "CoilyState.h"
+#include "GameObject.h"
+
 
 qbert::CoilyMoveComponent::CoilyMoveComponent(dae::GameObject* owner, qbert::MapComponent* pMap, QbertMoveComponent* pPlayer) :
 BaseComponent(owner),

@@ -1,6 +1,4 @@
 #pragma once
-#include "QbertScenes.h"
-#include "SceneManager.h"
 
 namespace qbert
 {

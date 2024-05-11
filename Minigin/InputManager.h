@@ -1,10 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <SDL_syswm.h>
-
-
-
 #include <vector>
 
 #include "Command.h"
@@ -37,6 +33,8 @@ namespace dae
 		void AddController(std::unique_ptr<Controller> controller);
 
 		void BindKeyboardInput(SDL_Scancode input, std::unique_ptr<Command> command, InputType inputType);
+
+		void UnbindAll();
 
 	private:
 		std::vector<InputBinding> m_KeyboardBindings;

@@ -68,3 +68,9 @@ void dae::InputManager::BindKeyboardInput(SDL_Scancode input, std::unique_ptr<Co
 {
 	m_KeyboardBindings.push_back({ input, std::move(command), inputType });
 }
+
+void dae::InputManager::UnbindAll()
+{
+	m_KeyboardBindings.clear();
+	m_Controllers.clear();
+}

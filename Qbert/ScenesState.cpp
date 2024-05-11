@@ -1,11 +1,14 @@
 #include "ScenesState.h"
 
 #include "EngineTime.h"
+#include "InputManager.h"
+#include "QbertScenes.h"
 #include "SceneManager.h"
 
 void qbert::SceneStates::Exit()
 {
 	dae::SceneManager::GetInstance().ClearScenes();
+	dae::InputManager::GetInstance().UnbindAll();
 }
 
 qbert::SceneStates* qbert::StartMenuSceneState::HandleTransitions()

@@ -1,11 +1,14 @@
 #pragma once
-#include "GameObject.h"
-#include "QbertMoveComponent.h"
+#include <glm/vec2.hpp>
+
+#include "BaseComponent.h"
 
 namespace qbert
 {
 	class CoilyState;
 	class MapComponent;
+	class QbertMoveComponent;
+	class GameObject;
 
 	class CoilyMoveComponent final : public dae::BaseComponent
 	{

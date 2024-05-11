@@ -14,8 +14,8 @@ namespace dae
 	class ImageComponent : public BaseComponent
 	{
 	public:
-		ImageComponent(GameObject* owner, const std::string& filePath = "", const bool isVisible = true, const float relativeX = 0, const float relativeY = 0, const int nbRows = 1, const int nbCols = 1, const int rowNb = 0, const int colNb = 0);
-		~ImageComponent() override { m_pTexture = nullptr; }
+		ImageComponent(GameObject* pGameObject, const std::string& filePath = "", const bool isVisible = true, const float relativeX = 0, const float relativeY = 0, const int nbRows = 1, const int nbCols = 1, const int rowNb = 0, const int colNb = 0);
+		virtual ~ImageComponent() override = default;
 
 
 		ImageComponent(const ImageComponent& other) = delete;

@@ -21,6 +21,9 @@
 
 
 SDL_Window* g_window{};
+const int dae::Minigin::m_WindowWidth = 600;
+const int dae::Minigin::m_WindowHeight = 400;
+
 
 void PrintSDLVersion()
 {
@@ -63,8 +66,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		600,
-		400,
+		m_WindowWidth,
+		m_WindowHeight,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 

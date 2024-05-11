@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 
 
 namespace dae
@@ -17,15 +16,15 @@ namespace dae
 		virtual void Render() const {}
 		virtual void RenderGui() const {}
 
-		BaseComponent(GameObject* m_pParent);
+		BaseComponent(GameObject* pGameObject);
 		virtual ~BaseComponent() = default;
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
 		BaseComponent& operator=(const BaseComponent& other) = delete;
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
-		void Destroy() { m_IsDead = true; };
-		bool GetIsDead() const { return m_IsDead; };
+		void Destroy() { m_IsDead = true; }
+		bool GetIsDead() const { return m_IsDead; }
 
 	protected:
 		GameObject* GetOwner() const;

@@ -6,7 +6,6 @@
 #include<algorithm>
 
 #include "BaseComponent.h"
-#include <string>
 
 #include<glm/glm.hpp>
 
@@ -31,7 +30,7 @@ namespace dae
 		void Init();
 
 		GameObject() = default;
-		GameObject(std::unique_ptr<Observer> pObserver);
+		//GameObject(std::unique_ptr<Observer> pObserver);
 
 		virtual ~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
@@ -48,12 +47,12 @@ namespace dae
 		}
 
 		template<typename TComponent>
-		void RemoveComponent()
+		void RemoveComponent() const
 		{
 			for (auto& component : m_pComponents)
 			{
 				if (dynamic_cast<TComponent*>(component.get()))
-					component->Kill();
+					component->Destroy();
 			}
 		}
 
@@ -96,7 +95,7 @@ namespace dae
 		//Event
 		void Notify(const Event& event);
 
-		Subject* GetDieEvent() { return m_pEventSubject.get(); };
+		Subject* GetDieEvent() const { return m_pEventSubject.get(); };
 
 	private:
 		Transform m_transform{};

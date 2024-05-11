@@ -13,13 +13,14 @@ namespace dae
 	{
 	public:
 		TextComponent(GameObject* pGameObject, const std::string& text, const Font& font);
-
-		void SetText(const std::string& text);
+		virtual ~TextComponent() override = default;
 
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;
 		TextComponent& operator=(TextComponent&& other) = delete;
+
+		void SetText(const std::string& text);
 
 	private:
 
