@@ -3,6 +3,7 @@
 #include "BlinkingComponent.h"
 #include "CoilyMoveComponent.h"
 #include "GameObject.h"
+#include "imgui.h"
 #include "InputManager.h"
 #include "MapComponent.h"
 #include "Minigin.h"
@@ -13,6 +14,8 @@
 #include "TextComponent.h"
 
 #include "ScenesState.h"
+#include "ServiceLocator.h"
+#include "SoundTypes.h"
 
 qbert::SceneStates* qbert::QbertScenes::m_pSceneState = new qbert::StartMenuSceneState{};
 bool qbert::QbertScenes::goNext = false;
@@ -157,12 +160,17 @@ void qbert::QbertScenes::LoadLevelLoading()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("StartMenu");
 
-	auto loadobject = std::make_unique<dae::GameObject>();
-	loadobject->AddComponent<dae::ImageComponent>("qbert/Level_ 01_Title.png");
+	auto loadObject = std::make_unique<dae::GameObject>();
+	loadObject->AddComponent<dae::ImageComponent>("qbert/Level_ 01_Title.png");
+
+	loadObject->GetComponent<dae::ImageComponent>()->SetWidth(dae::Minigin::GetWindowWidth());
+	loadObject->GetComponent<dae::ImageComponent>()->SetHeight(dae::Minigin::GetWindowHeight());
+
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::LOAD), 100.0f);
 
 
 
-	scene.Add(std::move(loadobject));
+	scene.Add(std::move(loadObject));
 }
 
 void qbert::QbertScenes::Update()

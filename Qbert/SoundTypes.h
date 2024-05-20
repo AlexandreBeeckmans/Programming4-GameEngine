@@ -5,6 +5,7 @@ namespace qbert
 	{
 		JUMP,
 		FALL,
-		WIN
+		WIN,
+		LOAD
 	};
 }

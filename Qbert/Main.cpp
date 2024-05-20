@@ -25,6 +25,7 @@ void LoadSounds()
 	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/QBert Jump.wav");
 	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/QBert Fall.wav");
 	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/Round_Complete_Tune.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/Level Screen Tune.wav");
 }
 
 void Load()

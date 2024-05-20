@@ -34,7 +34,6 @@ dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& 
 
 void dae::ImageComponent::Update()
 {
-	BaseComponent::Update();
 	UpdateShape();
 }
 
@@ -66,8 +65,24 @@ void dae::ImageComponent::UpdateShape()
 {
 	m_ImageShape.x = static_cast<int>(GetOwner()->GetWorldPosition().x + m_RelativePosition.GetPosition().x);
 	m_ImageShape.y = static_cast<int>(GetOwner()->GetWorldPosition().y + m_RelativePosition.GetPosition().y);
+
+	
+}
+
+void dae::ImageComponent::MakeShapeFitTexture()
+{
 	m_ImageShape.w = m_pTexture->GetSize().x / m_MaxCol;
 	m_ImageShape.h = m_pTexture->GetSize().y / m_MaxRow;
+}
+
+void dae::ImageComponent::SetWidth(const int newWidth)
+{
+	m_ImageShape.w = newWidth;
+}
+
+void dae::ImageComponent::SetHeight(const int newHeight)
+{
+	m_ImageShape.h = newHeight;
 }
 
 void dae::ImageComponent::SetVisible(const bool isVisible)

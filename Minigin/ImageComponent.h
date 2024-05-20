@@ -33,9 +33,12 @@ namespace dae
 		void UpdateRow();
 		void SetColumn(int col);
 		int GetColumn() const { return m_Col; }
-		
 
 		void UpdateShape();
+		void MakeShapeFitTexture();
+		void SetWidth(const int newWidth);
+		void SetHeight(const int newHeight);
+
 
 		void SetVisible(const bool isVisible);
 	protected:
