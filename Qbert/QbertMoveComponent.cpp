@@ -103,10 +103,9 @@ bool qbert::QbertMoveComponent::HasCompletedMap() const
 void qbert::QbertMoveComponent::UpdateMovement()
 {
 	Bounce();
-	constexpr float speed{ 55.0f };
 
-	GetOwner()->Translate(speed * dae::EngineTime::GetInstance().GetDeltaTime() * m_Direction);
-	m_AccumulatedDistanceX += speed * dae::EngineTime::GetInstance().GetDeltaTime() * std::abs(m_Direction.x);
+	GetOwner()->Translate(m_Speed * dae::EngineTime::GetInstance().GetDeltaTime() * m_Direction);
+	m_AccumulatedDistanceX += m_Speed * dae::EngineTime::GetInstance().GetDeltaTime() * std::abs(m_Direction.x);
 }
 void qbert::QbertMoveComponent::SetJumpSprite() const
 {

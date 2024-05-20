@@ -19,6 +19,8 @@ namespace qbert
 
 		static bool goNext;
 		static bool gameOver;
+	private :
+		static const float m_LevelScale;
 	};
 }
 

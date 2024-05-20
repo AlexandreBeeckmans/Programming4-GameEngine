@@ -18,6 +18,8 @@
 #include "SoundTypes.h"
 
 qbert::SceneStates* qbert::QbertScenes::m_pSceneState = new qbert::StartMenuSceneState{};
+const float qbert::QbertScenes::m_LevelScale = 2.0f;
+
 bool qbert::QbertScenes::goNext = false;
 bool qbert::QbertScenes::gameOver = false;
 
@@ -28,6 +30,7 @@ void qbert::QbertScenes::Init()
 
 void qbert::QbertScenes::LoadQbertLevel()
 {
+	dae::ImageComponent::SetSpriteScale(m_LevelScale);
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level");
 
 	auto backgroundObject = std::make_unique<dae::GameObject>();
@@ -43,7 +46,7 @@ void qbert::QbertScenes::LoadQbertLevel()
 	constexpr int nbOfRow{ 7 };
 	int nbOfTiles{ nbOfRow };
 	std::unique_ptr<dae::GameObject> pMapObject{ std::make_unique<dae::GameObject>() };
-	pMapObject->SetLocalPosition(250.0f, 300.0f);
+
 	pMapObject->AddComponent<qbert::MapComponent>(nbOfRow);
 	float baseTileX{ 0.0f };
 	float baseTileY{ 0.0f };
@@ -71,6 +74,13 @@ void qbert::QbertScenes::LoadQbertLevel()
 	}
 
 	pMapObject->GetComponent<qbert::MapComponent>()->SetCurrentIndexToLast();
+
+	const glm::vec2 mapPosition
+	{
+		static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(nbOfRow * tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f,
+		static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f + static_cast<float>(nbOfRow * tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().h) / 4.0f
+	};
+	pMapObject->SetLocalPosition(mapPosition);
 
 
 
@@ -118,6 +128,7 @@ void qbert::QbertScenes::LoadQbertLevel()
 
 void qbert::QbertScenes::LoadStartMenu()
 {
+	dae::ImageComponent::SetSpriteScale(1.0f);
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("StartMenu");
 
 	auto titleObject = std::make_unique<dae::GameObject>();

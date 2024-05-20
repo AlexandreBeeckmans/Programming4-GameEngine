@@ -3,6 +3,8 @@
 #include "Renderer.h"
 #include "GameObject.h"
 #include "Texture2D.h"
+float dae::ImageComponent::m_SpriteScale = 2.0f;
+
 
 dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& filePath, const bool isVisible, const float relativeX, const float relativeY, const int nbRows, const int nbCols, const int rowNb, const int colNb) :
 	BaseComponent(pGameObject),
@@ -21,8 +23,8 @@ dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& 
 
 	m_ImageShape.x = static_cast<int>(GetOwner()->GetWorldPosition().x + m_RelativePosition.GetPosition().x);
 	m_ImageShape.y = static_cast<int>(GetOwner()->GetWorldPosition().y + m_RelativePosition.GetPosition().y);
-	m_ImageShape.w = m_pTexture->GetSize().x / nbCols;
-	m_ImageShape.h = m_pTexture->GetSize().y / nbRows;
+	m_ImageShape.w = static_cast<int>(static_cast<float>(m_pTexture->GetSize().x / nbCols) * m_SpriteScale);
+	m_ImageShape.h = static_cast<int>(static_cast<float>(m_pTexture->GetSize().y / nbRows) * m_SpriteScale);
 
 	
 	m_SrcRect.w = m_pTexture->GetSize().x / nbCols;

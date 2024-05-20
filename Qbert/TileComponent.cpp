@@ -34,6 +34,6 @@ glm::vec2 qbert::TileComponent::GetStartPoint() const
 
 int qbert::TileComponent::GetWidth() const
 {
-	return GetOwner()->GetComponent<dae::ImageComponent>()->GetShape().w;
+	return static_cast<int>(static_cast<float>(GetOwner()->GetComponent<dae::ImageComponent>()->GetShape().w) / dae::ImageComponent::GetSpriteScale());
 }
 

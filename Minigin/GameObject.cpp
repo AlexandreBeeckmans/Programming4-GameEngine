@@ -148,7 +148,7 @@ glm::vec3 dae::GameObject::GetWorldPosition()
 
 void dae::GameObject::Translate(const glm::vec2& discplacement)
 {
-	SetLocalPosition(m_transform.GetPosition() + glm::vec3{ discplacement.x, discplacement.y, 0 });
+	SetLocalPosition(m_transform.GetPosition() + glm::vec3{ discplacement.x, discplacement.y, 0 } * ImageComponent::GetSpriteScale());
 	if(GetComponent<ImageComponent>())
 	{
 		GetComponent<ImageComponent>()->UpdateShape();

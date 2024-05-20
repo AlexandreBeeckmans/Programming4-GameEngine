@@ -41,6 +41,9 @@ namespace dae
 
 
 		void SetVisible(const bool isVisible);
+
+		static void SetSpriteScale(const float scale) { m_SpriteScale = scale; }
+		static float GetSpriteScale() { return m_SpriteScale; }
 	protected:
 		void SetTexture(SDL_Texture* pTexture);
 		void UpdateSource();
@@ -48,6 +51,9 @@ namespace dae
 		
 
 	private:
+		static float m_SpriteScale;
+
+
 		std::unique_ptr<Texture2D> m_pTexture{};
 		Transform m_RelativePosition{};
 
