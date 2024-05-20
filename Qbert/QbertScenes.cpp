@@ -1,8 +1,12 @@
 #include "QbertScenes.h"
 
 #include "BlinkingComponent.h"
+#include "ChangeToUIComponent.h"
+#include "CoilyMoveComponent.h"
 #include "CoilyMoveComponent.h"
 #include "GameObject.h"
+#include "HealthComponent.h"
+#include "HealthUIComponent.h"
 #include "imgui.h"
 #include "InputManager.h"
 #include "MapComponent.h"
@@ -14,6 +18,8 @@
 #include "TextComponent.h"
 
 #include "ScenesState.h"
+#include "ScoreComponent.h"
+#include "ScoreUIComponent.h"
 #include "ServiceLocator.h"
 #include "SoundTypes.h"
 
@@ -89,6 +95,8 @@ void qbert::QbertScenes::LoadQbertLevel()
 	auto playerObject = std::make_unique<dae::GameObject>();
 	playerObject->AddComponent<dae::ImageComponent>("qbert/Qbert P1 Spritesheet.png", true, 0.0f, 0.0f, 1, 4);
 	playerObject->AddComponent<qbert::QbertMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>());
+	playerObject->AddComponent<dae::ScoreComponent>();
+	playerObject->AddComponent<dae::HealthComponent>();
 
 	qbert::QbertMoveCommand qbertMoveRightCommand{ playerObject.get(),  glm::vec2{1,0} };
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_D, std::make_unique<qbert::QbertMoveCommand>(qbertMoveRightCommand), dae::InputType::DOWN);
@@ -115,6 +123,100 @@ void qbert::QbertScenes::LoadQbertLevel()
 	coilyObject->AddComponent<qbert::CoilyMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>(), playerObject->GetComponent<qbert::QbertMoveComponent>());
 
 
+#pragma region UI
+	auto scoreFont = dae::ResourceManager::GetInstance().LoadFont("qbert/Minecraft.ttf", 24);
+
+	//Score
+	auto scoreUIObject = std::make_unique<dae::GameObject>();
+	scoreUIObject->AddComponent<dae::TextComponent>("Saucisse", *scoreFont);
+	
+
+	dae::TextComponent* scoreTextComponent = scoreUIObject->GetComponent<dae::TextComponent>();
+	scoreTextComponent->SetRelativePosition(25, 25);
+	scoreTextComponent->SetColor({ 255,165,0, 255 });
+
+	scoreUIObject->AddComponent<qbert::ScoreUIComponent>(scoreTextComponent, 0);
+	scoreUIObject->GetComponent<qbert::ScoreUIComponent>()->SetScoreComponent(playerObject->GetComponent<dae::ScoreComponent>());
+
+	playerObject->GetComponent<dae::ScoreComponent>()->InitObserver(scoreUIObject->GetComponent<ScoreUIComponent>());
+
+	//NextTile
+	auto changeToUIObject = std::make_unique<dae::GameObject>();
+	changeToUIObject->SetLocalPosition(0, 45);
+
+	//main text
+	changeToUIObject->AddComponent<dae::TextComponent>("CHANGE TO:", *scoreFont);
+	changeToUIObject->GetComponent<dae::TextComponent>()->SetColor({ 255,0,0,255 });
+
+	
+	std::vector<dae::ImageComponent*> pArrowComponents{};
+	//2 arrows left
+	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/ChangeTo_Arrow.png", true, 15.0f, 20.0f);
+	pArrowComponents.push_back( {changeToUIObject->GetComponent<dae::ImageComponent>(1) });
+
+	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/ChangeTo_Arrow.png", true, 40.0f, 20.0f);
+	pArrowComponents.push_back({ changeToUIObject->GetComponent<dae::ImageComponent>(2) });
+
+	//middle tile
+	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/Color_Icons_Spritesheet.png", true,  55.0f, 20.0f, 2, 6);
+
+	//2 arrows right
+	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/ChangeTo_Arrow_Left.png", true, 85.0f, 20.0f);
+	pArrowComponents.push_back({ changeToUIObject->GetComponent<dae::ImageComponent>(4) });
+
+	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/ChangeTo_Arrow_Left.png", true, 110.0f, 20.0f);
+	pArrowComponents.push_back({ changeToUIObject->GetComponent<dae::ImageComponent>(5) });
+
+	for (auto arrow : pArrowComponents)
+	{
+		arrow->SetWidth(15);
+		arrow->SetHeight(25);
+	}
+
+	changeToUIObject->AddComponent<qbert::ChangeToUIComponent>(pArrowComponents);
+
+	
+
+
+
+
+	//Level and Round
+	auto levelUIObject = std::make_unique<dae::GameObject>();
+	levelUIObject->AddComponent<dae::TextComponent>("LEVEL :", *scoreFont);
+	levelUIObject->GetComponent<dae::TextComponent>(0)->SetColor({ 0, 255, 0, 255 });
+
+	levelUIObject->AddComponent<dae::TextComponent>("1", *scoreFont);
+	levelUIObject->GetComponent<dae::TextComponent>(1)->SetRelativePosition(115, 0);
+	levelUIObject->GetComponent<dae::TextComponent>(1)->SetColor({ 255, 165, 0, 255 });
+
+	levelUIObject->AddComponent<dae::TextComponent>("ROUND :", *scoreFont);
+	levelUIObject->GetComponent<dae::TextComponent>(2)->SetRelativePosition(0, 25);
+	levelUIObject->GetComponent<dae::TextComponent>(2)->SetColor({ 0, 0, 255, 255 });
+
+	levelUIObject->AddComponent<dae::TextComponent>("1", *scoreFont);
+	levelUIObject->GetComponent<dae::TextComponent>(3)->SetRelativePosition(115, 25);
+	levelUIObject->GetComponent<dae::TextComponent>(3)->SetColor({ 255, 165, 0, 255 });
+
+	levelUIObject->SetLocalPosition(static_cast<float>(dae::Minigin::GetWindowWidth()) - 150.0f, 10.0f);
+	
+
+	//Lives
+	auto livesUIObject = std::make_unique<dae::GameObject>();
+	livesUIObject->AddComponent<dae::ImageComponent>("qbert/Lives_UI.png");
+	livesUIObject->SetLocalPosition(0, 150);
+	livesUIObject->AddComponent<HealthUIComponent>(livesUIObject->GetComponent<dae::ImageComponent>());
+
+	livesUIObject->GetComponent<qbert::HealthUIComponent>()->SetHealthComponent(playerObject->GetComponent<dae::HealthComponent>());
+	playerObject->GetComponent<dae::HealthComponent>()->AddObserver(livesUIObject->GetComponent<qbert::HealthUIComponent>());
+
+
+
+
+	//Add everything to the scene
+	scene.Add(std::move(livesUIObject));
+	scene.Add(std::move(levelUIObject));
+	scene.Add(std::move(changeToUIObject));
+	scene.Add(std::move(scoreUIObject));
 	for (auto& tile : tiles)
 	{
 		scene.Add(std::move(tile));
@@ -124,6 +226,9 @@ void qbert::QbertScenes::LoadQbertLevel()
 	scene.Add(std::move(bubbleObject));
 	scene.Add(std::move(playerObject));
 	scene.Add(std::move(coilyObject));
+
+
+#pragma endregion
 }
 
 void qbert::QbertScenes::LoadStartMenu()

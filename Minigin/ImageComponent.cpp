@@ -31,6 +31,9 @@ dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& 
 	m_SrcRect.h = m_pTexture->GetSize().y / nbRows;
 	m_SrcRect.x = colNb * m_SrcRect.w;
 	m_SrcRect.y = rowNb * m_SrcRect.h;
+
+	m_StartingDestHeight = static_cast<float>(m_ImageShape.h);
+	m_StartingSrcHeight = static_cast<float>(m_SrcRect.h);
 	
 }
 
@@ -87,9 +90,20 @@ void dae::ImageComponent::SetHeight(const int newHeight)
 	m_ImageShape.h = newHeight;
 }
 
+void dae::ImageComponent::ReduceHeight(const float percentage)
+{
+	m_SrcRect.h = static_cast<int>(percentage * m_StartingSrcHeight);
+	m_ImageShape.h = static_cast<int>(percentage * m_StartingDestHeight);
+}
+
 void dae::ImageComponent::SetVisible(const bool isVisible)
 {
 	m_IsVisible = isVisible;
+}
+
+void dae::ImageComponent::SetRelativePosition(const float x, const float y)
+{
+	m_RelativePosition.SetPosition(x, y, 0);
 }
 
 void dae::ImageComponent::UpdateRow()

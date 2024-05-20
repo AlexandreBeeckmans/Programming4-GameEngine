@@ -8,7 +8,7 @@ namespace dae
 	{
 	public:
 
-		HealthComponent(GameObject* m_pParent);
+		HealthComponent(GameObject* m_pParent, const int maxLives = 3);
 		virtual ~HealthComponent() = default;
 		HealthComponent(const HealthComponent& other) = default;
 		HealthComponent(HealthComponent&& other) = default;
@@ -17,7 +17,9 @@ namespace dae
 
 		void Init() override;
 		void RemoveLive();
+
 		int GetLivesRemaining()const { return m_CurrentLives; };
+		int GetMaxLives() const { return  m_MaxLives; }
 
 	private:
 		const int m_MaxLives{ 3 };

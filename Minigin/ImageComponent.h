@@ -26,8 +26,9 @@ namespace dae
 		virtual void Update() override;
 
 		void virtual Render() const override;
+
 		SDL_Rect GetShape() const { return m_ImageShape; }
-		
+		void SetRelativePosition(const float x, const float y);
 
 		
 		void UpdateRow();
@@ -39,11 +40,17 @@ namespace dae
 		void SetWidth(const int newWidth);
 		void SetHeight(const int newHeight);
 
+		void ReduceHeight(const float percentage);
+
 
 		void SetVisible(const bool isVisible);
 
 		static void SetSpriteScale(const float scale) { m_SpriteScale = scale; }
 		static float GetSpriteScale() { return m_SpriteScale; }
+
+
+
+
 	protected:
 		void SetTexture(SDL_Texture* pTexture);
 		void UpdateSource();
@@ -66,6 +73,9 @@ namespace dae
 		int m_Row{ 0 };
 
 		bool m_IsVisible{ true };
+
+		float m_StartingDestHeight{};
+		float m_StartingSrcHeight{};
 	};
 }
 

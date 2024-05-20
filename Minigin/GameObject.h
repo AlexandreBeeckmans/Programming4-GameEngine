@@ -49,6 +49,12 @@ namespace dae
 		}
 
 		template<typename TComponent>
+		void AddComponent(BaseComponent* pCompToAdd)
+		{
+			m_pComponents.push_back(std::make_unique<TComponent>(pCompToAdd));
+		}
+
+		template<typename TComponent>
 		void RemoveComponent() const
 		{
 			for (auto& component : m_pComponents)
@@ -70,16 +76,37 @@ namespace dae
 		}
 
 		template<typename TComponent>
+		TComponent* GetComponent(const int compNb)
+		{
+			if (!HasComponent<TComponent>()) return nullptr;
+			int currentCount{ 0 };
+
+
+			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [&](const std::unique_ptr<BaseComponent>& component) -> bool
+				{
+					if(dynamic_cast<TComponent*>(component.get()) && currentCount == compNb)
+					{
+						return true;
+
+					}
+					++currentCount;
+					return false;
+					
+				}); 
+
+			return dynamic_cast<TComponent*>(find->get());
+		}
+
+		template<typename TComponent>
 		TComponent* GetComponent()
 		{
 			if (!HasComponent<TComponent>()) return nullptr;
 
-
-
 			auto find = std::find_if(std::cbegin(m_pComponents), std::cend(m_pComponents), [](const std::unique_ptr<BaseComponent>& component)
 				{
 					return dynamic_cast<TComponent*>(component.get());
-				}); 
+
+				});
 
 			return dynamic_cast<TComponent*>(find->get());
 		}

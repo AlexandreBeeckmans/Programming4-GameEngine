@@ -2,18 +2,20 @@
 #include "GameObject.h"
 #include "UIComponent.h"
 
-dae::HealthComponent::HealthComponent(GameObject* pParent) :
-	BaseComponent::BaseComponent{ pParent }
+dae::HealthComponent::HealthComponent(GameObject* pParent, const int maxLives) :
+	BaseComponent::BaseComponent{ pParent },
+m_MaxLives(maxLives),
+m_CurrentLives(maxLives)
 {
 
 }
 
 void dae::HealthComponent::Init()
 {
-	if (auto ui{ GetOwner()->GetComponent<UIComponent>() })
+	/*if (auto ui{ GetOwner()->GetComponent<UIComponent>() })
 	{
 		AddObserver(ui);
-	}
+	}*/
 }
 
 void dae::HealthComponent::RemoveLive()

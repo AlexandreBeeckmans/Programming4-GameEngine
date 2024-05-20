@@ -5,10 +5,12 @@
 #include "MapComponent.h"
 #include "TileComponent.h"
 #include "EngineTime.h"
+#include "HealthComponent.h"
 #include "ServiceLocator.h"
 #include "SoundTypes.h"
 #include "PlayerState.h"
 #include "QbertScenes.h"
+#include "ScoreComponent.h"
 
 qbert::QbertMoveComponent::QbertMoveComponent(dae::GameObject* owner, qbert::MapComponent* pMap):
 BaseComponent(owner),
@@ -73,6 +75,7 @@ void qbert::QbertMoveComponent::Kill()
 	ShowBubble(true);
 
 	--m_Lives;
+	GetOwner()->GetComponent<dae::HealthComponent>()->RemoveLive();
 }
 
 void qbert::QbertMoveComponent::Respawn()
@@ -157,6 +160,8 @@ void qbert::QbertMoveComponent::ActivateCurrentTile() const
 {
 	if (!m_pMap->GetCurrentTile()) return;
 	m_pMap->ActivateCurrentTile();
+
+	GetOwner()->GetComponent<dae::ScoreComponent>()->IncrementScore(25);
 }
 
 void qbert::QbertMoveComponent::Bounce()

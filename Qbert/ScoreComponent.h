@@ -2,6 +2,11 @@
 #include "BaseComponent.h"
 #include "Subject.h"
 
+namespace qbert
+{
+	class ScoreUIComponent;
+}
+
 namespace dae
 {
 	class ScoreComponent final : public BaseComponent, public Subject
@@ -15,7 +20,7 @@ namespace dae
 		ScoreComponent& operator=(const ScoreComponent& other) = default;
 		ScoreComponent& operator=(ScoreComponent&& other) = default;
 
-		void Init() override;
+		void InitObserver(qbert::ScoreUIComponent* pUiComponent);
 		void IncrementScore(const int& valueToAdd);
 		int GetScore()const { return m_CurrentScore; };
 

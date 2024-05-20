@@ -21,6 +21,7 @@ namespace dae
 		TextComponent& operator=(TextComponent&& other) = delete;
 
 		void SetText(const std::string& text);
+		void SetColor(const SDL_Color& color);
 
 	private:
 
@@ -28,6 +29,7 @@ namespace dae
 
 		std::string m_Text{};
 		std::unique_ptr<Font> m_pFont{};
+		SDL_Color m_FontColor{255,255,255, 255 };
 	};
 }
 

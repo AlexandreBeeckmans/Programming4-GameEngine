@@ -1,6 +1,7 @@
 #include "ScoreComponent.h"
 
 #include "GameObject.h"
+#include "ScoreUIComponent.h"
 #include "UIComponent.h"
 
 dae::ScoreComponent::ScoreComponent(GameObject* pParent) :
@@ -9,12 +10,9 @@ dae::ScoreComponent::ScoreComponent(GameObject* pParent) :
 
 }
 
-void dae::ScoreComponent::Init()
+void dae::ScoreComponent::InitObserver(qbert::ScoreUIComponent* pUiComponent)
 {
-	if (auto ui{ GetOwner()->GetComponent<UIComponent>() })
-	{
-		AddObserver(ui);
-	}
+	AddObserver(pUiComponent);
 }
 
 void dae::ScoreComponent::IncrementScore(const int& scoreToAdd)

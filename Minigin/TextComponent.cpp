@@ -25,9 +25,15 @@ void dae::TextComponent::SetText(const std::string& text)
 	UpdateSource();
 }
 
+void dae::TextComponent::SetColor(const SDL_Color& color)
+{
+	m_FontColor = color;
+	InitTexture();
+}
+
 void dae::TextComponent::InitTexture()
 {
-	const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
+	const SDL_Color color = { m_FontColor }; // only white text is supported now
 	const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), color);
 	if (surf == nullptr)
 	{
