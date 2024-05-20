@@ -13,12 +13,16 @@ dae::TextComponent::TextComponent(GameObject* pGameObject, const std::string& te
 	m_pFont{std::make_unique<Font>(font)}
 {
 	InitTexture();
+	UpdateShape();
+	UpdateSource();
 }
 
 void dae::TextComponent::SetText(const std::string& text)
 {
 	m_Text = text;
 	InitTexture();
+	UpdateShape();
+	UpdateSource();
 }
 
 void dae::TextComponent::InitTexture()

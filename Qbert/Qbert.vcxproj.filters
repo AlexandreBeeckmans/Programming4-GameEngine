@@ -90,6 +90,9 @@
     <ClCompile Include="ScenesState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BlinkingComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapComponent.h">
@@ -156,6 +159,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScenesState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlinkingComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

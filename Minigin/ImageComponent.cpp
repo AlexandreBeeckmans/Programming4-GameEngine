@@ -56,6 +56,8 @@ void dae::ImageComponent::SetTexture(SDL_Texture* pTexture)
 
 void dae::ImageComponent::UpdateSource()
 {
+	m_SrcRect.w = m_pTexture->GetSize().x / m_MaxCol;
+	m_SrcRect.h = m_pTexture->GetSize().y / m_MaxRow;
 	m_SrcRect.x = m_Col * m_SrcRect.w;
 	m_SrcRect.y = m_Row * m_SrcRect.h;
 }
@@ -64,6 +66,8 @@ void dae::ImageComponent::UpdateShape()
 {
 	m_ImageShape.x = static_cast<int>(GetOwner()->GetWorldPosition().x + m_RelativePosition.GetPosition().x);
 	m_ImageShape.y = static_cast<int>(GetOwner()->GetWorldPosition().y + m_RelativePosition.GetPosition().y);
+	m_ImageShape.w = m_pTexture->GetSize().x / m_MaxCol;
+	m_ImageShape.h = m_pTexture->GetSize().y / m_MaxRow;
 }
 
 void dae::ImageComponent::SetVisible(const bool isVisible)

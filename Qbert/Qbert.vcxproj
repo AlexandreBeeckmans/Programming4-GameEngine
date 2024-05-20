@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlinkingComponent.cpp" />
     <ClCompile Include="CoilyMoveComponent.cpp" />
     <ClCompile Include="CoilyState.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="UIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlinkingComponent.h" />
     <ClInclude Include="CoilyMoveComponent.h" />
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="FPSComponent.h" />

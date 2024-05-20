@@ -34,6 +34,7 @@ void dae::GameObject::LateUpdate()
 
 void dae::GameObject::Render() const
 {
+	if (!m_IsVisible) return;
 	for (auto& pComp : m_pComponents)
 	{
 		pComp->Render();
@@ -152,6 +153,16 @@ void dae::GameObject::Translate(const glm::vec2& discplacement)
 	{
 		GetComponent<ImageComponent>()->UpdateShape();
 	}
+}
+
+void dae::GameObject::SetVisible(const bool isVisible)
+{
+	m_IsVisible = isVisible;
+}
+
+bool dae::GameObject::IsVisible() const
+{
+	return m_IsVisible;
 }
 
 void dae::GameObject::SetLocalPosition(const glm::vec3& pos)

@@ -1,5 +1,6 @@
 #include "QbertScenes.h"
 
+#include "BlinkingComponent.h"
 #include "CoilyMoveComponent.h"
 #include "GameObject.h"
 #include "InputManager.h"
@@ -9,6 +10,7 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "TextComponent.h"
 
 #include "ScenesState.h"
 
@@ -121,7 +123,7 @@ void qbert::QbertScenes::LoadStartMenu()
 	const glm::vec2 titlePos
 	{
 		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(titleObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 16.0f)
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 8.0f)
 	};
 	titleObject->SetLocalPosition(titlePos);
 
@@ -130,7 +132,18 @@ void qbert::QbertScenes::LoadStartMenu()
 
 	dae::Font actualFont = *font;
 	std::string enterString{ "Press space to continue..." };
-	//pressSpaceObject->AddComponent<dae::TextComponent>(enterString, actualFont);
+
+	pressSpaceObject->AddComponent<dae::TextComponent>(enterString, actualFont);
+	pressSpaceObject->AddComponent<qbert::BlinkingComponent>(0.25f);
+
+	const glm::vec2 pressSpacePos
+	{
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(titleObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
+		static_cast<int>(static_cast<float>(3 * dae::Minigin::GetWindowHeight()) / 4.0f)
+	};
+
+	pressSpaceObject->SetLocalPosition(pressSpacePos);
+	
 
 
 	scene.Add(std::move(titleObject));
@@ -146,6 +159,8 @@ void qbert::QbertScenes::LoadLevelLoading()
 
 	auto loadobject = std::make_unique<dae::GameObject>();
 	loadobject->AddComponent<dae::ImageComponent>("qbert/Level_ 01_Title.png");
+
+
 
 	scene.Add(std::move(loadobject));
 }

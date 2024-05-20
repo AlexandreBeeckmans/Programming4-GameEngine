@@ -6,6 +6,7 @@
 #include<algorithm>
 
 #include "BaseComponent.h"
+#include "TextComponent.h"
 
 #include<glm/glm.hpp>
 
@@ -30,7 +31,6 @@ namespace dae
 		void Init();
 
 		GameObject() = default;
-		//GameObject(std::unique_ptr<Observer> pObserver);
 
 		virtual ~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
@@ -43,6 +43,8 @@ namespace dae
 		template<typename TComponent, typename ...Args>
 		void AddComponent(Args&&... args)
 		{
+			//static_assert(std::is_base_of<BaseComponent, TComponent>::value, "TComponent must be derived from BaseComponent");
+
 			m_pComponents.push_back(std::make_unique<TComponent>(this, args...));
 		}
 
@@ -95,7 +97,11 @@ namespace dae
 		//Event
 		void Notify(const Event& event);
 
-		Subject* GetDieEvent() const { return m_pEventSubject.get(); };
+		Subject* GetDieEvent() const { return m_pEventSubject.get(); }
+
+
+		void SetVisible(const bool isVisible);
+		bool IsVisible() const;
 
 	private:
 		Transform m_transform{};
@@ -122,5 +128,7 @@ namespace dae
 
 		//Events
 		std::unique_ptr<Subject> m_pEventSubject;
+
+		bool m_IsVisible{ true };
 	};
 }
