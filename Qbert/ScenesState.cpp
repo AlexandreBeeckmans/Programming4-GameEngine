@@ -31,7 +31,7 @@ qbert::SceneStates* qbert::LevelSceneState::HandleTransitions()
 
 void qbert::LevelSceneState::Enter()
 {
-	QbertScenes::LoadQbertLevel();
+	QbertScenes::LoadQbertLevel(0,2);
 	QbertScenes::goNext = false;
 }
 

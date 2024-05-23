@@ -114,6 +114,7 @@ namespace dae
 		GameObject* GetParent() const;
 		void SetParent(GameObject* pParent, const bool keepWorldPosition = false);
 		void DetachFromParent();
+		void DetachAllChildren();
 
 
 		//Position
@@ -122,13 +123,16 @@ namespace dae
 		void Translate(const glm::vec2& discplacement);
 
 		//Event
-		void Notify(const Event& event);
+		//void Notify(const Event& event);
 
 		Subject* GetDieEvent() const { return m_pEventSubject.get(); }
 
 
 		void SetVisible(const bool isVisible);
 		bool IsVisible() const;
+
+		void SetActive(const bool isActive);
+		bool IsActive() const;
 
 	private:
 		Transform m_transform{};
@@ -143,7 +147,7 @@ namespace dae
 		void AddChild(GameObject* pChild);
 		void RemoveChild(GameObject* pChild);
 
-		bool IsChild(GameObject* pParent) const;
+		bool IsChild(const GameObject* pParent) const;
 
 		void UpdateWorldPosition();
 		void SetPositionDirty();
@@ -157,5 +161,6 @@ namespace dae
 		std::unique_ptr<Subject> m_pEventSubject;
 
 		bool m_IsVisible{ true };
+		bool m_IsActive{ true };
 	};
 }

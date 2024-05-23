@@ -1,9 +1,14 @@
+
+#include <windows.h>
+#include <Xinput.h>
+
 #include "QbertScenes.h"
 
+#include "AnimatorComponent.h"
 #include "BlinkingComponent.h"
 #include "ChangeToUIComponent.h"
 #include "CoilyMoveComponent.h"
-#include "CoilyMoveComponent.h"
+#include "DiscComponent.h"
 #include "GameObject.h"
 #include "HealthComponent.h"
 #include "HealthUIComponent.h"
@@ -34,7 +39,7 @@ void qbert::QbertScenes::Init()
 	m_pSceneState->Enter();
 }
 
-void qbert::QbertScenes::LoadQbertLevel()
+void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 {
 	dae::ImageComponent::SetSpriteScale(m_LevelScale);
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level");
@@ -66,7 +71,9 @@ void qbert::QbertScenes::LoadQbertLevel()
 		{
 			auto tileObject = std::make_unique<dae::GameObject>();
 			tileObject->AddComponent<qbert::TileComponent>();
-			tileObject->AddComponent<dae::ImageComponent>("qbert/Qbert Cubes.png", true, 0.0f, 0.0f, 3, 6);
+			tileObject->AddComponent<dae::ImageComponent>("qbert/Qbert Cubes.png", true, 0.0f, 0.0f, 3, 6, 0, round);
+			tileObject->AddComponent<dae::AnimatorComponent>(false, 0.1f, 1,3,round,0);
+
 			tileObject->SetParent(pMapObject.get(), true);
 			tileObject->SetLocalPosition(baseTileX + i * tileObject->GetComponent<dae::ImageComponent>()->GetShape().w, baseTileY);
 
@@ -98,17 +105,25 @@ void qbert::QbertScenes::LoadQbertLevel()
 	playerObject->AddComponent<dae::ScoreComponent>();
 	playerObject->AddComponent<dae::HealthComponent>();
 
+	std::unique_ptr<dae::GamepadController> gamepadController{ std::make_unique<dae::GamepadController>() };
+
 	qbert::QbertMoveCommand qbertMoveRightCommand{ playerObject.get(),  glm::vec2{1,0} };
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_D, std::make_unique<qbert::QbertMoveCommand>(qbertMoveRightCommand), dae::InputType::DOWN);
+	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<qbert::QbertMoveCommand>(qbertMoveRightCommand), dae::InputType::DOWN);
 
 	qbert::QbertMoveCommand qbertMoveLeftCommand{ playerObject.get(),  glm::vec2{-1,0} };
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_A, std::make_unique<qbert::QbertMoveCommand>(qbertMoveLeftCommand), dae::InputType::DOWN);
+	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<qbert::QbertMoveCommand>(qbertMoveLeftCommand), dae::InputType::DOWN);
 
 	qbert::QbertMoveCommand qbertMoveTopCommand{ playerObject.get(),  glm::vec2{0,1} };
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_W, std::make_unique<qbert::QbertMoveCommand>(qbertMoveTopCommand), dae::InputType::DOWN);
+	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_UP, std::make_unique<qbert::QbertMoveCommand>(qbertMoveTopCommand), dae::InputType::DOWN);
 
 	qbert::QbertMoveCommand qbertMoveDownCommand{ playerObject.get(),  glm::vec2{0,-1} };
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_S, std::make_unique<qbert::QbertMoveCommand>(qbertMoveDownCommand), dae::InputType::DOWN);
+	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<qbert::QbertMoveCommand>(qbertMoveDownCommand), dae::InputType::DOWN);
+
+	dae::InputManager::GetInstance().AddController(std::move(gamepadController));
 
 	auto bubbleObject = std::make_unique<dae::GameObject>();
 	bubbleObject->AddComponent<dae::ImageComponent>("qbert/Qbert Curses.png", false);
@@ -122,6 +137,26 @@ void qbert::QbertScenes::LoadQbertLevel()
 	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
 	coilyObject->AddComponent<qbert::CoilyMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>(), playerObject->GetComponent<qbert::QbertMoveComponent>());
 
+#pragma region DISC
+	auto leftDiscObject = std::make_unique<dae::GameObject>();
+	leftDiscObject->SetLocalPosition(150, 150);
+
+	leftDiscObject->AddComponent<dae::ImageComponent>("qbert/Disk_Spritesheet.png", true, 0.0f, 0.0f, 1, 30, 0, 5 * round);
+	leftDiscObject->AddComponent<dae::AnimatorComponent>(true, 0.25f, 4, 1, 5 * round, 0);
+	leftDiscObject->AddComponent<qbert::DiscComponent>(pMapObject->GetComponent<qbert::MapComponent>());
+
+
+	auto rightDiscObject = std::make_unique<dae::GameObject>();
+	rightDiscObject->SetLocalPosition(150, 150);
+
+	rightDiscObject->AddComponent<dae::ImageComponent>("qbert/Disk_Spritesheet.png", true, 0.0f, 0.0f, 1, 30, 0, 5 * round);
+	rightDiscObject->AddComponent<dae::AnimatorComponent>(true, 0.25f, 4, 1, 5 * round, 0);
+	rightDiscObject->AddComponent<qbert::DiscComponent>(pMapObject->GetComponent<qbert::MapComponent>(), false);
+
+	pMapObject->GetComponent<MapComponent>()->AddDisc(leftDiscObject->GetComponent<DiscComponent>());
+	pMapObject->GetComponent<MapComponent>()->AddDisc(rightDiscObject->GetComponent<DiscComponent>());
+
+#pragma endregion
 
 #pragma region UI
 	auto scoreFont = dae::ResourceManager::GetInstance().LoadFont("qbert/Minecraft.ttf", 24);
@@ -158,7 +193,7 @@ void qbert::QbertScenes::LoadQbertLevel()
 	pArrowComponents.push_back({ changeToUIObject->GetComponent<dae::ImageComponent>(2) });
 
 	//middle tile
-	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/Color_Icons_Spritesheet.png", true,  55.0f, 20.0f, 2, 6);
+	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/Color_Icons_Spritesheet.png", true,  55.0f, 20.0f, 2, 6, 0, round);
 
 	//2 arrows right
 	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/ChangeTo_Arrow_Left.png", true, 85.0f, 20.0f);
@@ -185,7 +220,7 @@ void qbert::QbertScenes::LoadQbertLevel()
 	levelUIObject->AddComponent<dae::TextComponent>("LEVEL :", *scoreFont);
 	levelUIObject->GetComponent<dae::TextComponent>(0)->SetColor({ 0, 255, 0, 255 });
 
-	levelUIObject->AddComponent<dae::TextComponent>("1", *scoreFont);
+	levelUIObject->AddComponent<dae::TextComponent>(std::to_string(level + 1), *scoreFont);
 	levelUIObject->GetComponent<dae::TextComponent>(1)->SetRelativePosition(115, 0);
 	levelUIObject->GetComponent<dae::TextComponent>(1)->SetColor({ 255, 165, 0, 255 });
 
@@ -193,7 +228,7 @@ void qbert::QbertScenes::LoadQbertLevel()
 	levelUIObject->GetComponent<dae::TextComponent>(2)->SetRelativePosition(0, 25);
 	levelUIObject->GetComponent<dae::TextComponent>(2)->SetColor({ 0, 0, 255, 255 });
 
-	levelUIObject->AddComponent<dae::TextComponent>("1", *scoreFont);
+	levelUIObject->AddComponent<dae::TextComponent>(std::to_string(round + 1), *scoreFont);
 	levelUIObject->GetComponent<dae::TextComponent>(3)->SetRelativePosition(115, 25);
 	levelUIObject->GetComponent<dae::TextComponent>(3)->SetColor({ 255, 165, 0, 255 });
 
@@ -209,7 +244,7 @@ void qbert::QbertScenes::LoadQbertLevel()
 	livesUIObject->GetComponent<qbert::HealthUIComponent>()->SetHealthComponent(playerObject->GetComponent<dae::HealthComponent>());
 	playerObject->GetComponent<dae::HealthComponent>()->AddObserver(livesUIObject->GetComponent<qbert::HealthUIComponent>());
 
-
+#pragma endregion
 
 
 	//Add everything to the scene
@@ -217,18 +252,24 @@ void qbert::QbertScenes::LoadQbertLevel()
 	scene.Add(std::move(levelUIObject));
 	scene.Add(std::move(changeToUIObject));
 	scene.Add(std::move(scoreUIObject));
+
+	
+
 	for (auto& tile : tiles)
 	{
 		scene.Add(std::move(tile));
 	}
 	scene.Add(std::move(pMapObject));
 
+	scene.Add(std::move(leftDiscObject));
+	scene.Add(std::move(rightDiscObject));
+
 	scene.Add(std::move(bubbleObject));
 	scene.Add(std::move(playerObject));
 	scene.Add(std::move(coilyObject));
 
 
-#pragma endregion
+
 }
 
 void qbert::QbertScenes::LoadStartMenu()

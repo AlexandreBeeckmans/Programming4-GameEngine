@@ -48,6 +48,22 @@ namespace qbert
 	public:
 		virtual void Enter(QbertMoveComponent& qbert) override;
 	};
+
+	class TeleportingState final : public PlayerState
+	{
+	public:
+		virtual PlayerState* HandleTransitions(const QbertMoveComponent& qbert) override;
+		
+	};
+
+	class FallingState final : public PlayerState
+	{
+	public:
+		virtual PlayerState* HandleTransitions(const QbertMoveComponent& qbert) override;
+		virtual void Enter(QbertMoveComponent& qbert) override;
+		virtual void Update(QbertMoveComponent& qbert) override;
+
+	};
 }
 
 

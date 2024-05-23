@@ -117,3 +117,9 @@ void dae::ImageComponent::SetColumn(int col)
 	m_Col = col;
 	UpdateSource();
 }
+
+void dae::ImageComponent::SetRow(const int row)
+{
+	m_Row = row;
+	UpdateSource();
+}

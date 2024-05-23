@@ -9,6 +9,7 @@
 
 void dae::GameObject::Update()
 {
+	if (!m_IsActive) return;
 	for (auto& pComp : m_pComponents)
 	{
 		pComp->Update();
@@ -83,7 +84,7 @@ dae::GameObject* dae::GameObject::GetParent() const
 	return m_pParent;
 }
 
-bool dae::GameObject::IsChild(GameObject* pParent) const
+bool dae::GameObject::IsChild(const GameObject* pParent) const
 {
 	if (pParent == nullptr) return false;
 	return pParent->GetParent() == this;
@@ -120,6 +121,14 @@ void dae::GameObject::DetachFromParent()
 	SetParent(nullptr);
 }
 
+void dae::GameObject::DetachAllChildren()
+{
+	for(auto child : m_pChildren)
+	{
+		child->DetachFromParent();
+	}
+	m_pChildren.clear();
+}
 
 
 void dae::GameObject::AddChild(GameObject* pChild)
@@ -163,6 +172,16 @@ void dae::GameObject::SetVisible(const bool isVisible)
 bool dae::GameObject::IsVisible() const
 {
 	return m_IsVisible;
+}
+
+void dae::GameObject::SetActive(const bool isActive)
+{
+	m_IsActive = isActive;
+}
+
+bool dae::GameObject::IsActive() const
+{
+	return m_IsActive;
 }
 
 void dae::GameObject::SetLocalPosition(const glm::vec3& pos)

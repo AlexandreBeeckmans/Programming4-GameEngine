@@ -116,6 +116,12 @@ void qbert::CoilyMoveComponent::SetMovementDirection()
 	m_CurrentIndex = m_pMap->GetTopRightIndex(m_CurrentIndex);
 	GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(3);
 	m_Direction = { 0.5f, -0.75f };
+
+	if(m_CurrentIndex < 0)
+	{
+		GetOwner()->SetActive(false);
+		GetOwner()->SetVisible(false);
+	}
 }
 
 void qbert::CoilyMoveComponent::SetWaitingSprite() const

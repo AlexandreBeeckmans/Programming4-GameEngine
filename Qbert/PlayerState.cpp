@@ -39,6 +39,7 @@ qbert::PlayerState* qbert::JumpingState::HandleTransitions(const QbertMoveCompon
 
 	if (qbert.GetCurrentIndex() >= 0) return new WaitingState{};
 
+	if (qbert.IsOnTeleporter()) return new TeleportingState{};
 	return new DieState{};
 }
 
@@ -88,4 +89,29 @@ void qbert::DieState::Exit(QbertMoveComponent& qbert)
 void qbert::WinState::Enter(QbertMoveComponent& qbert)
 {
 	qbert.PlayWinSound();
+	qbert.AnimateTiles();
+}
+
+qbert::PlayerState* qbert::TeleportingState::HandleTransitions(const QbertMoveComponent& qbert)
+{
+	if (qbert.GetParent() != nullptr) return nullptr;
+
+	return new FallingState{};
+}
+
+qbert::PlayerState* qbert::FallingState::HandleTransitions(const QbertMoveComponent& qbert)
+{
+	if (!qbert.HasReachedFallPos()) return nullptr;
+	return new WaitingState{};
+}
+
+void qbert::FallingState::Enter(QbertMoveComponent& qbert)
+{
+	qbert.SetCurrentIndexToTop();
+
+}
+
+void qbert::FallingState::Update(QbertMoveComponent& qbert)
+{
+	qbert.UpdateFall();
 }

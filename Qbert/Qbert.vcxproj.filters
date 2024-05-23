@@ -28,6 +28,12 @@
     <Filter Include="Coily\FSM">
       <UniqueIdentifier>{c66b907d-e7dd-4713-a353-b460cb103f47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Disc">
+      <UniqueIdentifier>{5be25986-26d3-471f-a0eb-67e374d420af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Disc\FSM">
+      <UniqueIdentifier>{4614570f-3c22-4237-8f0b-8de33d821d04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -101,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="HealthUIComponent.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiscComponent.cpp">
+      <Filter>Disc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="HealthUIComponent.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiscComponent.h">
+      <Filter>Disc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

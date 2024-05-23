@@ -1,5 +1,6 @@
 #include "TileComponent.h"
 
+#include "AnimatorComponent.h"
 #include "GameObject.h"
 #include "ImageComponent.h"
 
@@ -35,5 +36,15 @@ glm::vec2 qbert::TileComponent::GetStartPoint() const
 int qbert::TileComponent::GetWidth() const
 {
 	return static_cast<int>(static_cast<float>(GetOwner()->GetComponent<dae::ImageComponent>()->GetShape().w) / dae::ImageComponent::GetSpriteScale());
+}
+
+int qbert::TileComponent::GetHeight() const
+{
+	return static_cast<int>(static_cast<float>(GetOwner()->GetComponent<dae::ImageComponent>()->GetShape().h) / dae::ImageComponent::GetSpriteScale());
+}
+
+void qbert::TileComponent::SetAnimated(const bool isAnimated)
+{
+	GetOwner()->GetComponent<dae::AnimatorComponent>()->SetActive(isAnimated);
 }
 

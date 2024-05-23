@@ -20,6 +20,9 @@ namespace qbert
 
 		glm::vec2 GetStartPoint() const;
 		int GetWidth() const;
+		int GetHeight() const;
+
+		void SetAnimated(const bool isAnimated);
 
 	private:
 		int m_CurrentState{ 0 };

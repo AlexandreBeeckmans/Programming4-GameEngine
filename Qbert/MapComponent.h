@@ -7,6 +7,7 @@
 
 namespace qbert
 {
+	class DiscComponent;
 	class MapComponent final : public dae::BaseComponent
 	{
 	public:
@@ -21,6 +22,11 @@ namespace qbert
 		void AddTile(TileComponent* pTileComponent);
 		void SetNextTile(QbertDirection direction);
 		void ActivateCurrentTile() const;
+
+		void AddDisc(DiscComponent* pDiscComponent);
+
+		int GetNbRows() const { return m_Rows; }
+
 
 		TileComponent* GetCurrentTile() const;
 		TileComponent* GetTileByIndex(const int index) const;
@@ -39,9 +45,18 @@ namespace qbert
 		int GetBottomLeftIndex(const int currentIndex) const;
 		int GetBottomRightIndex(const int currentIndex) const;
 
+		int GetTileHeight() const;
+		int GetTileWidth() const;
+
+		bool IsOnATeleporter(const QbertMoveComponent* qbert) const;
+
+		void SetAllTileAnimated(const bool isAnimated);
+
 
 	private:
 		std::vector<TileComponent*> m_pTiles{};
+		std::vector<DiscComponent*> m_pDiscs{};
+
 		int m_CurrentTileIndex{0};
 		const int m_Rows{ 0 };
 

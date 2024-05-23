@@ -222,6 +222,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Out
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_truetype.h" />
+    <ClInclude Include="AnimatorComponent.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BaseGuiComponent.h" />
     <ClInclude Include="Command.h" />
@@ -258,6 +259,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Out
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui_widgets.cpp" />
+    <ClCompile Include="AnimatorComponent.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BaseGuiComponent.cpp" />
     <ClCompile Include="Command.cpp" />

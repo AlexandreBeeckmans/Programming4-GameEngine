@@ -22,7 +22,7 @@
 
 SDL_Window* g_window{};
 const int dae::Minigin::m_WindowWidth = 600;
-const int dae::Minigin::m_WindowHeight = 400;
+const int dae::Minigin::m_WindowHeight = 600;
 
 
 void PrintSDLVersion()
@@ -55,6 +55,7 @@ void PrintSDLVersion()
 
 dae::Minigin::Minigin(const std::string &dataPath)
 {
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	PrintSDLVersion();
 	
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 

@@ -10,7 +10,7 @@ namespace qbert
 	public:
 		static void Init();
 
-		static void LoadQbertLevel();
+		static void LoadQbertLevel(const int level, const int round);
 		static void LoadStartMenu();
 		static void LoadLevelLoading();
 

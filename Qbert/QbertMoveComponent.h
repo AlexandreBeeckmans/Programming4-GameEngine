@@ -37,6 +37,8 @@ namespace qbert
 		//Setters
 		void SetDirection(const glm::vec2& direction);
 		void SetBubbleImage(dae::ImageComponent* pImageComponent);
+		void SetCurrentIndexToTop();
+
 
 		//Getters
 		int GetCurrentIndex() const { return m_CurrentIndex; }
@@ -64,7 +66,13 @@ namespace qbert
 
 		//Win State
 		static void PlayWinSound();
+		void AnimateTiles();
 
+		bool IsOnTeleporter() const;
+
+		//Faling State
+		void UpdateFall();
+		bool HasReachedFallPos() const;
 
 
 

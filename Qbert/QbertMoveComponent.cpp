@@ -69,6 +69,11 @@ void qbert::QbertMoveComponent::SetBubbleImage(dae::ImageComponent* pImageCompon
 	m_pBubbleImage = pImageComponent;
 }
 
+void qbert::QbertMoveComponent::SetCurrentIndexToTop()
+{
+	m_pMap->SetCurrentIndexToLast();
+}
+
 void qbert::QbertMoveComponent::Kill()
 {
 	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
@@ -89,6 +94,28 @@ void qbert::QbertMoveComponent::Respawn()
 void qbert::QbertMoveComponent::PlayWinSound()
 {
 	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::WIN), 100.0f);
+}
+
+void qbert::QbertMoveComponent::AnimateTiles()
+{
+	m_pMap->SetAllTileAnimated(true);
+}
+
+bool qbert::QbertMoveComponent::IsOnTeleporter() const
+{
+	return m_pMap->IsOnATeleporter(this);
+}
+
+void qbert::QbertMoveComponent::UpdateFall()
+{
+	const glm::vec2 direction{ glm::normalize(m_pMap->GetCurrentTile()->GetStartPoint() - glm::vec2{GetWorldPosition().x, GetWorldPosition().y}) };
+	GetOwner()->Translate(direction * m_Speed * dae::EngineTime::GetInstance().GetDeltaTime());
+
+}
+
+bool qbert::QbertMoveComponent::HasReachedFallPos() const
+{
+	return glm::length(m_pMap->GetCurrentTile()->GetStartPoint() - glm::vec2{ GetWorldPosition().x, GetWorldPosition().y }) <= 1.0f;
 }
 
 

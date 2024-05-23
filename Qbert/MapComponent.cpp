@@ -1,5 +1,8 @@
 #include "MapComponent.h"
 
+#include "DiscComponent.h"
+#include "GameObject.h"
+
 qbert::MapComponent::MapComponent(dae::GameObject* pOwner, const int rows) :
 BaseComponent(pOwner),
 m_Rows(rows)
@@ -43,6 +46,13 @@ void qbert::MapComponent::ActivateCurrentTile() const
 {
 	m_pTiles[m_CurrentTileIndex]->UpdateTile();
 }
+
+void qbert::MapComponent::AddDisc(DiscComponent* pDiscComponent)
+{
+	m_pDiscs.emplace_back(pDiscComponent);
+	pDiscComponent->SetTarget(m_pTiles[m_pTiles.size() - 1]->GetStartPoint());
+}
+
 qbert::TileComponent* qbert::MapComponent::GetCurrentTile() const
 {
 	return GetTileByIndex(m_CurrentTileIndex);
@@ -208,6 +218,43 @@ int qbert::MapComponent::GetBottomRightIndex(const int currentIndex) const
 	}
 
 	return -1;
+}
+
+int qbert::MapComponent::GetTileHeight() const
+{
+	return m_pTiles[0]->GetHeight();
+}
+
+int qbert::MapComponent::GetTileWidth() const
+{
+	return m_pTiles[0]->GetWidth();
+}
+
+bool qbert::MapComponent::IsOnATeleporter(const QbertMoveComponent* qbert) const
+{
+	for (DiscComponent* pDisc : m_pDiscs)
+	{
+		const float maxDist = 30.0f;
+
+		const float distance = glm::length(pDisc->GetWorldPosition() - qbert->GetWorldPosition());
+
+		if(distance <= maxDist)
+		{
+			pDisc->SetActive(true, qbert);
+
+			return true;
+		}
+		
+	}
+	return false;
+}
+
+void qbert::MapComponent::SetAllTileAnimated(const bool isAnimated)
+{
+	for (TileComponent* tile : m_pTiles)
+	{
+		tile->SetAnimated(isAnimated);
+	}
 }
 
 

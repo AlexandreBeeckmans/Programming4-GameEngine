@@ -32,7 +32,10 @@ namespace dae
 
 		
 		void UpdateRow();
+
 		void SetColumn(int col);
+		void SetRow(const int row);
+
 		int GetColumn() const { return m_Col; }
 
 		void UpdateShape();

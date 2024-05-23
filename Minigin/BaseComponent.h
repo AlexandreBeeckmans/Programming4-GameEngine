@@ -1,4 +1,6 @@
 #pragma once
+#include <glm/vec3.hpp>
+//#include "GameObject.h"
 
 
 namespace dae
@@ -25,6 +27,13 @@ namespace dae
 
 		void Destroy() { m_IsDead = true; }
 		bool GetIsDead() const { return m_IsDead; }
+
+		glm::vec3 GetWorldPosition() const;
+
+		const GameObject* GetParent() const;
+		void SetParent(GameObject* newParent) const;
+		void DetachFromParent() const;
+		void DetachAllChildren() const;
 
 	protected:
 		GameObject* GetOwner() const;
