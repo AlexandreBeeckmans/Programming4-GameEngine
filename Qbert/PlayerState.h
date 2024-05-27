@@ -46,7 +46,12 @@ namespace qbert
 	class WinState final : public PlayerState
 	{
 	public:
+		virtual PlayerState* HandleTransitions(const QbertMoveComponent& qbert) override;
 		virtual void Enter(QbertMoveComponent& qbert) override;
+		virtual void Update(QbertMoveComponent& qbert) override;
+	private:
+		float m_CurrentWinTime = 0.0f;
+		float m_MaxWinTime = 5.0f;
 	};
 
 	class TeleportingState final : public PlayerState

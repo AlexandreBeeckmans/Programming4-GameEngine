@@ -86,10 +86,23 @@ void qbert::DieState::Exit(QbertMoveComponent& qbert)
 	}
 }
 
+qbert::PlayerState* qbert::WinState::HandleTransitions(const QbertMoveComponent&)
+{
+	if (m_CurrentWinTime < m_MaxWinTime) return nullptr;
+
+	QbertScenes::goNext = true;
+	return new WaitingState{};
+}
+
 void qbert::WinState::Enter(QbertMoveComponent& qbert)
 {
 	qbert.PlayWinSound();
 	qbert.AnimateTiles();
+}
+
+void qbert::WinState::Update(QbertMoveComponent&)
+{
+	m_CurrentWinTime += dae::EngineTime::GetInstance().GetDeltaTime();
 }
 
 qbert::PlayerState* qbert::TeleportingState::HandleTransitions(const QbertMoveComponent& qbert)

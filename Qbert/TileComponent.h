@@ -8,7 +8,7 @@ namespace qbert
 	class TileComponent final : public dae::BaseComponent
 	{
 	public:
-		TileComponent(dae::GameObject* m_pParent);
+		TileComponent(dae::GameObject* m_pParent, const int maxStates = 1, const bool isReversible = false);
 		virtual ~TileComponent() override = default;
 		TileComponent(const TileComponent& other) = default;
 		TileComponent(TileComponent&& other) = default;
@@ -27,6 +27,7 @@ namespace qbert
 	private:
 		int m_CurrentState{ 0 };
 		const int m_MaxState{ 2 };
+		const bool m_IsReversible{ false };
 	};
 }
 

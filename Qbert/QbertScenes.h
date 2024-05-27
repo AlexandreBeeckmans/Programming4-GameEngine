@@ -12,7 +12,7 @@ namespace qbert
 
 		static void LoadQbertLevel(const int level, const int round);
 		static void LoadStartMenu();
-		static void LoadLevelLoading();
+		static void LoadLevelLoading(const int level);
 
 		virtual void Update() override;
 		static SceneStates* m_pSceneState;

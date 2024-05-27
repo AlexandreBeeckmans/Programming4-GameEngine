@@ -70,7 +70,7 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 		for (int i{ 0 }; i < nbOfTiles; ++i)
 		{
 			auto tileObject = std::make_unique<dae::GameObject>();
-			tileObject->AddComponent<qbert::TileComponent>();
+			tileObject->AddComponent<qbert::TileComponent>(level%2 + 1, level >= 2);
 			tileObject->AddComponent<dae::ImageComponent>("qbert/Qbert Cubes.png", true, 0.0f, 0.0f, 3, 6, 0, round);
 			tileObject->AddComponent<dae::AnimatorComponent>(false, 0.1f, 1,3,round,0);
 
@@ -193,7 +193,7 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 	pArrowComponents.push_back({ changeToUIObject->GetComponent<dae::ImageComponent>(2) });
 
 	//middle tile
-	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/Color_Icons_Spritesheet.png", true,  55.0f, 20.0f, 2, 6, 0, round);
+	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/Color_Icons_Spritesheet.png", true,  55.0f, 20.0f, 2, 6, level%2, round);
 
 	//2 arrows right
 	changeToUIObject->AddComponent<dae::ImageComponent>("qbert/ChangeTo_Arrow_Left.png", true, 85.0f, 20.0f);
@@ -313,12 +313,12 @@ void qbert::QbertScenes::LoadStartMenu()
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_SPACE, std::make_unique<qbert::GoNextSceneCommand>(goNextCommand), dae::InputType::DOWN);
 }
 
-void qbert::QbertScenes::LoadLevelLoading()
+void qbert::QbertScenes::LoadLevelLoading(const int level)
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("StartMenu");
 
 	auto loadObject = std::make_unique<dae::GameObject>();
-	loadObject->AddComponent<dae::ImageComponent>("qbert/Level_ 01_Title.png");
+	loadObject->AddComponent<dae::ImageComponent>("qbert/Level_" + std::to_string(level + 1) + "_Title.png");
 
 	loadObject->GetComponent<dae::ImageComponent>()->SetWidth(dae::Minigin::GetWindowWidth());
 	loadObject->GetComponent<dae::ImageComponent>()->SetHeight(dae::Minigin::GetWindowHeight());

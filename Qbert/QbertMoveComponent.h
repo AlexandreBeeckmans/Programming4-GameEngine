@@ -81,7 +81,7 @@ namespace qbert
 		void SetMovementDirection();
 		void ShowBubble(const bool showBubble) const;
 
-		const float m_Speed{ 55.0f };
+		const float m_Speed{ 125.0f };
 
 		QbertDirection m_directionState{QbertDirection::TOPRIGHT};
 		glm::vec2 m_Direction{0.5f,-0.75f};

@@ -193,7 +193,7 @@ void qbert::QbertMoveComponent::ActivateCurrentTile() const
 
 void qbert::QbertMoveComponent::Bounce()
 {
-	constexpr float jumpSpeed{ 50.0f };
+	const float jumpSpeed{ m_Speed / 1.5f };
 	m_AdditionalY = jumpSpeed * dae::EngineTime::GetInstance().GetDeltaTime();
 
 	if (m_AccumulatedDistanceX > m_MaxDistanceX / 2.0f)

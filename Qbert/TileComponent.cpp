@@ -4,13 +4,15 @@
 #include "GameObject.h"
 #include "ImageComponent.h"
 
-qbert::TileComponent::TileComponent(dae::GameObject* m_pParent) :
-	BaseComponent(m_pParent)
+qbert::TileComponent::TileComponent(dae::GameObject* m_pParent, const int maxStates, const bool isReversible) :
+	BaseComponent(m_pParent),
+	m_MaxState(maxStates),
+	m_IsReversible(isReversible)
 {}
 
 bool qbert::TileComponent::IsCompleted() const
 {
-	return m_CurrentState >= (m_MaxState - 1);
+	return m_CurrentState >= (m_MaxState);
 }
 
 void qbert::TileComponent::UpdateTile()
@@ -19,6 +21,14 @@ void qbert::TileComponent::UpdateTile()
 	{
 		++m_CurrentState;
 		GetOwner()->GetComponent<dae::ImageComponent>()->UpdateRow();
+	}
+	else
+	{
+		if(m_IsReversible)
+		{
+			m_CurrentState = 0;
+			GetOwner()->GetComponent<dae::ImageComponent>()->SetRow(0);
+		}
 	}
 }
 
