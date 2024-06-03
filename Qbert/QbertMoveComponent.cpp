@@ -221,6 +221,7 @@ void qbert::QbertMoveComponent::SetMovementDirection()
 		return;
 	}
 
+	//if out of the map
 	switch(m_directionState)
 	{
 	case QbertDirection::TOPRIGHT:

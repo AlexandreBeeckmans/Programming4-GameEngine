@@ -15,6 +15,8 @@ m_pMap(pMap)
 
 		m_State = new CoilyPreparingState{};
 		m_State->Enter(*this);
+
+
 }
 
 void qbert::CoilyMoveComponent::Update()
@@ -35,11 +37,14 @@ void qbert::CoilyMoveComponent::Update()
 void qbert::CoilyMoveComponent::Init()
 {
 	GetOwner()->GetComponent<dae::ImageComponent>()->SetVisible(false);
+	m_Target = m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint() - glm::vec2{ 0, GetOwner()->GetComponent<dae::ImageComponent>()->GetShape().h / 2 };
+	m_Direction = glm::normalize(m_Target - glm::vec2{ GetWorldPosition() });
 }
 
 bool qbert::CoilyMoveComponent::HasReachedFinalPosition() const
 {
 	return m_AccumulatedDistanceX >= m_MaxDistanceX;
+	//return glm::distance(glm::vec2(GetWorldPosition().x, GetWorldPosition().y), m_Target) <= 1.0f;
 }
 
 bool qbert::CoilyMoveComponent::IsArrived() const
@@ -49,7 +54,7 @@ bool qbert::CoilyMoveComponent::IsArrived() const
 		GetOwner()->GetWorldPosition().x,
 		GetOwner()->GetWorldPosition().y
 	};
-	return glm::length(m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint() - currentPos) < 0.1f;
+	return glm::length(m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint() - currentPos) < 30.0f;
 }
 
 void qbert::CoilyMoveComponent::ResetPositionValues()
@@ -57,8 +62,9 @@ void qbert::CoilyMoveComponent::ResetPositionValues()
 	m_AccumulatedDistanceX = 0;
 	m_AdditionalY = 0;
 
-	if(m_pMap->GetTileByIndex(m_CurrentIndex))
-		GetOwner()->SetLocalPosition(m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint());
+	if (m_pMap->GetTileByIndex(m_CurrentIndex))
+		GetOwner()->SetLocalPosition(m_Target);
+		//GetOwner()->SetLocalPosition(m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint());
 }
 
 void qbert::CoilyMoveComponent::Bounce()
@@ -94,34 +100,45 @@ void qbert::CoilyMoveComponent::SetMovementDirection()
 		if(playerColumn < coilyColumn)
 		{
 			m_CurrentIndex = m_pMap->GetBottomLeftIndex(m_CurrentIndex);
-			m_Direction = { -0.5f, 0.75f };
+			//m_Direction = { -0.5f, 0.75f };
 			GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(9);
-			return;
+			//return;
+		}
+		else
+		{
+			m_CurrentIndex = m_pMap->GetBottomRightIndex(m_CurrentIndex);
+			GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(7);
+			//m_Direction = { 0.5f, 0.75f };
+			//return;
 		}
 
-		m_CurrentIndex = m_pMap->GetBottomRightIndex(m_CurrentIndex);
-		GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(7);
-		m_Direction = { 0.5f, 0.75f };
-		return;
+		
 	}
-
-	if(playerColumn < coilyColumn)
+	else if(playerColumn < coilyColumn)
 	{
 		m_CurrentIndex = m_pMap->GetTopLeftIndex(m_CurrentIndex);
 		GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(5);
-		m_Direction = { -0.5f, -0.75f };
-		return;
+		//m_Direction = { -0.5f, -0.75f };
+		//return;
+	}
+	else
+	{
+		m_CurrentIndex = m_pMap->GetTopRightIndex(m_CurrentIndex);
+		GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(3);
+		//m_Direction = { 0.5f, -0.75f };
 	}
 
-	m_CurrentIndex = m_pMap->GetTopRightIndex(m_CurrentIndex);
-	GetOwner()->GetComponent<dae::ImageComponent>()->SetColumn(3);
-	m_Direction = { 0.5f, -0.75f };
+
 
 	if(m_CurrentIndex < 0)
 	{
-		GetOwner()->SetActive(false);
-		GetOwner()->SetVisible(false);
+		/*GetOwner()->SetActive(false);
+		GetOwner()->SetVisible(false);*/
+		return;
 	}
+
+	m_Target = m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint() - glm::vec2{0, GetOwner()->GetComponent<dae::ImageComponent>()->GetShape().h/2};
+	m_Direction = glm::normalize(m_Target - glm::vec2{ GetOwner()->GetWorldPosition() });
 }
 
 void qbert::CoilyMoveComponent::SetWaitingSprite() const
@@ -153,7 +170,11 @@ void qbert::CoilyMoveComponent::UpdateMovement()
 {
 	Bounce();
 	constexpr float speed{ 55.0f };
+	//const glm::vec2 direction = glm::normalize(m_Target - glm::vec2(GetWorldPosition().x, GetWorldPosition().y));
 
+
+	/*GetOwner()->Translate(speed * dae::EngineTime::GetInstance().GetDeltaTime() * m_Direction);
+	m_AccumulatedDistanceX += speed * dae::EngineTime::GetInstance().GetDeltaTime() * std::abs(m_Direction.x);*/
 	GetOwner()->Translate(speed * dae::EngineTime::GetInstance().GetDeltaTime() * m_Direction);
 	m_AccumulatedDistanceX += speed * dae::EngineTime::GetInstance().GetDeltaTime() * std::abs(m_Direction.x);
 }
@@ -169,12 +190,12 @@ void qbert::CoilyMoveComponent::CheckForPlayer() const
 void qbert::CoilyMoveComponent::UpdateArrivingMovement() const
 {
 	constexpr float speed = 55.0f;
-	const glm::vec2 currentPos
+	/*const glm::vec2 currentPos
 	{
 		GetOwner()->GetWorldPosition().x,
 		GetOwner()->GetWorldPosition().y
-	};
+	};*/
 
-	const glm::vec2 direction = glm::normalize(m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint() - currentPos);
-	GetOwner()->Translate(speed * dae::EngineTime::GetInstance().GetDeltaTime() * direction);
+	//const glm::vec2 direction = glm::normalize(m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint() - currentPos);
+	GetOwner()->Translate(speed * dae::EngineTime::GetInstance().GetDeltaTime() * m_Direction);
 }

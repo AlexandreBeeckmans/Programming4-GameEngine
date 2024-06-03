@@ -23,7 +23,7 @@ namespace qbert
 
 	private:
 		float m_CurrentWaitingTime = 0.0f;
-		const float m_MaxWaitingTime{ 2.0f };
+		const float m_MaxWaitingTime{ 1.0f };
 		
 	};
 
@@ -56,7 +56,7 @@ namespace qbert
 
 	private:
 		float m_CurrentPreparingTime = 0.0f;
-		const float m_MaxAnimTime{ 10.0f };
+		const float m_MaxAnimTime{ 1.0f };
 	};
 }
 

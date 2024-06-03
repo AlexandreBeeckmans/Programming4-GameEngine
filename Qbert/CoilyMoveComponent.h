@@ -46,6 +46,7 @@ namespace qbert
 		void Bounce();
 
 		glm::vec2 m_Direction{ 0.5f,-0.75f };
+		glm::vec2 m_Target{};
 
 		float m_MaxDistanceX{ 0.0f };
 		float m_AccumulatedDistanceX{ 0.0f };

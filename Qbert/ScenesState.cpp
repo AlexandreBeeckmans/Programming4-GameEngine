@@ -18,7 +18,7 @@ void qbert::SceneStates::Exit()
 void qbert::SceneStates::ResetLevelAndRound()
 {
 	m_LevelNumber = 0;
-	m_RoundNumber = 0;
+	m_RoundNumber = 5;
 }
 
 void qbert::SceneStates::IncrementRound()
@@ -29,7 +29,7 @@ void qbert::SceneStates::IncrementRound()
 	{
 		++m_LevelNumber;
 		m_RoundNumber = 0;
-		m_LevelFinished = true;
+		SetLevelFinished(true);
 	}
 
 	if (m_LevelNumber >= 3) QbertScenes::gameOver = true;
@@ -51,9 +51,17 @@ void qbert::StartMenuSceneState::Enter()
 qbert::SceneStates* qbert::LevelSceneState::HandleTransitions()
 {
 	if (QbertScenes::gameOver) return new StartMenuSceneState{};
-	if (IsLevelFinished()) return new LevelLoadingState{};
 
-	if (QbertScenes::goNext) return new LevelSceneState{};
+	if (QbertScenes::goNext)
+	{
+		IncrementRound();
+
+		if (!IsLevelFinished())
+			return new LevelSceneState{};
+
+		return new LevelLoadingState{};
+	}
+
 	return nullptr;
 }
 
@@ -63,12 +71,14 @@ void qbert::LevelSceneState::Enter()
 {
 	QbertScenes::goNext = false;
 	QbertScenes::LoadQbertLevel(GetLevelNumber(),GetRoundNumber());
+
+	dae::SceneManager::GetInstance().Init();
 }
 
 void qbert::LevelSceneState::Exit()
 {
 	SceneStates::Exit();
-	IncrementRound();
+	//IncrementRound();
 }
 
 qbert::SceneStates* qbert::LevelLoadingState::HandleTransitions()
