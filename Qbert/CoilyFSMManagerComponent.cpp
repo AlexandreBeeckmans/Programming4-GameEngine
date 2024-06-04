@@ -8,8 +8,6 @@
 qbert::CoilyFSMManagerComponent::CoilyFSMManagerComponent(dae::GameObject* owner) :
 BaseComponent(owner)
 {
-	
-
 	m_State = std::make_unique<CoilyPreparingState>();
 	m_State->Enter(*GetOwner());
 }

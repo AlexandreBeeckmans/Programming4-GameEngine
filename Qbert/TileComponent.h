@@ -16,7 +16,9 @@ namespace qbert
 		TileComponent& operator=(TileComponent&& other) = default;
 
 		bool IsCompleted() const;
+
 		void UpdateTile();
+		void Deactivate();
 
 		glm::vec2 GetStartPoint() const;
 		int GetWidth() const;

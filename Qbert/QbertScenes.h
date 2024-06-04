@@ -30,6 +30,8 @@ namespace qbert
 		static std::unique_ptr<dae::GameObject> CreatePlayer(MapComponent* pMapComponent);
 		static std::unique_ptr<dae::GameObject> CreateBubble(dae::GameObject* pPlayerObject);
 		static std::unique_ptr<dae::GameObject> CreateCoily(dae::GameObject* pPlayerObject, MapComponent* pMapComponent);
+		static std::unique_ptr<dae::GameObject> CreateUgg(bool isLeft);
+		static std::unique_ptr<dae::GameObject> CreateSlick(const bool isSlick, dae::GameObject* pPlayerObject, MapComponent* pMapComponent);
 	};
 }
 

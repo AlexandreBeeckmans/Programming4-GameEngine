@@ -32,6 +32,15 @@ void qbert::TileComponent::UpdateTile()
 	}
 }
 
+void qbert::TileComponent::Deactivate()
+{
+	if (m_CurrentState > 0)
+	{
+		--m_CurrentState;
+		GetOwner()->GetComponent<dae::ImageComponent>()->SetRow(m_CurrentState);
+	}
+}
+
 glm::vec2 qbert::TileComponent::GetStartPoint() const
 {
 	dae::ImageComponent* pImageComp = GetOwner()->GetComponent<dae::ImageComponent>();

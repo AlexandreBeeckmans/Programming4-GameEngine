@@ -1,14 +1,8 @@
 #pragma once
 #include <memory>
-#include <glm/vec2.hpp>
 
 #include "BaseComponent.h"
 #include "CoilyState.h"
-
-namespace qbert
-{
-	
-}
 
 namespace qbert
 {

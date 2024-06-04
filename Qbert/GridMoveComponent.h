@@ -41,7 +41,7 @@ namespace qbert
 		bool HasReachedFinalPosition() const;
 
 		int GetCurrentIndex() const { return m_CurrentIndex; }
-		const TileComponent* GetCurrentTile() const;
+		TileComponent* GetCurrentTile() const;
 
 		GridDirection GetGridDirection() const;
 		void SetGridDirection(const GridDirection direction);

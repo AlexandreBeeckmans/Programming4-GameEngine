@@ -1,15 +1,6 @@
 #pragma once
 #include "GameObject.h"
 
-namespace qbert
-{
-	class CoilyAnimatorComponent;
-}
-
-namespace qbert
-{
-	class KillerComponent;
-}
 
 namespace qbert
 {
@@ -17,6 +8,8 @@ namespace qbert
 	class GridMoveComponent;
 	class FallComponent;
 	class FollowPlayerComponent;
+	class CoilyAnimatorComponent;
+	class KillerComponent;
 
 	class CoilyState
 	{

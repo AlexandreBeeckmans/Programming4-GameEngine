@@ -13,11 +13,6 @@ m_pMap(pMap)
 	m_MaxDistanceX = static_cast<float>(m_pMap->GetTileByIndex(0)->GetWidth()) / 2.0f;
 }
 
-//void qbert::GridMoveComponent::Init()
-//{
-//	GetOwner()->SetLocalPosition(GetCurrentTile()->GetStartPoint());
-//}
-
 void qbert::GridMoveComponent::UpdateMovement()
 {
 	Bounce();
@@ -80,7 +75,7 @@ bool qbert::GridMoveComponent::HasReachedFinalPosition() const
 	return m_AccumulatedDistanceX >= m_MaxDistanceX;
 }
 
-const qbert::TileComponent* qbert::GridMoveComponent::GetCurrentTile() const
+qbert::TileComponent* qbert::GridMoveComponent::GetCurrentTile() const
 {
 	return m_pMap->GetTileByIndex(m_CurrentIndex);
 }
