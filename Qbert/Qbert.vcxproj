@@ -152,22 +152,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlinkingComponent.cpp" />
+    <ClCompile Include="BubbleManagerComponent.cpp" />
     <ClCompile Include="ChangeToUIComponent.cpp" />
     <ClCompile Include="CoilyMoveComponent.cpp" />
     <ClCompile Include="CoilyState.cpp" />
     <ClCompile Include="DiscComponent.cpp" />
+    <ClCompile Include="FallComponent.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GridMoveComponent.cpp" />
     <ClCompile Include="GuiEx1Component.cpp" />
     <ClCompile Include="GuiEx2Component.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HealthUIComponent.cpp" />
+    <ClCompile Include="InputDirectionComponent.cpp" />
+    <ClCompile Include="KillableComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapComponent.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="QbertCommand.cpp" />
-    <ClCompile Include="QbertMoveComponent.cpp" />
+    <ClCompile Include="QbertJumpAnimatorComponent.cpp" />
+    <ClCompile Include="QbertFSMManagerComponent.cpp" />
     <ClCompile Include="QbertScenes.cpp" />
     <ClCompile Include="RenderFPSComponent.cpp" />
     <ClCompile Include="RotatingComponent.cpp" />
@@ -175,15 +180,18 @@
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreUIComponent.cpp" />
     <ClCompile Include="TestCommand.cpp" />
+    <ClCompile Include="TileActivatorComponent.cpp" />
     <ClCompile Include="TileComponent.cpp" />
     <ClCompile Include="UIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlinkingComponent.h" />
+    <ClInclude Include="BubbleManagerComponent.h" />
     <ClInclude Include="ChangeToUIComponent.h" />
     <ClInclude Include="CoilyMoveComponent.h" />
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="DiscComponent.h" />
+    <ClInclude Include="FallComponent.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="GridMoveComponent.h" />
@@ -191,11 +199,14 @@
     <ClInclude Include="GuiEx2Component.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthUIComponent.h" />
+    <ClInclude Include="InputDirectionComponent.h" />
+    <ClInclude Include="KillableComponent.h" />
     <ClInclude Include="MapComponent.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="QbertCommand.h" />
-    <ClInclude Include="QbertMoveComponent.h" />
+    <ClInclude Include="QbertJumpAnimatorComponent.h" />
+    <ClInclude Include="QbertFSMManagerComponent.h" />
     <ClInclude Include="QbertScenes.h" />
     <ClInclude Include="RenderFPSComponent.h" />
     <ClInclude Include="RotatingComponent.h" />
@@ -204,6 +215,7 @@
     <ClInclude Include="ScoreUIComponent.h" />
     <ClInclude Include="SoundTypes.h" />
     <ClInclude Include="TestCommand.h" />
+    <ClInclude Include="TileActivatorComponent.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TrashTheCache.h" />
     <ClInclude Include="UIComponent.h" />

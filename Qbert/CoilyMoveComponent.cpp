@@ -7,14 +7,14 @@
 #include "CoilyState.h"
 #include "GridMoveComponent.h"
 
-#include "QbertMoveComponent.h"
+#include "KillableComponent.h"
 
 qbert::CoilyMoveComponent::CoilyMoveComponent(dae::GameObject* owner, dae::GameObject* pPlayerObject, MapComponent* pMap) :
 BaseComponent(owner),
 m_pMap(pMap)
 {
-		m_pPlayer = pPlayerObject->GetComponent<QbertMoveComponent>();
 		m_pPlayerMoveComponent = pPlayerObject->GetComponent<GridMoveComponent>();
+		m_pPlayerKillableComponent = pPlayerObject->GetComponent<KillableComponent>();
 
 		m_State = new CoilyPreparingState{};
 		m_State->Enter(*GetOwner());
@@ -48,7 +48,7 @@ void qbert::CoilyMoveComponent::CheckForPlayer() const
 {
 	if (m_pPlayerMoveComponent->GetCurrentIndex() == m_pMoveComponent->GetCurrentIndex())
 	{
-		m_pPlayer->EncountersEnemy();
+		m_pPlayerKillableComponent->EncountersEnemy();
 	}
 }
 

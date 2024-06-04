@@ -42,7 +42,7 @@
     <ClCompile Include="MapComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QbertMoveComponent.cpp">
+    <ClCompile Include="QbertFSMManagerComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QbertCommand.cpp">
@@ -114,12 +114,30 @@
     <ClCompile Include="GridMoveComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FallComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDirectionComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BubbleManagerComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KillableComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TileActivatorComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QbertJumpAnimatorComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QbertMoveComponent.h">
+    <ClInclude Include="QbertFSMManagerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QbertCommand.h">
@@ -198,6 +216,24 @@
       <Filter>Disc</Filter>
     </ClInclude>
     <ClInclude Include="GridMoveComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FallComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDirectionComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleManagerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KillableComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileActivatorComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertJumpAnimatorComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,19 +8,26 @@
 #include "BlinkingComponent.h"
 #include "ChangeToUIComponent.h"
 
-#include "QbertMoveComponent.h"
+#include "QbertFSMManagerComponent.h"
 #include "CoilyMoveComponent.h"
 
 
 #include "DiscComponent.h"
+#include "FallComponent.h"
+#include "BubbleManagerComponent.h"
+#include "KillableComponent.h"
+#include "GridMoveComponent.h"
+
 #include "GameObject.h"
 #include "HealthComponent.h"
 #include "HealthUIComponent.h"
 #include "imgui.h"
+#include "InputDirectionComponent.h"
 #include "InputManager.h"
 #include "MapComponent.h"
 #include "Minigin.h"
 #include "QbertCommand.h"
+#include "QbertJumpAnimatorComponent.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
@@ -31,6 +38,7 @@
 #include "ScoreUIComponent.h"
 #include "ServiceLocator.h"
 #include "SoundTypes.h"
+#include "TileActivatorComponent.h"
 
 qbert::SceneStates* qbert::QbertScenes::m_pSceneState = new qbert::StartMenuSceneState{};
 const float qbert::QbertScenes::m_LevelScale = 2.0f;
@@ -103,9 +111,15 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 
 	auto playerObject = std::make_unique<dae::GameObject>();
 	playerObject->AddComponent<dae::ImageComponent>("qbert/Qbert P1 Spritesheet.png", true, 0.0f, 0.0f, 1, 4);
-	playerObject->AddComponent<qbert::QbertMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>());
+	playerObject->AddComponent<qbert::QbertFSMManagerComponent>();
 	playerObject->AddComponent<qbert::GridMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>());
 	playerObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndexToTop();
+	playerObject->AddComponent<qbert::FallComponent>();
+	playerObject->AddComponent<qbert::InputDirectionComponent>();
+	playerObject->AddComponent<qbert::BubbleManagerComponent>();
+	playerObject->AddComponent<qbert::KillableComponent>();
+	playerObject->AddComponent<qbert::TileActivatorComponent>(pMapObject->GetComponent<qbert::MapComponent>());
+	playerObject->AddComponent<qbert::QbertJumpAnimatorComponent>();
 
 	playerObject->AddComponent<dae::ScoreComponent>();
 	playerObject->AddComponent<dae::HealthComponent>();
@@ -136,7 +150,7 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 	bubbleObject->SetParent(playerObject.get());
 	bubbleObject->SetLocalPosition(-15.0f, -35.0f);
 
-	playerObject->GetComponent<qbert::QbertMoveComponent>()->SetBubbleImage(bubbleObject->GetComponent<dae::ImageComponent>());
+	playerObject->GetComponent<qbert::BubbleManagerComponent>()->SetBubbleImage(bubbleObject->GetComponent<dae::ImageComponent>());
 
 
 	auto coilyObject = std::make_unique<dae::GameObject>();

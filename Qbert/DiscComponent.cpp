@@ -5,7 +5,6 @@
 
 #include "EngineTime.h"
 #include "MapComponent.h"
-#include "QbertMoveComponent.h"
 
 qbert::DiscComponent::DiscComponent(dae::GameObject* pGameObject, MapComponent* pMap, const bool isLeft) :
 BaseComponent(pGameObject),
@@ -34,7 +33,7 @@ void qbert::DiscComponent::Update()
 	}
 }
 
-void qbert::DiscComponent::SetActive(const bool isActive, const QbertMoveComponent* qbert)
+void qbert::DiscComponent::SetActive(const bool isActive, dae::GameObject* qbert)
 {
 	m_IsActivated = isActive;
 	if (qbert == nullptr) return;

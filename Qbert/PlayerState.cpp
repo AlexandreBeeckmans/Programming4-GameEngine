@@ -6,12 +6,26 @@
 
 #include "QbertMoveComponent.h"
 #include "GridMoveComponent.h"
+#include "FallComponent.h"
+#include "InputDirectionComponent.h"
+#include "KillableComponent.h"
+#include "TileActivatorComponent.h"
+#include "QbertJumpAnimatorComponent.h"
+
 #include "HealthComponent.h"
+#include "ServiceLocator.h"
+#include "SoundTypes.h"
+
 
 void qbert::PlayerState::Enter(dae::GameObject& qbertObject)
 {
 	m_pMoveComponent = qbertObject.GetComponent<GridMoveComponent>();
 	m_pQbertComponent = qbertObject.GetComponent<QbertMoveComponent>();
+	m_pFallComponent = qbertObject.GetComponent<FallComponent>();
+	m_pInputComponent = qbertObject.GetComponent<InputDirectionComponent>();
+	m_pKillableComponent = qbertObject.GetComponent<KillableComponent>();
+	m_pTileActivatorComponent = qbertObject.GetComponent<TileActivatorComponent>();
+	m_pJumpAnimator = qbertObject.GetComponent<QbertJumpAnimatorComponent>();
 
 	m_pHealthComponent = qbertObject.GetComponent<dae::HealthComponent>();
 }
@@ -20,18 +34,18 @@ qbert::PlayerState* qbert::WaitingState::HandleTransitions()
 {
 
 	//If an enemy is on the same index
-	if(GetQbertComponent()->IsEnemyEncounteredThisFrame())
+	if(GetKillableComponent()->IsEnemyEncounteredThisFrame())
 	{
 		return new DieState();
 	}
 
 	//If an input is pressed
-	if (GetQbertComponent()->IsInputPressedThisFrame())
+	if (GetInputComponent()->IsInputPressedThisFrame())
 	{
 		return new JumpingState{};
 	}
 
-	if(GetQbertComponent()->HasCompletedMap())
+	if(GetTileActivatorComponent()->HasCompletedMap())
 	{
 		return new WinState{};
 	}
@@ -45,7 +59,7 @@ void qbert::WaitingState::Enter(dae::GameObject& qbertObject)
 {
 	PlayerState::Enter(qbertObject);
 	GetMoveComponent()->ResetPositionValues();
-	GetQbertComponent()->ActivateCurrentTile();
+
 }
 
 qbert::PlayerState* qbert::JumpingState::HandleTransitions()
@@ -54,7 +68,7 @@ qbert::PlayerState* qbert::JumpingState::HandleTransitions()
 
 	if (GetMoveComponent()->GetCurrentIndex() >= 0) return new WaitingState{};
 
-	if (GetQbertComponent()->IsOnTeleporter()) return new TeleportingState{};
+	if (GetTileActivatorComponent()->IsOnTeleporter()) return new TeleportingState{};
 	return new DieState{};
 }
 
@@ -66,13 +80,18 @@ void qbert::JumpingState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
 	//Set sprite
-	GetQbertComponent()->SetJumpSprite();
+	GetJumpAnimator()->SetJumpSprite();
 
 	//Play jumpSound
-	GetQbertComponent()->PlayJumpSound();
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::JUMP), 100.0f);
 
 	//Set Movement direction
 	GetMoveComponent()->SetMovementDirection();
+}
+
+void qbert::JumpingState::Exit()
+{
+	GetTileActivatorComponent()->ActivateCurrentTile();
 }
 
 qbert::PlayerState* qbert::DieState::HandleTransitions()
@@ -90,13 +109,13 @@ void qbert::DieState::Update()
 void qbert::DieState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
-	GetQbertComponent()->Kill();
+	GetKillableComponent()->Kill();
 	m_CurrentDeadTime = 0;
 }
 
 void qbert::DieState::Exit()
 {
-	GetQbertComponent()->Respawn();
+	GetKillableComponent()->Respawn();
 	if (GetHealthComponent()->IsDead())
 	{
 		QbertScenes::gameOver = true;
@@ -114,8 +133,8 @@ qbert::PlayerState* qbert::WinState::HandleTransitions()
 void qbert::WinState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
-	GetQbertComponent()->PlayWinSound();
-	GetQbertComponent()->AnimateTiles();
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::WIN), 100.0f);
+	GetTileActivatorComponent()->AnimateTiles();
 }
 
 void qbert::WinState::Update()
@@ -132,7 +151,7 @@ qbert::PlayerState* qbert::TeleportingState::HandleTransitions()
 
 qbert::PlayerState* qbert::FallingState::HandleTransitions()
 {
-	if (!GetQbertComponent()->HasReachedFallPos()) return nullptr;
+	if (!GetFallComponent()->HasReachedFallPos()) return nullptr;
 	return new WaitingState{};
 }
 
@@ -140,10 +159,11 @@ void qbert::FallingState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
 	GetMoveComponent()->SetCurrentIndexToTop();
+	GetFallComponent()->SetFallDirection();
 
 }
 
 void qbert::FallingState::Update()
 {
-	GetQbertComponent()->UpdateFall();
+	GetFallComponent()->UpdateFall();
 }

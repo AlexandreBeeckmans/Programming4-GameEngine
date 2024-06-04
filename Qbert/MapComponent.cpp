@@ -1,6 +1,5 @@
 #include "MapComponent.h"
 
-#include "QbertMoveComponent.h"
 #include "DiscComponent.h"
 #include "GameObject.h"
 
@@ -20,49 +19,11 @@ void qbert::MapComponent::ActivateTileAtIndex(const int index) const
 	m_pTiles[index]->UpdateTile();
 }
 
-//void qbert::MapComponent::SetNextTile(QbertDirection direction)
-//{
-//	switch(direction)
-//	{
-//	case QbertDirection::TOPLEFT:
-//		{
-//			SetTopLeftTile();
-//			break;
-//		}
-//	case QbertDirection::TOPRIGHT:
-//		{
-//			SetTopRightTile();
-//			break;
-//		}
-//	case QbertDirection::BOTTOMLEFT:
-//		{
-//			SetBottomLeft();
-//			break;
-//		}
-//	case QbertDirection::BOTTOMRIGHT:
-//		{
-//			SetBottomRight();
-//			break;
-//		}
-//	}
-//	
-//}
-
-//void qbert::MapComponent::ActivateCurrentTile() const
-//{
-//	m_pTiles[m_CurrentTileIndex]->UpdateTile();
-//}
-
 void qbert::MapComponent::AddDisc(DiscComponent* pDiscComponent)
 {
 	m_pDiscs.emplace_back(pDiscComponent);
 	pDiscComponent->SetTarget(m_pTiles[m_pTiles.size() - 1]->GetStartPoint());
 }
-
-//qbert::TileComponent* qbert::MapComponent::GetCurrentTile() const
-//{
-//	return GetTileByIndex(m_CurrentTileIndex);
-//}
 
 qbert::TileComponent* qbert::MapComponent::GetTileByIndex(const int index) const
 {
@@ -105,27 +66,8 @@ int qbert::MapComponent::GetColumnFromIndex(const int index) const
 
 int qbert::MapComponent::GetLastIndex()
 {
-	return m_pTiles.size() - 1;
+	return static_cast<int>(m_pTiles.size()) - 1;
 }
-
-//void qbert::MapComponent::SetCurrentIndexToLast()
-//{
-//	m_CurrentTileIndex = static_cast<int>(m_pTiles.size()) - 1;
-//}
-
-//void qbert::MapComponent::SetTopRightTile()
-//{
-//	m_CurrentTileIndex = GetTopRightIndex(m_CurrentTileIndex);
-//}
-//void qbert::MapComponent::SetBottomLeft()
-//{
-//	m_CurrentTileIndex = GetBottomLeftIndex(m_CurrentTileIndex);
-//}
-//void qbert::MapComponent::SetBottomRight()
-//{
-//	m_CurrentTileIndex = GetBottomRightIndex(m_CurrentTileIndex);
-//	
-//}
 
 int qbert::MapComponent::GetFirstIndexOfTheRow(const int row) const
 {
@@ -147,14 +89,6 @@ int qbert::MapComponent::GetFirstIndexOfTheRow(const int row) const
 
 	return -1;
 }
-
-//void qbert::MapComponent::SetTopLeftTile()
-//{
-//	m_CurrentTileIndex = GetTopLeftIndex(m_CurrentTileIndex);
-//}
-
-
-
 
 bool qbert::MapComponent::IsComplete() const
 {
@@ -241,7 +175,7 @@ int qbert::MapComponent::GetTileWidth() const
 	return m_pTiles[0]->GetWidth();
 }
 
-bool qbert::MapComponent::IsOnATeleporter(const QbertMoveComponent* qbert) const
+bool qbert::MapComponent::IsOnATeleporter(dae::GameObject* qbert) const
 {
 	for (DiscComponent* pDisc : m_pDiscs)
 	{

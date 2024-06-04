@@ -30,7 +30,7 @@ namespace qbert
 		GridMoveComponent& operator=(const GridMoveComponent& other) = delete;
 		GridMoveComponent& operator=(GridMoveComponent&& other) = delete;
 
-		
+		//virtual void Init() override;
 
 		void UpdateMovement();
 		void ResetPositionValues();

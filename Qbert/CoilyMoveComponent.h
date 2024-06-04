@@ -5,6 +5,11 @@
 
 namespace qbert
 {
+	class KillableComponent;
+}
+
+namespace qbert
+{
 	class CoilyState;
 	class GridMoveComponent;
 	class MapComponent;
@@ -44,8 +49,9 @@ private:
 		glm::vec2 m_ArrivingTarget{};
 		glm::vec2 m_ArrivingDirection{};
 
-		QbertMoveComponent* m_pPlayer{ nullptr };
+		//QbertMoveComponent* m_pPlayer{ nullptr };
 		GridMoveComponent* m_pPlayerMoveComponent{ nullptr };
+		KillableComponent* m_pPlayerKillableComponent{ nullptr };
 
 		GridMoveComponent* m_pMoveComponent{ nullptr };
 

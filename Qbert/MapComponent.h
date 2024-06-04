@@ -49,7 +49,7 @@ namespace qbert
 		int GetTileHeight() const;
 		int GetTileWidth() const;
 
-		bool IsOnATeleporter(const QbertMoveComponent* qbert) const;
+		bool IsOnATeleporter(dae::GameObject* qbert) const;
 
 		void SetAllTileAnimated(const bool isAnimated);
 
