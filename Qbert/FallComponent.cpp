@@ -33,7 +33,7 @@ void qbert::FallComponent::UpdateFall()
 	const glm::vec2 displacement{ m_FallDirection * m_FallSpeed * dae::EngineTime::GetInstance().GetDeltaTime() };
 	GetOwner()->Translate(displacement);
 
-	m_AccumulatedDistanceToFall += glm::length(displacement);
+	m_AccumulatedDistanceToFall += glm::length(displacement * dae::ImageComponent::GetSpriteScale());
 }
 
 bool qbert::FallComponent::HasReachedFallPos() const

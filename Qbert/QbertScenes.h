@@ -1,12 +1,15 @@
 #pragma once
 #include <memory>
 
+#include "GameObject.h"
 #include "SceneCollection.h"
 #include "ScenesState.h"
 
 
 namespace qbert
 {
+	class MapComponent;
+
 	class QbertScenes final : public dae::SceneCollection
 	{
 	public:
@@ -23,6 +26,10 @@ namespace qbert
 		static bool gameOver;
 	private :
 		static const float m_LevelScale;
+
+		static std::unique_ptr<dae::GameObject> CreatePlayer(MapComponent* pMapComponent);
+		static std::unique_ptr<dae::GameObject> CreateBubble(dae::GameObject* pPlayerObject);
+		static std::unique_ptr<dae::GameObject> CreateCoily(dae::GameObject* pPlayerObject, MapComponent* pMapComponent);
 	};
 }
 

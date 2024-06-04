@@ -154,10 +154,12 @@
     <ClCompile Include="BlinkingComponent.cpp" />
     <ClCompile Include="BubbleManagerComponent.cpp" />
     <ClCompile Include="ChangeToUIComponent.cpp" />
-    <ClCompile Include="CoilyMoveComponent.cpp" />
+    <ClCompile Include="CoilyAnimatorComponent.cpp" />
+    <ClCompile Include="CoilyFSMManagerComponent.cpp" />
     <ClCompile Include="CoilyState.cpp" />
     <ClCompile Include="DiscComponent.cpp" />
     <ClCompile Include="FallComponent.cpp" />
+    <ClCompile Include="FollowPlayerComponent.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GridMoveComponent.cpp" />
     <ClCompile Include="GuiEx1Component.cpp" />
@@ -166,6 +168,7 @@
     <ClCompile Include="HealthUIComponent.cpp" />
     <ClCompile Include="InputDirectionComponent.cpp" />
     <ClCompile Include="KillableComponent.cpp" />
+    <ClCompile Include="KillerComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapComponent.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
@@ -188,10 +191,12 @@
     <ClInclude Include="BlinkingComponent.h" />
     <ClInclude Include="BubbleManagerComponent.h" />
     <ClInclude Include="ChangeToUIComponent.h" />
-    <ClInclude Include="CoilyMoveComponent.h" />
+    <ClInclude Include="CoilyAnimatorComponent.h" />
+    <ClInclude Include="CoilyFSMManagerComponent.h" />
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="DiscComponent.h" />
     <ClInclude Include="FallComponent.h" />
+    <ClInclude Include="FollowPlayerComponent.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="GridMoveComponent.h" />
@@ -201,6 +206,7 @@
     <ClInclude Include="HealthUIComponent.h" />
     <ClInclude Include="InputDirectionComponent.h" />
     <ClInclude Include="KillableComponent.h" />
+    <ClInclude Include="KillerComponent.h" />
     <ClInclude Include="MapComponent.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="PlayerState.h" />

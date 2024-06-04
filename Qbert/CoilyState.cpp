@@ -2,13 +2,22 @@
 
 #include "EngineTime.h"
 
-#include "CoilyMoveComponent.h"
+#include "CoilyFSMManagerComponent.h"
 #include "GridMoveComponent.h"
+#include "FallComponent.h"
+#include "FollowPlayerComponent.h"
+#include "KillerComponent.h"
+#include "CoilyAnimatorComponent.h"
+
 
 void qbert::CoilyState::Enter(dae::GameObject& coilyObject)
 {
 	m_pMoveComponent = coilyObject.GetComponent<GridMoveComponent>();
-	m_pCoilyComponent = coilyObject.GetComponent<CoilyMoveComponent>();
+	m_pCoilyComponent = coilyObject.GetComponent<CoilyFSMManagerComponent>();
+	m_pFallComponent = coilyObject.GetComponent<FallComponent>();
+	m_pFollowPlayerComponent = coilyObject.GetComponent<FollowPlayerComponent>();
+	m_pKillerComponent = coilyObject.GetComponent<KillerComponent>();
+	m_pAnimatorComponent = coilyObject.GetComponent<CoilyAnimatorComponent>();
 }
 
 std::unique_ptr<qbert::CoilyState> qbert::CoilyWaitingState::HandleTransitions()
@@ -21,7 +30,7 @@ std::unique_ptr<qbert::CoilyState> qbert::CoilyWaitingState::HandleTransitions()
 void qbert::CoilyWaitingState::Update()
 {
 	m_CurrentWaitingTime += dae::EngineTime::GetInstance().GetDeltaTime();
-	GetCoilyComponent()->CheckForPlayer();
+	GetKillerComponent()->CheckForPlayer();
 }
 
 void qbert::CoilyWaitingState::Enter(dae::GameObject& coilyObject)
@@ -29,7 +38,7 @@ void qbert::CoilyWaitingState::Enter(dae::GameObject& coilyObject)
 	CoilyState::Enter(coilyObject);
 	m_CurrentWaitingTime = 0.0f;
 	GetMoveComponent()->ResetPositionValues();
-	GetCoilyComponent()->SetWaitingSprite();
+	GetAnimatorComponent()->SetWaitingSprite();
 }
 
 std::unique_ptr<qbert::CoilyState> qbert::CoilyJumpingState::HandleTransitions()
@@ -47,13 +56,13 @@ void qbert::CoilyJumpingState::Enter(dae::GameObject& coilyObject)
 {
 	CoilyState::Enter(coilyObject);
 
-	GetCoilyComponent()->SetMovementDirection();
+	GetFollowComponent()->SetMovementDirection();
 	GetMoveComponent()->SetMovementDirection();
 }
 
 std::unique_ptr<qbert::CoilyState> qbert::CoilyArrivingState::HandleTransitions()
 {
-	if (GetCoilyComponent()->IsArrived())
+	if (GetFallComponent()->HasReachedFallPos())
 	{
 		return std::make_unique<CoilyWaitingState>();
 	}
@@ -62,21 +71,22 @@ std::unique_ptr<qbert::CoilyState> qbert::CoilyArrivingState::HandleTransitions(
 
 void qbert::CoilyArrivingState::Update()
 {
-	GetCoilyComponent()->UpdateArrivingMovement();
+	GetFallComponent()->UpdateFall();
 
 	m_CurrentAnimTime += dae::EngineTime::GetInstance().GetDeltaTime();
 	if(m_CurrentAnimTime >= m_MaxAnimTime)
 	{
 		m_CurrentAnimTime = 0;
 		++m_AnimState %= 2;
-		GetCoilyComponent()->SetArrivingSprite(m_AnimState);
+		GetAnimatorComponent()->SetArrivingSprite(m_AnimState);
 	}
 }
 
 void qbert::CoilyArrivingState::Enter(dae::GameObject& coilyObject)
 {
 	CoilyState::Enter(coilyObject);
-	GetCoilyComponent()->SetVisible();
+	GetAnimatorComponent()->SetVisible();
+	GetFallComponent()->SetFallDirection();
 }
 
 std::unique_ptr<qbert::CoilyState> qbert::CoilyPreparingState::HandleTransitions()

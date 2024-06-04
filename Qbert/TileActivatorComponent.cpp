@@ -26,12 +26,13 @@ bool qbert::TileActivatorComponent::HasCompletedMap() const
 void qbert::TileActivatorComponent::ActivateCurrentTile() const
 {
 	if (!m_pMoveComponent->GetCurrentTile()) return;
-	m_pMap->ActivateTileAtIndex(m_pMoveComponent->GetCurrentIndex());
 
-	if(!m_pMoveComponent->GetCurrentTile()->IsCompleted())
+	if (!m_pMoveComponent->GetCurrentTile()->IsCompleted())
 	{
 		m_pScoreComponent->IncrementScore(25);
 	}
+
+	m_pMap->ActivateTileAtIndex(m_pMoveComponent->GetCurrentIndex());
 }
 
 void qbert::TileActivatorComponent::AnimateTiles() const

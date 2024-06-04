@@ -38,7 +38,7 @@ void qbert::DiscComponent::SetActive(const bool isActive, dae::GameObject* qbert
 	m_IsActivated = isActive;
 	if (qbert == nullptr) return;
 
-	qbert->SetParent(GetOwner());
+	qbert->SetParent(GetOwner(), true);
 }
 
 void qbert::DiscComponent::SetRandomRow()

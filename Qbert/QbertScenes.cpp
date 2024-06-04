@@ -9,14 +9,18 @@
 #include "ChangeToUIComponent.h"
 
 #include "QbertFSMManagerComponent.h"
-#include "CoilyMoveComponent.h"
+#include "CoilyFSMManagerComponent.h"
 
 
 #include "DiscComponent.h"
 #include "FallComponent.h"
 #include "BubbleManagerComponent.h"
+#include "FollowPlayerComponent.h"
 #include "KillableComponent.h"
 #include "GridMoveComponent.h"
+
+#include "KillerComponent.h"
+#include "CoilyAnimatorComponent.h"
 
 #include "GameObject.h"
 #include "HealthComponent.h"
@@ -109,54 +113,14 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 
 #pragma endregion
 
-	auto playerObject = std::make_unique<dae::GameObject>();
-	playerObject->AddComponent<dae::ImageComponent>("qbert/Qbert P1 Spritesheet.png", true, 0.0f, 0.0f, 1, 4);
-	playerObject->AddComponent<qbert::QbertFSMManagerComponent>();
-	playerObject->AddComponent<qbert::GridMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>());
-	playerObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndexToTop();
-	playerObject->AddComponent<qbert::FallComponent>();
-	playerObject->AddComponent<qbert::InputDirectionComponent>();
-	playerObject->AddComponent<qbert::BubbleManagerComponent>();
-	playerObject->AddComponent<qbert::KillableComponent>();
-	playerObject->AddComponent<qbert::TileActivatorComponent>(pMapObject->GetComponent<qbert::MapComponent>());
-	playerObject->AddComponent<qbert::QbertJumpAnimatorComponent>();
-
-	playerObject->AddComponent<dae::ScoreComponent>();
-	playerObject->AddComponent<dae::HealthComponent>();
-
-
-	std::unique_ptr<dae::GamepadController> gamepadController{ std::make_unique<dae::GamepadController>() };
-
-	qbert::QbertMoveCommand qbertMoveRightCommand{ playerObject.get(),  glm::vec2{1,0} };
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_D, std::make_unique<qbert::QbertMoveCommand>(qbertMoveRightCommand), dae::InputType::DOWN);
-	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<qbert::QbertMoveCommand>(qbertMoveRightCommand), dae::InputType::DOWN);
-
-	qbert::QbertMoveCommand qbertMoveLeftCommand{ playerObject.get(),  glm::vec2{-1,0} };
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_A, std::make_unique<qbert::QbertMoveCommand>(qbertMoveLeftCommand), dae::InputType::DOWN);
-	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<qbert::QbertMoveCommand>(qbertMoveLeftCommand), dae::InputType::DOWN);
-
-	qbert::QbertMoveCommand qbertMoveTopCommand{ playerObject.get(),  glm::vec2{0,1} };
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_W, std::make_unique<qbert::QbertMoveCommand>(qbertMoveTopCommand), dae::InputType::DOWN);
-	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_UP, std::make_unique<qbert::QbertMoveCommand>(qbertMoveTopCommand), dae::InputType::DOWN);
-
-	qbert::QbertMoveCommand qbertMoveDownCommand{ playerObject.get(),  glm::vec2{0,-1} };
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_S, std::make_unique<qbert::QbertMoveCommand>(qbertMoveDownCommand), dae::InputType::DOWN);
-	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<qbert::QbertMoveCommand>(qbertMoveDownCommand), dae::InputType::DOWN);
-
-	dae::InputManager::GetInstance().AddController(std::move(gamepadController));
-
-	auto bubbleObject = std::make_unique<dae::GameObject>();
-	bubbleObject->AddComponent<dae::ImageComponent>("qbert/Qbert Curses.png", false);
-	bubbleObject->SetParent(playerObject.get());
-	bubbleObject->SetLocalPosition(-15.0f, -35.0f);
+	auto playerObject = CreatePlayer(pMapObject->GetComponent<MapComponent>());
+	auto bubbleObject = CreateBubble(playerObject.get());
 
 	playerObject->GetComponent<qbert::BubbleManagerComponent>()->SetBubbleImage(bubbleObject->GetComponent<dae::ImageComponent>());
 
 
-	auto coilyObject = std::make_unique<dae::GameObject>();
-	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
-	coilyObject->AddComponent<qbert::CoilyMoveComponent>(playerObject.get(), pMapObject->GetComponent<MapComponent>());
-	coilyObject->AddComponent<qbert::GridMoveComponent>(pMapObject->GetComponent<MapComponent>());
+	auto coilyObject = CreateCoily(playerObject.get(), pMapObject->GetComponent<MapComponent>());
+	
 
 #pragma region DISC
 	auto leftDiscObject = std::make_unique<dae::GameObject>();
@@ -363,4 +327,70 @@ void qbert::QbertScenes::Update()
 	}
 
 	m_pSceneState->Update();
+}
+
+std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreatePlayer(MapComponent* pMapComponent)
+{
+	std::unique_ptr<dae::GameObject> playerObject = std::make_unique<dae::GameObject>();
+
+	playerObject->AddComponent<dae::ImageComponent>("qbert/Qbert P1 Spritesheet.png", true, 0.0f, 0.0f, 1, 4);
+	playerObject->AddComponent<qbert::QbertFSMManagerComponent>();
+	playerObject->AddComponent<qbert::GridMoveComponent>(pMapComponent);
+	playerObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndexToTop();
+	playerObject->AddComponent<qbert::FallComponent>();
+	playerObject->AddComponent<qbert::InputDirectionComponent>();
+	playerObject->AddComponent<qbert::BubbleManagerComponent>();
+	playerObject->AddComponent<qbert::KillableComponent>();
+	playerObject->AddComponent<qbert::TileActivatorComponent>(pMapComponent);
+	playerObject->AddComponent<qbert::QbertJumpAnimatorComponent>();
+
+	playerObject->AddComponent<dae::ScoreComponent>();
+	playerObject->AddComponent<dae::HealthComponent>();
+
+
+	std::unique_ptr<dae::GamepadController> gamepadController{ std::make_unique<dae::GamepadController>() };
+
+	qbert::QbertMoveCommand qbertMoveRightCommand{ playerObject.get(),  glm::vec2{1,0} };
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_D, std::make_unique<qbert::QbertMoveCommand>(qbertMoveRightCommand), dae::InputType::DOWN);
+	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<qbert::QbertMoveCommand>(qbertMoveRightCommand), dae::InputType::DOWN);
+
+	qbert::QbertMoveCommand qbertMoveLeftCommand{ playerObject.get(),  glm::vec2{-1,0} };
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_A, std::make_unique<qbert::QbertMoveCommand>(qbertMoveLeftCommand), dae::InputType::DOWN);
+	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<qbert::QbertMoveCommand>(qbertMoveLeftCommand), dae::InputType::DOWN);
+
+	qbert::QbertMoveCommand qbertMoveTopCommand{ playerObject.get(),  glm::vec2{0,1} };
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_W, std::make_unique<qbert::QbertMoveCommand>(qbertMoveTopCommand), dae::InputType::DOWN);
+	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_UP, std::make_unique<qbert::QbertMoveCommand>(qbertMoveTopCommand), dae::InputType::DOWN);
+
+	qbert::QbertMoveCommand qbertMoveDownCommand{ playerObject.get(),  glm::vec2{0,-1} };
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_S, std::make_unique<qbert::QbertMoveCommand>(qbertMoveDownCommand), dae::InputType::DOWN);
+	gamepadController->Bind(XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<qbert::QbertMoveCommand>(qbertMoveDownCommand), dae::InputType::DOWN);
+
+	dae::InputManager::GetInstance().AddController(std::move(gamepadController));
+
+	return playerObject;
+}
+
+std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateBubble(dae::GameObject* pPlayerObject)
+{
+	std::unique_ptr<dae::GameObject> bubbleObject{ std::make_unique<dae::GameObject>() };
+	bubbleObject->AddComponent<dae::ImageComponent>("qbert/Qbert Curses.png", false);
+	bubbleObject->SetParent(pPlayerObject);
+	bubbleObject->SetLocalPosition(-15.0f, -35.0f);
+
+	return bubbleObject;
+}
+
+std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(dae::GameObject* pPlayerObject, MapComponent* pMapComponent)
+{
+	std::unique_ptr<dae::GameObject> coilyObject = std::make_unique<dae::GameObject>();
+	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
+	coilyObject->AddComponent<qbert::CoilyFSMManagerComponent>();
+	coilyObject->AddComponent<qbert::GridMoveComponent>(pMapComponent);
+	coilyObject->AddComponent<qbert::FallComponent>();
+	coilyObject->AddComponent<qbert::FollowPlayerComponent>(pPlayerObject->GetComponent<GridMoveComponent>(), pMapComponent);
+	coilyObject->AddComponent<qbert::KillerComponent>(pPlayerObject);
+	coilyObject->AddComponent<qbert::CoilyAnimatorComponent>();
+
+	return coilyObject;
 }

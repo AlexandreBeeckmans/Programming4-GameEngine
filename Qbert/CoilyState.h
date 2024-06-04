@@ -1,12 +1,22 @@
 #pragma once
 #include "GameObject.h"
 
-//#include "CoilyMoveComponent.h"
+namespace qbert
+{
+	class CoilyAnimatorComponent;
+}
 
 namespace qbert
 {
-	class CoilyMoveComponent;
+	class KillerComponent;
+}
+
+namespace qbert
+{
+	class CoilyFSMManagerComponent;
 	class GridMoveComponent;
+	class FallComponent;
+	class FollowPlayerComponent;
 
 	class CoilyState
 	{
@@ -19,11 +29,20 @@ namespace qbert
 		virtual void Exit() {}
 
 	protected:
-		CoilyMoveComponent* GetCoilyComponent()const { return m_pCoilyComponent; }
+		CoilyFSMManagerComponent* GetCoilyComponent()const { return m_pCoilyComponent; }
 		GridMoveComponent* GetMoveComponent()const { return m_pMoveComponent; }
+		FallComponent* GetFallComponent() const { return m_pFallComponent; }
+		FollowPlayerComponent* GetFollowComponent() const { return m_pFollowPlayerComponent; }
+		KillerComponent* GetKillerComponent()const { return m_pKillerComponent; }
+		CoilyAnimatorComponent* GetAnimatorComponent()const { return m_pAnimatorComponent; }
+
 	private:
-		CoilyMoveComponent* m_pCoilyComponent{};
+		CoilyFSMManagerComponent* m_pCoilyComponent{};
 		GridMoveComponent* m_pMoveComponent{};
+		FallComponent* m_pFallComponent{};
+		FollowPlayerComponent* m_pFollowPlayerComponent{};
+		KillerComponent* m_pKillerComponent{};
+		CoilyAnimatorComponent* m_pAnimatorComponent{};
 	};
 
 	class CoilyWaitingState final : public CoilyState

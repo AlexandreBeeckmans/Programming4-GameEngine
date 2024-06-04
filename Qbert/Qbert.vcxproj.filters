@@ -81,7 +81,7 @@
     <ClCompile Include="MoveComponent.cpp">
       <Filter>Test Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoilyMoveComponent.cpp">
+    <ClCompile Include="CoilyFSMManagerComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerState.cpp">
@@ -130,6 +130,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QbertJumpAnimatorComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowPlayerComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KillerComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoilyAnimatorComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,7 +194,7 @@
     <ClInclude Include="SoundTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoilyMoveComponent.h">
+    <ClInclude Include="CoilyFSMManagerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayerState.h">
@@ -234,6 +243,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QbertJumpAnimatorComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowPlayerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KillerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoilyAnimatorComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
