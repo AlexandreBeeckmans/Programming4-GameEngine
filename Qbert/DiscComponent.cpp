@@ -5,6 +5,7 @@
 
 #include "EngineTime.h"
 #include "MapComponent.h"
+#include "QbertMoveComponent.h"
 
 qbert::DiscComponent::DiscComponent(dae::GameObject* pGameObject, MapComponent* pMap, const bool isLeft) :
 BaseComponent(pGameObject),

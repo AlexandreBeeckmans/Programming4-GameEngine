@@ -10,20 +10,14 @@ m_CurrentLives(maxLives)
 
 }
 
-void dae::HealthComponent::Init()
-{
-	/*if (auto ui{ GetOwner()->GetComponent<UIComponent>() })
-	{
-		AddObserver(ui);
-	}*/
-}
-
 void dae::HealthComponent::RemoveLive()
 {
 	if (m_CurrentLives > 0)
 	{
 		--m_CurrentLives;
 		NotifyObservers();
+		return;
 	}
-		
+
+	m_IsDead = true;
 }

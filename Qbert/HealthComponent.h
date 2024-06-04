@@ -15,15 +15,17 @@ namespace dae
 		HealthComponent& operator=(const HealthComponent& other) = default;
 		HealthComponent& operator=(HealthComponent&& other) = default;
 
-		void Init() override;
 		void RemoveLive();
 
 		int GetLivesRemaining()const { return m_CurrentLives; };
 		int GetMaxLives() const { return  m_MaxLives; }
 
+		bool IsDead() const { return m_IsDead; }
+
 	private:
 		const int m_MaxLives{ 3 };
 		int m_CurrentLives{ m_MaxLives };
+		bool m_IsDead{ false };
 
 	};
 }

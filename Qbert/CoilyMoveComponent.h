@@ -6,59 +6,52 @@
 namespace qbert
 {
 	class CoilyState;
+	class GridMoveComponent;
 	class MapComponent;
 	class QbertMoveComponent;
-	class GameObject;
+	//class GameObject;
 
 	class CoilyMoveComponent final : public dae::BaseComponent
 	{
 	public:
-		CoilyMoveComponent(dae::GameObject* owner, qbert::MapComponent* pMap, QbertMoveComponent* pPlayer);
-		virtual ~CoilyMoveComponent() override = default;
+	CoilyMoveComponent(dae::GameObject* owner, dae::GameObject* pPlayerObject, MapComponent* pMap);
+	virtual ~CoilyMoveComponent() override = default;
 
 
-		CoilyMoveComponent(const CoilyMoveComponent& other) = delete;
-		CoilyMoveComponent(CoilyMoveComponent&& other) = delete;
-		CoilyMoveComponent& operator=(const CoilyMoveComponent& other) = delete;
-		CoilyMoveComponent& operator=(CoilyMoveComponent&& other) = delete;
+	CoilyMoveComponent(const CoilyMoveComponent& other) = delete;
+	CoilyMoveComponent(CoilyMoveComponent&& other) = delete;
+	CoilyMoveComponent& operator=(const CoilyMoveComponent& other) = delete;
+	CoilyMoveComponent& operator=(CoilyMoveComponent&& other) = delete;
 
 		void Update() override;
 		void Init() override;
 
-
-		void UpdateMovement();
 		void CheckForPlayer() const;
 		void UpdateArrivingMovement() const;
 
-		bool HasReachedFinalPosition() const;
 		bool IsArrived() const;
 
-		void ResetPositionValues();
-		void SetMovementDirection();
 
 		void SetWaitingSprite() const;
 		void SetArrivingSprite(const int column) const;
 
 		void SetVisible() const;
+	void SetMovementDirection();
 
-	private:
+private:
 
-		void Bounce();
 
-		glm::vec2 m_Direction{ 0.5f,-0.75f };
-		glm::vec2 m_Target{};
+		glm::vec2 m_ArrivingTarget{};
+		glm::vec2 m_ArrivingDirection{};
 
-		float m_MaxDistanceX{ 0.0f };
-		float m_AccumulatedDistanceX{ 0.0f };
-
-		float m_AdditionalY{ 0.0f };
-
-		MapComponent* m_pMap{ nullptr };
 		QbertMoveComponent* m_pPlayer{ nullptr };
+		GridMoveComponent* m_pPlayerMoveComponent{ nullptr };
 
-		int m_CurrentIndex{ 0 };
+		GridMoveComponent* m_pMoveComponent{ nullptr };
 
 		CoilyState* m_State{ nullptr };
+
+		MapComponent* m_pMap{ nullptr };
 	};
 }
 

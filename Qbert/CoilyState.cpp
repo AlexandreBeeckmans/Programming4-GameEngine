@@ -2,73 +2,90 @@
 
 #include "EngineTime.h"
 
-qbert::CoilyState* qbert::CoilyWaitingState::HandleTransitions(const CoilyMoveComponent&)
+#include "CoilyMoveComponent.h"
+#include "GridMoveComponent.h"
+
+void qbert::CoilyState::Enter(dae::GameObject& coilyObject)
+{
+	m_pMoveComponent = coilyObject.GetComponent<GridMoveComponent>();
+	m_pCoilyComponent = coilyObject.GetComponent<CoilyMoveComponent>();
+}
+
+qbert::CoilyState* qbert::CoilyWaitingState::HandleTransitions()
 {
 	if (m_CurrentWaitingTime >= m_MaxWaitingTime) return new CoilyJumpingState{};
 
 	return nullptr;
 }
 
-void qbert::CoilyWaitingState::Update(CoilyMoveComponent& coily)
+void qbert::CoilyWaitingState::Update()
 {
 	m_CurrentWaitingTime += dae::EngineTime::GetInstance().GetDeltaTime();
-	coily.CheckForPlayer();
+	GetCoilyComponent()->CheckForPlayer();
 }
 
-void qbert::CoilyWaitingState::Enter(CoilyMoveComponent& coily)
+void qbert::CoilyWaitingState::Enter(dae::GameObject& coilyObject)
 {
+	CoilyState::Enter(coilyObject);
 	m_CurrentWaitingTime = 0.0f;
-	coily.ResetPositionValues();
-	coily.SetWaitingSprite();
+	GetMoveComponent()->ResetPositionValues();
+	GetCoilyComponent()->SetWaitingSprite();
 }
 
-qbert::CoilyState* qbert::CoilyJumpingState::HandleTransitions(const CoilyMoveComponent& coily)
+qbert::CoilyState* qbert::CoilyJumpingState::HandleTransitions()
 {
-	if (coily.HasReachedFinalPosition()) return new CoilyWaitingState{};
+	if (GetMoveComponent()->HasReachedFinalPosition()) return new CoilyWaitingState{};
 	return nullptr;
 }
 
-void qbert::CoilyJumpingState::Update(CoilyMoveComponent& coily)
+void qbert::CoilyJumpingState::Update()
 {
-	coily.UpdateMovement();
+	GetMoveComponent()->UpdateMovement();
 }
 
-void qbert::CoilyJumpingState::Enter(CoilyMoveComponent& coily)
+void qbert::CoilyJumpingState::Enter(dae::GameObject& coilyObject)
 {
-	coily.SetMovementDirection();
+	CoilyState::Enter(coilyObject);
+
+	GetCoilyComponent()->SetMovementDirection();
+	GetMoveComponent()->SetMovementDirection();
 }
 
-qbert::CoilyState* qbert::CoilyArrivingState::HandleTransitions(const CoilyMoveComponent& coily)
+qbert::CoilyState* qbert::CoilyArrivingState::HandleTransitions()
 {
-	if (coily.IsArrived()) return new CoilyWaitingState{};
+	if (GetCoilyComponent()->IsArrived())
+	{
+		return new CoilyWaitingState{};
+	}
 	return nullptr;
 }
 
-void qbert::CoilyArrivingState::Update(CoilyMoveComponent& coily)
+void qbert::CoilyArrivingState::Update()
 {
-	coily.UpdateArrivingMovement();
+	GetCoilyComponent()->UpdateArrivingMovement();
 
 	m_CurrentAnimTime += dae::EngineTime::GetInstance().GetDeltaTime();
 	if(m_CurrentAnimTime >= m_MaxAnimTime)
 	{
 		m_CurrentAnimTime = 0;
 		++m_AnimState %= 2;
-		coily.SetArrivingSprite(m_AnimState);
+		GetCoilyComponent()->SetArrivingSprite(m_AnimState);
 	}
 }
 
-void qbert::CoilyArrivingState::Enter(CoilyMoveComponent& coily)
+void qbert::CoilyArrivingState::Enter(dae::GameObject& coilyObject)
 {
-	coily.SetVisible();
+	CoilyState::Enter(coilyObject);
+	GetCoilyComponent()->SetVisible();
 }
 
-qbert::CoilyState* qbert::CoilyPreparingState::HandleTransitions(const CoilyMoveComponent&)
+qbert::CoilyState* qbert::CoilyPreparingState::HandleTransitions()
 {
 	if (m_CurrentPreparingTime >= m_MaxAnimTime) return new CoilyArrivingState{};
 	return nullptr;
 }
 
-void qbert::CoilyPreparingState::Update(CoilyMoveComponent&)
+void qbert::CoilyPreparingState::Update()
 {
 	m_CurrentPreparingTime += dae::EngineTime::GetInstance().GetDeltaTime();
 }

@@ -2,11 +2,12 @@
 #include <vector>
 
 #include "BaseComponent.h"
-#include "QbertMoveComponent.h"
+//#include "QbertMoveComponent.h"
 #include "TileComponent.h"
 
 namespace qbert
 {
+	class QbertMoveComponent;
 	class DiscComponent;
 	class MapComponent final : public dae::BaseComponent
 	{
@@ -20,24 +21,24 @@ namespace qbert
 		MapComponent& operator=(MapComponent&& other) = default;
 
 		void AddTile(TileComponent* pTileComponent);
-		void SetNextTile(QbertDirection direction);
-		void ActivateCurrentTile() const;
+		//void SetNextTile(QbertDirection direction);
+		void ActivateTileAtIndex(const int index) const;
 
 		void AddDisc(DiscComponent* pDiscComponent);
 
 		int GetNbRows() const { return m_Rows; }
 
 
-		TileComponent* GetCurrentTile() const;
+		//TileComponent* GetCurrentTile() const;
 		TileComponent* GetTileByIndex(const int index) const;
-		int GetCurrentIndex() const { return  m_CurrentTileIndex; }
+		//int GetCurrentIndex() const { return  m_CurrentTileIndex; }
 
 		int GetRowFromIndex(const int index) const;
 		int GetColumnFromIndex(const int index) const;
 
 
 
-		void SetCurrentIndexToLast();
+		int GetLastIndex();
 		bool IsComplete() const;
 
 		int GetTopRightIndex(const int currentIndex) const;
@@ -57,7 +58,7 @@ namespace qbert
 		std::vector<TileComponent*> m_pTiles{};
 		std::vector<DiscComponent*> m_pDiscs{};
 
-		int m_CurrentTileIndex{0};
+		//int m_CurrentTileIndex{0};
 		const int m_Rows{ 0 };
 
 		void SetTopLeftTile();

@@ -1,23 +1,37 @@
 #include "PlayerState.h"
 
 #include "EngineTime.h"
+#include "GameObject.h"
 #include "QbertScenes.h"
 
-qbert::PlayerState* qbert::WaitingState::HandleTransitions(const QbertMoveComponent& qbert)
+#include "QbertMoveComponent.h"
+#include "GridMoveComponent.h"
+#include "HealthComponent.h"
+
+void qbert::PlayerState::Enter(dae::GameObject& qbertObject)
 {
+	m_pMoveComponent = qbertObject.GetComponent<GridMoveComponent>();
+	m_pQbertComponent = qbertObject.GetComponent<QbertMoveComponent>();
+
+	m_pHealthComponent = qbertObject.GetComponent<dae::HealthComponent>();
+}
+
+qbert::PlayerState* qbert::WaitingState::HandleTransitions()
+{
+
 	//If an enemy is on the same index
-	if(qbert.IsEnemyEncounteredThisFrame())
+	if(GetQbertComponent()->IsEnemyEncounteredThisFrame())
 	{
 		return new DieState();
 	}
 
 	//If an input is pressed
-	if (qbert.IsInputPressedThisFrame())
+	if (GetQbertComponent()->IsInputPressedThisFrame())
 	{
 		return new JumpingState{};
 	}
 
-	if(qbert.HasCompletedMap())
+	if(GetQbertComponent()->HasCompletedMap())
 	{
 		return new WinState{};
 	}
@@ -27,66 +41,69 @@ qbert::PlayerState* qbert::WaitingState::HandleTransitions(const QbertMoveCompon
 
 }
 
-void qbert::WaitingState::Enter(QbertMoveComponent& qbert)
+void qbert::WaitingState::Enter(dae::GameObject& qbertObject)
 {
-	qbert.ResetPositionValues();
-	qbert.ActivateCurrentTile();
+	PlayerState::Enter(qbertObject);
+	GetMoveComponent()->ResetPositionValues();
+	GetQbertComponent()->ActivateCurrentTile();
 }
 
-qbert::PlayerState* qbert::JumpingState::HandleTransitions(const QbertMoveComponent& qbert)
+qbert::PlayerState* qbert::JumpingState::HandleTransitions()
 {
-	if (!qbert.HasReachedFinalPosition()) return nullptr;
+	if (!GetMoveComponent()->HasReachedFinalPosition()) return nullptr;
 
-	if (qbert.GetCurrentIndex() >= 0) return new WaitingState{};
+	if (GetMoveComponent()->GetCurrentIndex() >= 0) return new WaitingState{};
 
-	if (qbert.IsOnTeleporter()) return new TeleportingState{};
+	if (GetQbertComponent()->IsOnTeleporter()) return new TeleportingState{};
 	return new DieState{};
 }
 
-void qbert::JumpingState::Update(QbertMoveComponent& qbert)
+void qbert::JumpingState::Update()
 {
-	qbert.UpdateMovement();
+	GetMoveComponent()->UpdateMovement();
 }
-void qbert::JumpingState::Enter(QbertMoveComponent& qbert)
+void qbert::JumpingState::Enter(dae::GameObject& qbert)
 {
+	PlayerState::Enter(qbert);
 	//Set sprite
-	qbert.SetJumpSprite();
+	GetQbertComponent()->SetJumpSprite();
 
 	//Play jumpSound
-	qbert.PlayJumpSound();
+	GetQbertComponent()->PlayJumpSound();
 
 	//Set Movement direction
-	qbert.SetJumpDirection();
+	GetMoveComponent()->SetMovementDirection();
 }
 
-qbert::PlayerState* qbert::DieState::HandleTransitions(const QbertMoveComponent&)
+qbert::PlayerState* qbert::DieState::HandleTransitions()
 {
 	if (m_CurrentDeadTime < m_MaxDeadTime) return nullptr;
 
 	return new WaitingState{};
 }
 
-void qbert::DieState::Update(QbertMoveComponent&)
+void qbert::DieState::Update()
 {
 	m_CurrentDeadTime += dae::EngineTime::GetInstance().GetDeltaTime();
 }
 
-void qbert::DieState::Enter(QbertMoveComponent& qbert)
+void qbert::DieState::Enter(dae::GameObject& qbert)
 {
-	qbert.Kill();
+	PlayerState::Enter(qbert);
+	GetQbertComponent()->Kill();
 	m_CurrentDeadTime = 0;
 }
 
-void qbert::DieState::Exit(QbertMoveComponent& qbert)
+void qbert::DieState::Exit()
 {
-	qbert.Respawn();
-	if (qbert.GetLives() < 0)
+	GetQbertComponent()->Respawn();
+	if (GetHealthComponent()->IsDead())
 	{
 		QbertScenes::gameOver = true;
 	}
 }
 
-qbert::PlayerState* qbert::WinState::HandleTransitions(const QbertMoveComponent&)
+qbert::PlayerState* qbert::WinState::HandleTransitions()
 {
 	if (m_CurrentWinTime < m_MaxWinTime) return nullptr;
 
@@ -94,37 +111,39 @@ qbert::PlayerState* qbert::WinState::HandleTransitions(const QbertMoveComponent&
 	return new WaitingState{};
 }
 
-void qbert::WinState::Enter(QbertMoveComponent& qbert)
+void qbert::WinState::Enter(dae::GameObject& qbert)
 {
-	qbert.PlayWinSound();
-	qbert.AnimateTiles();
+	PlayerState::Enter(qbert);
+	GetQbertComponent()->PlayWinSound();
+	GetQbertComponent()->AnimateTiles();
 }
 
-void qbert::WinState::Update(QbertMoveComponent&)
+void qbert::WinState::Update()
 {
 	m_CurrentWinTime += dae::EngineTime::GetInstance().GetDeltaTime();
 }
 
-qbert::PlayerState* qbert::TeleportingState::HandleTransitions(const QbertMoveComponent& qbert)
+qbert::PlayerState* qbert::TeleportingState::HandleTransitions()
 {
-	if (qbert.GetParent() != nullptr) return nullptr;
+	if (GetQbertComponent()->GetParent() != nullptr) return nullptr;
 
 	return new FallingState{};
 }
 
-qbert::PlayerState* qbert::FallingState::HandleTransitions(const QbertMoveComponent& qbert)
+qbert::PlayerState* qbert::FallingState::HandleTransitions()
 {
-	if (!qbert.HasReachedFallPos()) return nullptr;
+	if (!GetQbertComponent()->HasReachedFallPos()) return nullptr;
 	return new WaitingState{};
 }
 
-void qbert::FallingState::Enter(QbertMoveComponent& qbert)
+void qbert::FallingState::Enter(dae::GameObject& qbert)
 {
-	qbert.SetCurrentIndexToTop();
+	PlayerState::Enter(qbert);
+	GetMoveComponent()->SetCurrentIndexToTop();
 
 }
 
-void qbert::FallingState::Update(QbertMoveComponent& qbert)
+void qbert::FallingState::Update()
 {
-	qbert.UpdateFall();
+	GetQbertComponent()->UpdateFall();
 }

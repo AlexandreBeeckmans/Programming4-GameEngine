@@ -18,7 +18,7 @@ void qbert::SceneStates::Exit()
 void qbert::SceneStates::ResetLevelAndRound()
 {
 	m_LevelNumber = 0;
-	m_RoundNumber = 5;
+	m_RoundNumber = 0;
 }
 
 void qbert::SceneStates::IncrementRound()

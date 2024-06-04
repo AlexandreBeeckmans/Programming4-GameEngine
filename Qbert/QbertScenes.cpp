@@ -7,7 +7,11 @@
 #include "AnimatorComponent.h"
 #include "BlinkingComponent.h"
 #include "ChangeToUIComponent.h"
+
+#include "QbertMoveComponent.h"
 #include "CoilyMoveComponent.h"
+
+
 #include "DiscComponent.h"
 #include "GameObject.h"
 #include "HealthComponent.h"
@@ -86,8 +90,6 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 		baseTileY -= 3 * tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().h / 4.0f;
 	}
 
-	pMapObject->GetComponent<qbert::MapComponent>()->SetCurrentIndexToLast();
-
 	const glm::vec2 mapPosition
 	{
 		static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(nbOfRow * tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f,
@@ -102,8 +104,12 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 	auto playerObject = std::make_unique<dae::GameObject>();
 	playerObject->AddComponent<dae::ImageComponent>("qbert/Qbert P1 Spritesheet.png", true, 0.0f, 0.0f, 1, 4);
 	playerObject->AddComponent<qbert::QbertMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>());
+	playerObject->AddComponent<qbert::GridMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>());
+	playerObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndexToTop();
+
 	playerObject->AddComponent<dae::ScoreComponent>();
 	playerObject->AddComponent<dae::HealthComponent>();
+
 
 	std::unique_ptr<dae::GamepadController> gamepadController{ std::make_unique<dae::GamepadController>() };
 
@@ -135,7 +141,8 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round)
 
 	auto coilyObject = std::make_unique<dae::GameObject>();
 	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
-	coilyObject->AddComponent<qbert::CoilyMoveComponent>(pMapObject->GetComponent<qbert::MapComponent>(), playerObject->GetComponent<qbert::QbertMoveComponent>());
+	coilyObject->AddComponent<qbert::CoilyMoveComponent>(playerObject.get(), pMapObject->GetComponent<MapComponent>());
+	coilyObject->AddComponent<qbert::GridMoveComponent>(pMapObject->GetComponent<MapComponent>());
 
 #pragma region DISC
 	auto leftDiscObject = std::make_unique<dae::GameObject>();

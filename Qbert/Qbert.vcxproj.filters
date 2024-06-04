@@ -111,6 +111,9 @@
     <ClCompile Include="DiscComponent.cpp">
       <Filter>Disc</Filter>
     </ClCompile>
+    <ClCompile Include="GridMoveComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapComponent.h">
@@ -193,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="DiscComponent.h">
       <Filter>Disc</Filter>
+    </ClInclude>
+    <ClInclude Include="GridMoveComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

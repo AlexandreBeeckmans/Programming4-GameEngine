@@ -157,6 +157,7 @@
     <ClCompile Include="CoilyState.cpp" />
     <ClCompile Include="DiscComponent.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
+    <ClCompile Include="GridMoveComponent.cpp" />
     <ClCompile Include="GuiEx1Component.cpp" />
     <ClCompile Include="GuiEx2Component.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="DiscComponent.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="Graph.hpp" />
+    <ClInclude Include="GridMoveComponent.h" />
     <ClInclude Include="GuiEx1Component.h" />
     <ClInclude Include="GuiEx2Component.h" />
     <ClInclude Include="HealthComponent.h" />
