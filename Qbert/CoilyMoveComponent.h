@@ -1,7 +1,9 @@
 #pragma once
+#include <memory>
 #include <glm/vec2.hpp>
 
 #include "BaseComponent.h"
+#include "CoilyState.h"
 
 namespace qbert
 {
@@ -41,7 +43,7 @@ namespace qbert
 		void SetArrivingSprite(const int column) const;
 
 		void SetVisible() const;
-	void SetMovementDirection();
+		void SetMovementDirection() const;
 
 private:
 
@@ -49,13 +51,12 @@ private:
 		glm::vec2 m_ArrivingTarget{};
 		glm::vec2 m_ArrivingDirection{};
 
-		//QbertMoveComponent* m_pPlayer{ nullptr };
 		GridMoveComponent* m_pPlayerMoveComponent{ nullptr };
 		KillableComponent* m_pPlayerKillableComponent{ nullptr };
 
 		GridMoveComponent* m_pMoveComponent{ nullptr };
 
-		CoilyState* m_State{ nullptr };
+		std::unique_ptr<CoilyState> m_State{ nullptr };
 
 		MapComponent* m_pMap{ nullptr };
 	};

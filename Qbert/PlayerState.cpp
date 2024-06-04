@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "QbertScenes.h"
 
-#include "QbertMoveComponent.h"
+#include "QbertFSMManagerComponent.h"
 #include "GridMoveComponent.h"
 #include "FallComponent.h"
 #include "InputDirectionComponent.h"
@@ -20,7 +20,7 @@
 void qbert::PlayerState::Enter(dae::GameObject& qbertObject)
 {
 	m_pMoveComponent = qbertObject.GetComponent<GridMoveComponent>();
-	m_pQbertComponent = qbertObject.GetComponent<QbertMoveComponent>();
+	m_pQbertComponent = qbertObject.GetComponent<QbertFSMManagerComponent>();
 	m_pFallComponent = qbertObject.GetComponent<FallComponent>();
 	m_pInputComponent = qbertObject.GetComponent<InputDirectionComponent>();
 	m_pKillableComponent = qbertObject.GetComponent<KillableComponent>();
@@ -30,24 +30,24 @@ void qbert::PlayerState::Enter(dae::GameObject& qbertObject)
 	m_pHealthComponent = qbertObject.GetComponent<dae::HealthComponent>();
 }
 
-qbert::PlayerState* qbert::WaitingState::HandleTransitions()
+std::unique_ptr<qbert::PlayerState> qbert::WaitingState::HandleTransitions()
 {
 
 	//If an enemy is on the same index
 	if(GetKillableComponent()->IsEnemyEncounteredThisFrame())
 	{
-		return new DieState();
+		return std::make_unique<DieState>();
 	}
 
 	//If an input is pressed
 	if (GetInputComponent()->IsInputPressedThisFrame())
 	{
-		return new JumpingState{};
+		return std::make_unique<JumpingState>();
 	}
 
 	if(GetTileActivatorComponent()->HasCompletedMap())
 	{
-		return new WinState{};
+		return std::make_unique<WinState>();
 	}
 
 	return nullptr;
@@ -62,14 +62,14 @@ void qbert::WaitingState::Enter(dae::GameObject& qbertObject)
 
 }
 
-qbert::PlayerState* qbert::JumpingState::HandleTransitions()
+std::unique_ptr<qbert::PlayerState> qbert::JumpingState::HandleTransitions()
 {
 	if (!GetMoveComponent()->HasReachedFinalPosition()) return nullptr;
 
-	if (GetMoveComponent()->GetCurrentIndex() >= 0) return new WaitingState{};
+	if (GetMoveComponent()->GetCurrentIndex() >= 0) return std::make_unique<WaitingState>();
 
-	if (GetTileActivatorComponent()->IsOnTeleporter()) return new TeleportingState{};
-	return new DieState{};
+	if (GetTileActivatorComponent()->IsOnTeleporter()) return std::make_unique<TeleportingState>();
+	return std::make_unique<DieState>();
 }
 
 void qbert::JumpingState::Update()
@@ -94,11 +94,11 @@ void qbert::JumpingState::Exit()
 	GetTileActivatorComponent()->ActivateCurrentTile();
 }
 
-qbert::PlayerState* qbert::DieState::HandleTransitions()
+std::unique_ptr<qbert::PlayerState> qbert::DieState::HandleTransitions()
 {
 	if (m_CurrentDeadTime < m_MaxDeadTime) return nullptr;
 
-	return new WaitingState{};
+	return std::make_unique<WaitingState>();
 }
 
 void qbert::DieState::Update()
@@ -122,12 +122,12 @@ void qbert::DieState::Exit()
 	}
 }
 
-qbert::PlayerState* qbert::WinState::HandleTransitions()
+std::unique_ptr<qbert::PlayerState> qbert::WinState::HandleTransitions()
 {
 	if (m_CurrentWinTime < m_MaxWinTime) return nullptr;
 
 	QbertScenes::goNext = true;
-	return new WaitingState{};
+	return std::make_unique<WaitingState>();
 }
 
 void qbert::WinState::Enter(dae::GameObject& qbert)
@@ -142,17 +142,17 @@ void qbert::WinState::Update()
 	m_CurrentWinTime += dae::EngineTime::GetInstance().GetDeltaTime();
 }
 
-qbert::PlayerState* qbert::TeleportingState::HandleTransitions()
+std::unique_ptr<qbert::PlayerState> qbert::TeleportingState::HandleTransitions()
 {
 	if (GetQbertComponent()->GetParent() != nullptr) return nullptr;
 
-	return new FallingState{};
+	return std::make_unique<FallingState>();
 }
 
-qbert::PlayerState* qbert::FallingState::HandleTransitions()
+std::unique_ptr<qbert::PlayerState> qbert::FallingState::HandleTransitions()
 {
 	if (!GetFallComponent()->HasReachedFallPos()) return nullptr;
-	return new WaitingState{};
+	return std::make_unique<WaitingState>();
 }
 
 void qbert::FallingState::Enter(dae::GameObject& qbert)

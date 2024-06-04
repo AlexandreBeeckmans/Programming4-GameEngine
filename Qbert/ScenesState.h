@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 namespace qbert
 {
@@ -7,7 +8,7 @@ namespace qbert
 	public:
 		virtual ~SceneStates() {}
 
-		virtual SceneStates* HandleTransitions() { return nullptr; }
+		virtual std::unique_ptr<SceneStates> HandleTransitions() { return nullptr; }
 		virtual void Update() {}
 		virtual void Enter() {}
 		virtual void Exit();
@@ -31,7 +32,7 @@ namespace qbert
 	{
 	public:
 
-		virtual SceneStates* HandleTransitions() override;
+		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
 		virtual void Enter() override;
 	};
 
@@ -39,7 +40,7 @@ namespace qbert
 	{
 	public:
 
-		virtual SceneStates* HandleTransitions() override;
+		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
 		virtual void Enter() override;
 		virtual void Exit() override;
 	};
@@ -48,7 +49,7 @@ namespace qbert
 	{
 	public:
 
-		virtual SceneStates* HandleTransitions() override;
+		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
 		virtual void Update() override;
 		virtual void Enter() override;
 

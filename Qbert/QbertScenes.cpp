@@ -40,7 +40,7 @@
 #include "SoundTypes.h"
 #include "TileActivatorComponent.h"
 
-qbert::SceneStates* qbert::QbertScenes::m_pSceneState = new qbert::StartMenuSceneState{};
+std::unique_ptr<qbert::SceneStates> qbert::QbertScenes::m_pSceneState = std::make_unique<qbert::StartMenuSceneState>(qbert::StartMenuSceneState{});
 const float qbert::QbertScenes::m_LevelScale = 2.0f;
 
 bool qbert::QbertScenes::goNext = false;
@@ -353,12 +353,12 @@ void qbert::QbertScenes::LoadLevelLoading(const int level)
 
 void qbert::QbertScenes::Update()
 {
-	qbert::SceneStates* newState = m_pSceneState->HandleTransitions();
-	if (newState)
+	std::unique_ptr<SceneStates> pNewState = m_pSceneState->HandleTransitions();
+	if (pNewState)
 	{
 		m_pSceneState->Exit();
-		delete m_pSceneState;
-		m_pSceneState = newState;
+		//delete m_pSceneState;
+		m_pSceneState = std::move(pNewState);
 		m_pSceneState->Enter();
 	}
 

@@ -13,7 +13,7 @@ namespace qbert
 	public:
 		virtual ~CoilyState() {}
 
-		virtual CoilyState* HandleTransitions() { return nullptr; }
+		virtual std::unique_ptr<CoilyState> HandleTransitions() { return nullptr; }
 		virtual void Update() {}
 		virtual void Enter(dae::GameObject& coilyObject);
 		virtual void Exit() {}
@@ -29,7 +29,7 @@ namespace qbert
 	class CoilyWaitingState final : public CoilyState
 	{
 	public:
-		virtual CoilyState* HandleTransitions() override;
+		virtual std::unique_ptr<CoilyState> HandleTransitions() override;
 		virtual void Update() override;
 		virtual void Enter(dae::GameObject& coilyObject) override;
 
@@ -42,7 +42,7 @@ namespace qbert
 	class CoilyJumpingState final : public CoilyState
 	{
 	public:
-		virtual CoilyState* HandleTransitions() override;
+		virtual std::unique_ptr<CoilyState> HandleTransitions() override;
 		virtual void Update() override;
 		virtual void Enter(dae::GameObject& coilyObject) override;
 	};
@@ -50,7 +50,7 @@ namespace qbert
 	class CoilyArrivingState final : public CoilyState
 	{
 	public:
-		virtual CoilyState* HandleTransitions() override;
+		virtual std::unique_ptr<CoilyState> HandleTransitions() override;
 		virtual void Update() override;
 		virtual void Enter(dae::GameObject& coilyObject) override;
 
@@ -63,7 +63,7 @@ namespace qbert
 	class CoilyPreparingState final : public CoilyState
 	{
 	public:
-		virtual CoilyState* HandleTransitions() override;
+		virtual std::unique_ptr<CoilyState> HandleTransitions() override;
 		virtual void Update() override;
 
 	private:

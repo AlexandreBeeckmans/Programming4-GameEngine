@@ -14,7 +14,7 @@ namespace dae
 
 namespace qbert
 {
-	class QbertMoveComponent;
+	class QbertFSMManagerComponent;
 	class GridMoveComponent;
 	class FallComponent;
 	class InputDirectionComponent;
@@ -26,14 +26,14 @@ namespace qbert
 	public:
 		virtual ~PlayerState(){}
 
-		virtual PlayerState* HandleTransitions() { return nullptr; }
+		virtual std::unique_ptr<PlayerState> HandleTransitions() { return nullptr; }
 
 		virtual void Update(){}
 		virtual void Enter(dae::GameObject& qbertObject);
 		virtual void Exit() {}
 
 	protected:
-		QbertMoveComponent* GetQbertComponent()const{ return m_pQbertComponent; }
+		QbertFSMManagerComponent* GetQbertComponent()const{ return m_pQbertComponent; }
 		GridMoveComponent* GetMoveComponent()const { return m_pMoveComponent; }
 		FallComponent* GetFallComponent() const { return m_pFallComponent; }
 		InputDirectionComponent* GetInputComponent() const { return m_pInputComponent; }
@@ -43,7 +43,7 @@ namespace qbert
 
 		dae::HealthComponent* GetHealthComponent()const { return m_pHealthComponent; }
 	private:
-		QbertMoveComponent* m_pQbertComponent{};
+		QbertFSMManagerComponent* m_pQbertComponent{};
 		GridMoveComponent* m_pMoveComponent{};
 		FallComponent* m_pFallComponent{};
 		InputDirectionComponent* m_pInputComponent{};
@@ -57,14 +57,14 @@ namespace qbert
 	class WaitingState final : public PlayerState
 	{
 	public:
-		virtual PlayerState* HandleTransitions() override;
+		virtual std::unique_ptr<PlayerState> HandleTransitions() override;
 		virtual void Enter(dae::GameObject& qbertObject) override;
 	};
 
 	class JumpingState final : public PlayerState
 	{
 	public:
-		virtual PlayerState* HandleTransitions() override;
+		virtual std::unique_ptr<PlayerState> HandleTransitions() override;
 		virtual void Update() override;
 		virtual void Enter(dae::GameObject& qbert) override;
 		virtual void Exit() override;
@@ -73,7 +73,7 @@ namespace qbert
 	class DieState final : public PlayerState
 	{
 	public:
-		virtual PlayerState* HandleTransitions() override;
+		virtual std::unique_ptr<PlayerState> HandleTransitions() override;
 		virtual void Update() override;
 		virtual void Enter(dae::GameObject& qbert) override;
 		virtual void Exit() override;
@@ -86,7 +86,7 @@ namespace qbert
 	class WinState final : public PlayerState
 	{
 	public:
-		virtual PlayerState* HandleTransitions() override;
+		virtual std::unique_ptr<PlayerState> HandleTransitions() override;
 		virtual void Enter(dae::GameObject& qbert) override;
 		virtual void Update() override;
 	private:
@@ -97,14 +97,14 @@ namespace qbert
 	class TeleportingState final : public PlayerState
 	{
 	public:
-		virtual PlayerState* HandleTransitions() override;
+		virtual std::unique_ptr<PlayerState> HandleTransitions() override;
 		
 	};
 
 	class FallingState final : public PlayerState
 	{
 	public:
-		virtual PlayerState* HandleTransitions() override;
+		virtual std::unique_ptr<PlayerState> HandleTransitions() override;
 		virtual void Enter(dae::GameObject& qbert) override;
 		virtual void Update() override;
 

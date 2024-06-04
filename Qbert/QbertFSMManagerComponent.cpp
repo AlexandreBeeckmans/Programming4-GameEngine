@@ -1,14 +1,12 @@
 #include "QbertFSMManagerComponent.h"
-
 #include "GameObject.h"
-
 #include"PlayerState.h"
 
 
 qbert::QbertFSMManagerComponent::QbertFSMManagerComponent(dae::GameObject* owner):
 BaseComponent(owner)
 {
-	m_PlayerState = new WaitingState{};
+	m_PlayerState = std::make_unique<WaitingState>(WaitingState{});
 }
 void qbert::QbertFSMManagerComponent::Init()
 {
@@ -16,12 +14,12 @@ void qbert::QbertFSMManagerComponent::Init()
 }
 void qbert::QbertFSMManagerComponent::Update()
 {
-	PlayerState* newState = m_PlayerState->HandleTransitions();
-	if(newState)
+	std::unique_ptr<PlayerState> pNewState = m_PlayerState->HandleTransitions();
+	if(pNewState)
 	{
 		m_PlayerState->Exit();
-		delete m_PlayerState;
-		m_PlayerState = newState;
+		//delete m_PlayerState;
+		m_PlayerState = std::move(pNewState);
 		m_PlayerState->Enter(*GetOwner());
 	}
 

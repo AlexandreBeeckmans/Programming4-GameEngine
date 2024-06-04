@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include "BaseComponent.h"
+#include "PlayerState.h"
 
 namespace dae
 {
@@ -9,8 +12,6 @@ namespace dae
 
 namespace qbert
 {
-	class PlayerState;
-
 	class QbertFSMManagerComponent final : public dae::BaseComponent
 	{
 	public:
@@ -27,7 +28,7 @@ namespace qbert
 		virtual void Update() override;
 
 	private:
-		PlayerState* m_PlayerState{ nullptr };
+		std::unique_ptr<PlayerState> m_PlayerState{ nullptr };
 	};
 }
 

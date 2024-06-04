@@ -1,10 +1,12 @@
 #pragma once
+#include <memory>
+
 #include "SceneCollection.h"
+#include "ScenesState.h"
 
 
 namespace qbert
 {
-	class SceneStates;
 	class QbertScenes final : public dae::SceneCollection
 	{
 	public:
@@ -15,7 +17,7 @@ namespace qbert
 		static void LoadLevelLoading(const int level);
 
 		virtual void Update() override;
-		static SceneStates* m_pSceneState;
+		static std::unique_ptr<SceneStates> m_pSceneState;
 
 		static bool goNext;
 		static bool gameOver;

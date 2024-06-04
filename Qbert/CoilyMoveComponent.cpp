@@ -16,18 +16,17 @@ m_pMap(pMap)
 		m_pPlayerMoveComponent = pPlayerObject->GetComponent<GridMoveComponent>();
 		m_pPlayerKillableComponent = pPlayerObject->GetComponent<KillableComponent>();
 
-		m_State = new CoilyPreparingState{};
+		m_State = std::make_unique<CoilyPreparingState>();
 		m_State->Enter(*GetOwner());
 }
 
 void qbert::CoilyMoveComponent::Update()
 {
-	CoilyState* newState = m_State->HandleTransitions();
-	if (newState)
+	std::unique_ptr<CoilyState> pNewState = m_State->HandleTransitions();
+	if (pNewState)
 	{
 		m_State->Exit();
-		delete m_State;
-		m_State = newState;
+		m_State = std::move(pNewState);
 		m_State->Enter(*GetOwner());
 	}
 
@@ -87,7 +86,7 @@ void qbert::CoilyMoveComponent::SetVisible() const
 	GetOwner()->GetComponent<dae::ImageComponent>()->SetVisible(true);
 }
 
-void qbert::CoilyMoveComponent::SetMovementDirection()
+void qbert::CoilyMoveComponent::SetMovementDirection() const
 {
 	const int playerRow = m_pMap->GetRowFromIndex(m_pPlayerMoveComponent->GetCurrentIndex());
 	const int playerColumn = m_pMap->GetColumnFromIndex(m_pPlayerMoveComponent->GetCurrentIndex());
