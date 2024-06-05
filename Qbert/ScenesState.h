@@ -67,6 +67,16 @@ namespace qbert
 		float m_CurrentWaitingTime{0.0f};
 	};
 
+	class GameOverScreen final : public SceneStates
+	{
+	public:
+		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
+		virtual void Enter() override;
+		virtual void Exit() override;
+
+	private:
+	};
+
 	
 }
 

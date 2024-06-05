@@ -7,6 +7,7 @@
 #include "FollowPlayerComponent.h"
 #include "KillerComponent.h"
 #include "CoilyAnimatorComponent.h"
+#include "DeadFallComponent.h"
 #include "InputDirectionComponent.h"
 
 
@@ -18,6 +19,7 @@ void qbert::CoilyState::Enter(dae::GameObject& coilyObject)
 	m_pKillerComponent = coilyObject.GetComponent<KillerComponent>();
 	m_pAnimatorComponent = coilyObject.GetComponent<CoilyAnimatorComponent>();
 	m_pInputComponent = coilyObject.GetComponent<InputDirectionComponent>();
+	m_pDeadFallComponent = coilyObject.GetComponent<DeadFallComponent>();
 }
 
 std::unique_ptr<qbert::CoilyState> qbert::CoilyWaitingState::HandleTransitions()
@@ -30,6 +32,11 @@ std::unique_ptr<qbert::CoilyState> qbert::CoilyWaitingState::HandleTransitions()
 	if(GetInputComonent())
 	{
 		if (GetInputComonent()->IsInputPressedThisFrame()) return std::make_unique<CoilyJumpingState>();
+	}
+
+	if(GetMoveComponent()->GetCurrentIndex() == -1)
+	{
+		return std::make_unique<CoilyDyingState>();
 	}
 
 	
@@ -74,10 +81,6 @@ void qbert::CoilyJumpingState::Enter(dae::GameObject& coilyObject)
 	{
 		GetFollowComponent()->SetMovementDirection();
 	}
-	else if(GetInputComonent())
-	{
-		//GetInputComonent()->();
-	}
 	
 	GetMoveComponent()->SetMovementDirection();
 	GetAnimatorComponent()->SetJumpingSprite();
@@ -110,7 +113,10 @@ void qbert::CoilyArrivingState::Enter(dae::GameObject& coilyObject)
 {
 	CoilyState::Enter(coilyObject);
 	GetAnimatorComponent()->SetVisible();
+
+	GetMoveComponent()->SetCurrentIndex(0);
 	GetFallComponent()->SetFallDirection();
+	GetAnimatorComponent()->SetArrivingSprite(0);
 }
 
 std::unique_ptr<qbert::CoilyState> qbert::CoilyPreparingState::HandleTransitions()
@@ -122,4 +128,24 @@ std::unique_ptr<qbert::CoilyState> qbert::CoilyPreparingState::HandleTransitions
 void qbert::CoilyPreparingState::Update()
 {
 	m_CurrentPreparingTime += dae::EngineTime::GetInstance().GetDeltaTime();
+}
+
+std::unique_ptr<qbert::CoilyState> qbert::CoilyDyingState::HandleTransitions()
+{
+	if (m_CurrentDyingTime >= m_MaxDyingTime) return std::make_unique<CoilyArrivingState>();
+	return nullptr;
+}
+
+void qbert::CoilyDyingState::Update()
+{
+	m_CurrentDyingTime += dae::EngineTime::GetInstance().GetDeltaTime();
+
+	GetDeadFallComponent()->UpdateMovement();
+}
+
+void qbert::CoilyDyingState::Enter(dae::GameObject& coilyObject)
+{
+	CoilyState::Enter(coilyObject);
+
+	GetDeadFallComponent()->InitValues();
 }

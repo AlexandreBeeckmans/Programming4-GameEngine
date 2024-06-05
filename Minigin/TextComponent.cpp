@@ -31,6 +31,13 @@ void dae::TextComponent::SetColor(const SDL_Color& color)
 	InitTexture();
 }
 
+void dae::TextComponent::IncrementLetter(const int index)
+{
+	if (m_Text[index] >= 90) return;
+	++m_Text[index];
+	SetText(m_Text);
+}
+
 void dae::TextComponent::InitTexture()
 {
 	const SDL_Color color = { m_FontColor }; // only white text is supported now

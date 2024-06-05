@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/vec2.hpp>
 #include "Command.h"
+#include "GameObject.h"
 
 namespace qbert
 {
@@ -17,6 +18,20 @@ namespace qbert
 	{
 	public:
 		GoNextSceneCommand() = default;
+		virtual void Execute() override;
+	};
+
+	class IncrementLetterCommand : public dae::GameObjectCommand
+	{
+	public:
+		IncrementLetterCommand(dae::GameObject* pObject);
+		virtual void Execute() override;
+	};
+
+	class IncrementLetterIndexCommand : public dae::GameObjectCommand
+	{
+	public:
+		IncrementLetterIndexCommand(dae::GameObject* pObject);
 		virtual void Execute() override;
 	};
 

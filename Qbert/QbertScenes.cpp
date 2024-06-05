@@ -1,6 +1,7 @@
 
 #include <windows.h>
 #include <Xinput.h>
+#include <fstream>
 
 #include "QbertScenes.h"
 
@@ -52,14 +53,7 @@
 #include "SlickDirection.h"
 #include "SoundTypes.h"
 #include "TileActivatorComponent.h"
-
-//std::unique_ptr<qbert::SceneStates> qbert::QbertScenes::m_pSceneState = std::make_unique<qbert::StartMenuSceneState>(qbert::StartMenuSceneState{});
-//const float qbert::QbertScenes::m_LevelScale = 2.0f;
-//int qbert::QbertScenes::nbPlayer{};
-//
-//bool qbert::QbertScenes::goNext = false;
-//bool qbert::QbertScenes::gameOver = false;
-//std::vector<int> qbert::QbertScenes::m_Lives{};
+#include "WritableNameComponent.h"
 
 void qbert::QbertScenes::Init()
 {
@@ -466,6 +460,106 @@ void qbert::QbertScenes::LoadLevelLoading(const int level)
 	scene.Add(std::move(loadObject));
 }
 
+void qbert::QbertScenes::LoadGameOverScreen()
+{
+
+	const int currentScore{ std::accumulate(std::cbegin(m_Scores), std::cend(m_Scores), 0) };
+	ScoreData highScore{ GetHighScore() };
+
+
+	auto gameOverFont = dae::ResourceManager::GetInstance().LoadFont("qbert/Minecraft.ttf", 55);
+	dae::Font actualGameOverFont{ *gameOverFont };
+
+	auto gameOverTextObject{ std::make_unique<dae::GameObject>() };
+	gameOverTextObject->AddComponent<dae::TextComponent>("GAME OVER!", actualGameOverFont);
+	const glm::vec2 gameOverPos
+	{
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(gameOverTextObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 8.0f)
+	};
+	gameOverTextObject->SetLocalPosition(gameOverPos);
+
+
+	auto scoreFont = dae::ResourceManager::GetInstance().LoadFont("qbert/Minecraft.ttf", 36);
+	dae::Font actualScoreFont{ *scoreFont };
+
+	auto nameObject{ std::make_unique<dae::GameObject>() };
+	nameObject->AddComponent<dae::TextComponent>("AAA", actualGameOverFont);
+	nameObject->AddComponent<qbert::WritableNameComponent>();
+
+	qbert::IncrementLetterCommand incrementLetterCommand{ nameObject.get() };
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_UP, std::make_unique<qbert::IncrementLetterCommand>(incrementLetterCommand), dae::InputType::DOWN);
+
+	qbert::IncrementLetterIndexCommand incrementLetterIndexCommand{ nameObject.get() };
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_RIGHT, std::make_unique<qbert::IncrementLetterIndexCommand>(incrementLetterIndexCommand), dae::InputType::DOWN);
+
+	const glm::vec2 namePos
+	{
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(nameObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f - 100)
+	};
+	nameObject->SetLocalPosition(namePos);
+
+	auto yourScoreTextObject{ std::make_unique<dae::GameObject>() };
+	yourScoreTextObject->AddComponent<dae::TextComponent>("YOUR SCORE:", actualGameOverFont);
+	const glm::vec2 yourScorePos
+	{
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(yourScoreTextObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f)
+	};
+	yourScoreTextObject->SetLocalPosition(yourScorePos);
+
+	auto currentScoreObject{ std::make_unique<dae::GameObject>() };
+	currentScoreObject->AddComponent<dae::TextComponent>(std::to_string(currentScore), actualGameOverFont);
+	const glm::vec2 currentScorePos
+	{
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(currentScoreObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f + 50)
+	};
+	currentScoreObject->SetLocalPosition(currentScorePos);
+
+	auto highScoreTextObject{ std::make_unique<dae::GameObject>() };
+	highScoreTextObject->AddComponent<dae::TextComponent>("HIGH SCORE:", actualGameOverFont);
+	const glm::vec2 highScoreTextPos
+	{
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(highScoreTextObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f + 100)
+	};
+	highScoreTextObject->SetLocalPosition(highScoreTextPos);
+
+	auto highScoreObject{ std::make_unique<dae::GameObject>() };
+	highScoreObject->AddComponent<dae::TextComponent>(highScore.name +": " + std::to_string(highScore.score), actualGameOverFont);
+	const glm::vec2 highScorePos
+	{
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(highScoreObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
+		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f + 150)
+	};
+	highScoreObject->SetLocalPosition(highScorePos);
+
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("GameOverMenu");
+	scene.Add(std::move(gameOverTextObject));
+	scene.Add(std::move(nameObject));
+	scene.Add(std::move(yourScoreTextObject));
+	scene.Add(std::move(currentScoreObject));
+	scene.Add(std::move(highScoreTextObject));
+	scene.Add(std::move(highScoreObject));
+
+	m_Score.score = currentScore;
+
+	qbert::GoNextSceneCommand goNextCommand{};
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_SPACE, std::make_unique<qbert::GoNextSceneCommand>(goNextCommand), dae::InputType::DOWN);
+}
+
+void qbert::QbertScenes::LeaveGameOverScreen()
+{
+	ScoreData highScore = GetHighScore();
+
+	if(m_Score.score > highScore.score)
+	{
+		RegisterHighScore(m_Score);
+	}
+}
+
 void qbert::QbertScenes::Update()
 {
 	std::unique_ptr<SceneStates> pNewState = m_pSceneState->HandleTransitions();
@@ -597,6 +691,7 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(const int coily
 	coilyObject->AddComponent<qbert::FallComponent>();
 	coilyObject->AddComponent<qbert::KillerComponent>(pPlayerObjects);
 	coilyObject->AddComponent<qbert::CoilyAnimatorComponent>();
+	coilyObject->AddComponent<qbert::DeadFallComponent>();
 
 	coilyObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndex(coilyNb * 6);
 
@@ -651,4 +746,31 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateSlick(const bool isSl
 	slickObject->AddComponent<qbert::SlickAnimatorComponent>();
 
 	return slickObject;
+}
+
+
+
+qbert::ScoreData qbert::QbertScenes::GetHighScore()
+{
+	nlohmann::json json = dae::ResourceManager::GetInstance().ReadFile("../Data/qbert/highscore.json");
+	ScoreData currentHighScore{};
+	if (json.contains("name")) currentHighScore.name = json["name"];
+	if (json.contains("score")) currentHighScore.score = json["score"];
+
+	return currentHighScore;
+}
+
+void qbert::QbertScenes::RegisterHighScore(ScoreData newHighScore)
+{
+	nlohmann::json jsonObject{};
+
+	jsonObject["name"] = newHighScore.name;
+	jsonObject["score"] = newHighScore.score;
+
+	std::ofstream file("../Data/qbert/highscore.json", std::ios::out);
+	if (file.is_open())
+	{
+		file << jsonObject.dump(4);
+		file.close();
+	}
 }

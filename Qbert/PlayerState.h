@@ -71,7 +71,7 @@ namespace qbert
 
 	private:
 		float m_CurrentDeadTime = 0.0f;
-		float m_MaxDeadTime = 5.0f;
+		float m_MaxDeadTime = 2.0f;
 	};
 
 	class WinState final : public PlayerState

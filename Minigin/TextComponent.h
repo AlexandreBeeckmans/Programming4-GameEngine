@@ -21,7 +21,11 @@ namespace dae
 		TextComponent& operator=(TextComponent&& other) = delete;
 
 		void SetText(const std::string& text);
+		std::string GetText() { return m_Text; }
+
 		void SetColor(const SDL_Color& color);
+
+		void IncrementLetter(const int index);
 
 	private:
 

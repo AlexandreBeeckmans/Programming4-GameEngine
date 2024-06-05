@@ -20,6 +20,8 @@ void qbert::DeadFallComponent::InitValues()
 
 void qbert::DeadFallComponent::UpdateMovement()
 {
+	if (GetWorldPosition().y > dae::Minigin::GetWindowHeight()) return;
+
 	m_VerticalSpeed += m_Gravity * dae::EngineTime::GetInstance().GetDeltaTime();
 
 	glm::vec2 fallMovement{

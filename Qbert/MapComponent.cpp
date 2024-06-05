@@ -179,7 +179,7 @@ bool qbert::MapComponent::IsOnATeleporter(dae::GameObject* qbert) const
 {
 	for (DiscComponent* pDisc : m_pDiscs)
 	{
-		constexpr float maxDist = 50.0f;
+		constexpr float maxDist = 30.0f;
 
 		const float distance = glm::length(pDisc->GetWorldPosition() - qbert->GetWorldPosition());
 

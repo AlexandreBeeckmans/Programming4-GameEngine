@@ -191,6 +191,7 @@
     <ClCompile Include="TileComponent.cpp" />
     <ClCompile Include="TileDeactivatorComponent.cpp" />
     <ClCompile Include="UIComponent.cpp" />
+    <ClCompile Include="WritableNameComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlinkingComponent.h" />
@@ -235,6 +236,7 @@
     <ClInclude Include="TileDeactivatorComponent.h" />
     <ClInclude Include="TrashTheCache.h" />
     <ClInclude Include="UIComponent.h" />
+    <ClInclude Include="WritableNameComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

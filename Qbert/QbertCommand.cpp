@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "InputDirectionComponent.h"
 #include "QbertScenes.h"
+#include "WritableNameComponent.h"
 
 qbert::QbertMoveCommand::QbertMoveCommand(dae::GameObject* pObject, const glm::vec2& direction) :
 	GameObjectCommand{ pObject },
@@ -19,6 +20,26 @@ void qbert::QbertMoveCommand::Execute()
 void qbert::GoNextSceneCommand::Execute()
 {
 	QbertScenes::GetInstance().goNext = true;
+}
+
+qbert::IncrementLetterCommand::IncrementLetterCommand(dae::GameObject* pObject) :
+GameObjectCommand(pObject)
+{
+}
+
+void qbert::IncrementLetterCommand::Execute()
+{
+	GetGameActor()->GetComponent<qbert::WritableNameComponent>()->IncrementCurrentLetter();
+}
+
+qbert::IncrementLetterIndexCommand::IncrementLetterIndexCommand(dae::GameObject* pObject):
+GameObjectCommand(pObject)
+{
+}
+
+void qbert::IncrementLetterIndexCommand::Execute()
+{
+	GetGameActor()->GetComponent<qbert::WritableNameComponent>()->IncrementLetterIndex();
 }
 
 qbert::SelectCommand::SelectCommand(dae::GameObject* pObject, int direction, const float discplacement):

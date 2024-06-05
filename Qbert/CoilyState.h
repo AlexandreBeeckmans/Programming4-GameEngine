@@ -4,6 +4,11 @@
 
 namespace qbert
 {
+	class DeadFallComponent;
+}
+
+namespace qbert
+{
 	class CoilyFSMManagerComponent;
 	class GridMoveComponent;
 	class FallComponent;
@@ -24,6 +29,7 @@ namespace qbert
 		KillerComponent* GetKillerComponent()const { return m_pKillerComponent; }
 		CoilyAnimatorComponent* GetAnimatorComponent()const { return m_pAnimatorComponent; }
 		InputDirectionComponent* GetInputComonent()const { return m_pInputComponent; }
+		DeadFallComponent* GetDeadFallComponent()const { return m_pDeadFallComponent; }
 
 	private:
 		GridMoveComponent* m_pMoveComponent{};
@@ -32,6 +38,7 @@ namespace qbert
 		KillerComponent* m_pKillerComponent{};
 		CoilyAnimatorComponent* m_pAnimatorComponent{};
 		InputDirectionComponent* m_pInputComponent{};
+		DeadFallComponent* m_pDeadFallComponent{};
 	};
 
 	class CoilyWaitingState final : public CoilyState
@@ -77,6 +84,18 @@ namespace qbert
 	private:
 		float m_CurrentPreparingTime = 0.0f;
 		static constexpr float m_MaxAnimTime{ 1.0f };
+	};
+
+	class CoilyDyingState final : public CoilyState
+	{
+	public:
+		virtual std::unique_ptr<CoilyState> HandleTransitions() override;
+		virtual void Update() override;
+		virtual void Enter(dae::GameObject& coilyObject) override;
+
+	private:
+		float m_CurrentDyingTime = 0.0f;
+		static constexpr float m_MaxDyingTime{ 10.0f };
 	};
 }
 

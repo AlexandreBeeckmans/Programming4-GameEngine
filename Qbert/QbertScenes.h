@@ -18,6 +18,12 @@ namespace dae
 
 namespace qbert
 {
+	struct ScoreData
+	{
+		std::string name;
+		int score;
+	};
+
 	class MapComponent;
 
 	class QbertScenes final : public dae::SceneCollection, public dae::Observer, public dae::Singleton<QbertScenes>
@@ -28,6 +34,8 @@ namespace qbert
 		void LoadQbertLevel(const int level, const int round, const int nbPlayerLevel, const bool isVersus = false);
 		void LoadStartMenu();
 		void LoadLevelLoading(const int level);
+		void LoadGameOverScreen();
+		void LeaveGameOverScreen();
 
 		virtual void Update() override;
 		std::unique_ptr<SceneStates> m_pSceneState{ std::make_unique<qbert::StartMenuSceneState>(qbert::StartMenuSceneState{}) };
@@ -42,6 +50,8 @@ namespace qbert
 		void AddScoreComponent(dae::ScoreComponent* pComp);
 		void ClearScoreComponents();
 
+		void SetName(const std::string& newName) { m_Score.name = newName; }
+
 		virtual void UpdateObserver() override;
 
 		bool goNext{false};
@@ -53,6 +63,12 @@ namespace qbert
 	private :
 		const float m_LevelScale{2.0f};
 		int nbPlayer{};
+		ScoreData m_Score
+		{
+			"Robert",
+			0
+		};
+
 
 		std::vector<dae::HealthComponent*> m_pHealthComponents{};
 		std::vector<dae::ScoreComponent*> m_pScoreComponents{};
@@ -63,7 +79,8 @@ namespace qbert
 		std::unique_ptr<dae::GameObject> CreateUgg(bool isLeft);
 		std::unique_ptr<dae::GameObject> CreateSlick(const bool isSlick, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent);
 
-
+		ScoreData GetHighScore();
+		void RegisterHighScore(ScoreData newHighScore);
 	};
 }
 
