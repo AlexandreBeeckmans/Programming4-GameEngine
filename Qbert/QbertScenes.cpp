@@ -34,6 +34,7 @@
 #include "imgui.h"
 #include "InputDirectionComponent.h"
 #include "InputManager.h"
+#include "LevelLoader.h"
 #include "MapComponent.h"
 #include "Minigin.h"
 #include "PlayerKillableComponent.h"
@@ -66,9 +67,11 @@ void qbert::QbertScenes::Init()
 
 void qbert::QbertScenes::LoadQbertLevel(const int level, const int round, const int nbPlayerLevel, const bool isVersus)
 {
+	LevelInfo levelInfo{ LevelLoader::GetInstance().LoadLevel(level + 1, round + 1) };
+
 	SetNbPlayer(nbPlayerLevel);
 	dae::ImageComponent::SetSpriteScale(m_LevelScale);
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level");
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level" + std::to_string(level) + "Round" + std::to_string(round));
 
 	auto backgroundObject = std::make_unique<dae::GameObject>();
 
@@ -143,11 +146,18 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round, const 
 
 	
 
+	std::vector<std::unique_ptr<dae::GameObject>> coilyObjects{};
+	for(int i{0}; i < levelInfo.nbCoily; ++i)
+	{
+		coilyObjects.push_back(CreateCoily(i, &playerObjects, pMapObject->GetComponent<MapComponent>(), isVersus));
+	}
 
-	auto coilyObject = CreateCoily(&playerObjects, pMapObject->GetComponent<MapComponent>(), isVersus);
-	auto slickObject = CreateSlick(true, &playerObjects, pMapObject->GetComponent<MapComponent>());
-	auto samObject = CreateSlick(false, &playerObjects, pMapObject->GetComponent<MapComponent>());
+	std::vector<std::unique_ptr<dae::GameObject>> slickObjects{};
 
+	for (int i{ 0 }; i < levelInfo.nbSlick; ++i)
+	{
+		slickObjects.push_back(CreateSlick(static_cast<bool>(i%2), &playerObjects, pMapObject->GetComponent<MapComponent>()));
+	}
 #pragma region DISC
 	auto leftDiscObject = std::make_unique<dae::GameObject>();
 	leftDiscObject->SetLocalPosition(150, 150);
@@ -330,12 +340,15 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round, const 
 		scene.Add(std::move(player));
 	}
 
-	scene.Add(std::move(coilyObject));
-	scene.Add(std::move(slickObject));
-	scene.Add(std::move(samObject));
+	for (auto& coily : coilyObjects)
+	{
+		scene.Add(std::move(coily));
+	}
 
-
-
+	for (auto& slick : slickObjects)
+	{
+		scene.Add(std::move(slick));
+	}
 }
 
 void qbert::QbertScenes::LoadStartMenu()
@@ -535,7 +548,7 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateBubble(dae::GameObjec
 	return bubbleObject;
 }
 
-std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent, const bool isVersus)
+std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(const int coilyNb,  std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent, const bool isVersus)
 {
 	std::unique_ptr<dae::GameObject> coilyObject = std::make_unique<dae::GameObject>();
 	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
@@ -545,7 +558,9 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(std::vector<std
 	coilyObject->AddComponent<qbert::KillerComponent>(pPlayerObjects);
 	coilyObject->AddComponent<qbert::CoilyAnimatorComponent>();
 
-	if(isVersus)
+	coilyObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndex(coilyNb * 6);
+
+	if(isVersus && coilyNb == 0)
 	{
 		coilyObject->AddComponent<qbert::InputDirectionComponent>();
 		std::unique_ptr<dae::GamepadController> gamepadController{ std::make_unique<dae::GamepadController>() };

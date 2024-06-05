@@ -70,6 +70,7 @@ std::unique_ptr<qbert::SceneStates> qbert::LevelSceneState::HandleTransitions()
 			return std::make_unique<LevelSceneState>(LevelSceneState{});
 
 
+		if (QbertScenes::gameOver) return std::make_unique<StartMenuSceneState>(StartMenuSceneState{});
 		return std::make_unique<LevelLoadingState>(LevelLoadingState{});
 	}
 

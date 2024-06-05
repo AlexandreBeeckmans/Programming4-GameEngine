@@ -2,6 +2,10 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "ResourceManager.h"
+
+#include <iostream>
+#include <fstream>
+
 #include "Renderer.h"
 #include "Texture2D.h"
 #include "Font.h"
@@ -33,4 +37,30 @@ std::unique_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& fil
 {
 	auto fontToReturn = std::make_unique<Font>(m_dataPath + file, size);
 	return std::move(fontToReturn);
+}
+
+nlohmann::json dae::ResourceManager::ReadFile(const std::string& path) const
+{
+	std::ifstream inputFile(m_dataPath + path);
+	if (!inputFile.is_open())
+	{
+		std::string errorMessage{ "Failed to open " + path };
+		std::cerr << errorMessage << "\n";
+		return {};
+	}
+
+	nlohmann::json doc{};
+	try
+	{
+		doc = nlohmann::json::parse(inputFile);
+		return doc;
+	}
+	catch (const nlohmann::json::parse_error& e)
+	{
+		const std::string errorMessage{ "JSON parsing error: " + std::string{ e.what() } };
+		std::cerr << errorMessage << '\n';
+	}
+
+
+	return {};
 }
