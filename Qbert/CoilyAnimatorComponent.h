@@ -1,6 +1,11 @@
 #pragma once
 #include "BaseComponent.h"
 
+namespace qbert
+{
+	class GridMoveComponent;
+}
+
 namespace dae
 {
 	class ImageComponent;
@@ -24,10 +29,13 @@ namespace qbert
 
 		void SetWaitingSprite() const;
 		void SetArrivingSprite(const int column) const;
+		void SetJumpingSprite() const;
+
 		void SetVisible() const;
 
 	private:
 		dae::ImageComponent* m_pImageComponent{nullptr};
+		GridMoveComponent* m_pMoveComponent{ nullptr };
 	};
 }
 

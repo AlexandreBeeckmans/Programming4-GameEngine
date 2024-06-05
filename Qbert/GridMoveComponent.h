@@ -36,6 +36,8 @@ namespace qbert
 		void ResetPositionValues();
 
 		void SetCurrentIndexToTop();
+		void SetCurrentIndex(int index);
+
 		void SetMovementDirection();
 
 		bool HasReachedFinalPosition() const;

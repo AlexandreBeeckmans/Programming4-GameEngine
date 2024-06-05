@@ -40,6 +40,12 @@ void qbert::GridMoveComponent::SetCurrentIndexToTop()
 	m_Target = m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint();
 }
 
+void qbert::GridMoveComponent::SetCurrentIndex(int index)
+{
+	m_CurrentIndex = index;
+	m_Target = m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint();
+}
+
 void qbert::GridMoveComponent::SetMovementDirection()
 {
 	switch(m_CurrentGridDirection)

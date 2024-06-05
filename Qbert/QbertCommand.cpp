@@ -20,3 +20,18 @@ void qbert::GoNextSceneCommand::Execute()
 {
 	QbertScenes::goNext = true;
 }
+
+qbert::SelectCommand::SelectCommand(dae::GameObject* pObject, int direction, const float discplacement):
+GameObjectCommand(pObject),
+m_Direction(direction/std::abs(direction)),
+m_Discplacement(discplacement)
+{
+	
+}
+
+void qbert::SelectCommand::Execute()
+{
+	if(SceneStates::IncrementGameMode(m_Direction))
+		GetGameActor()->Translate(glm::vec2{ 0, m_Discplacement * static_cast<float>(m_Direction) });
+}
+

@@ -8,11 +8,21 @@
 int qbert::SceneStates::m_LevelNumber{ 0 };
 int qbert::SceneStates::m_RoundNumber{ 0 };
 bool qbert::SceneStates::m_LevelFinished{ false };
+qbert::GameMode qbert::SceneStates::m_GameMode{ qbert::GameMode::SOLO };
 
 void qbert::SceneStates::Exit()
 {
 	dae::SceneManager::GetInstance().ClearScenes();
 	dae::InputManager::GetInstance().UnbindAll();
+}
+
+bool qbert::SceneStates::IncrementGameMode(const int addedValue)
+{
+	if (static_cast<int>(m_GameMode) + addedValue >= 3) return false;
+	if (static_cast<int>(m_GameMode) + addedValue < 0) return false;
+
+	m_GameMode = static_cast<GameMode>(static_cast<int>(m_GameMode) + addedValue);
+	return true;
 }
 
 void qbert::SceneStates::ResetLevelAndRound()
@@ -71,7 +81,20 @@ std::unique_ptr<qbert::SceneStates> qbert::LevelSceneState::HandleTransitions()
 void qbert::LevelSceneState::Enter()
 {
 	QbertScenes::goNext = false;
-	QbertScenes::LoadQbertLevel(GetLevelNumber(),GetRoundNumber());
+
+	switch(m_GameMode)
+	{
+	case(GameMode::SOLO):
+		QbertScenes::LoadQbertLevel(GetLevelNumber(), GetRoundNumber(), 1);
+		break;
+	case(GameMode::COOP):
+		QbertScenes::LoadQbertLevel(GetLevelNumber(), GetRoundNumber(), 2);
+		break;
+	case(GameMode::VERSUS):
+		QbertScenes::LoadQbertLevel(GetLevelNumber(), GetRoundNumber(), 1, true);
+		break;
+	}
+	
 
 	dae::SceneManager::GetInstance().Init();
 }
@@ -79,7 +102,6 @@ void qbert::LevelSceneState::Enter()
 void qbert::LevelSceneState::Exit()
 {
 	SceneStates::Exit();
-	//IncrementRound();
 }
 
 std::unique_ptr<qbert::SceneStates> qbert::LevelLoadingState::HandleTransitions()

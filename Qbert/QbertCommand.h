@@ -19,6 +19,16 @@ namespace qbert
 		GoNextSceneCommand() = default;
 		virtual void Execute() override;
 	};
+
+	class SelectCommand : public dae::GameObjectCommand
+	{
+	public:
+		SelectCommand(dae::GameObject* pObject, int direction, const float discplacement);
+		virtual void Execute() override;
+	private :
+		int m_Direction;
+		float m_Discplacement;
+	};
 }
 
 

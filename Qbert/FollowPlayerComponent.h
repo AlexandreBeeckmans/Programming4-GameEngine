@@ -1,4 +1,7 @@
 #pragma once
+#include <memory>
+#include <vector>
+
 #include "BaseComponent.h"
 
 
@@ -10,7 +13,7 @@ namespace qbert
 	class FollowPlayerComponent final : public dae::BaseComponent
 	{
 	public:
-		FollowPlayerComponent(dae::GameObject* owner, GridMoveComponent* pPlayerMovement, MapComponent* pMap);
+		FollowPlayerComponent(dae::GameObject* owner, std::vector<std::unique_ptr<dae::GameObject>>* pPlayers, MapComponent* pMap);
 		virtual ~FollowPlayerComponent() override = default;
 
 
@@ -26,7 +29,9 @@ namespace qbert
 	private:
 
 		GridMoveComponent* m_pMoveComponent{ nullptr };
-		GridMoveComponent* m_pPlayerMoveComponent{ nullptr };
+
+		std::vector<GridMoveComponent*> m_pPlayerMoveComponents{ };
+
 		MapComponent* m_pMap{ nullptr };
 	};
 }

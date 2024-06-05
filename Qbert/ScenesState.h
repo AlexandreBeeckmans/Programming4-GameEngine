@@ -3,6 +3,13 @@
 
 namespace qbert
 {
+	enum class GameMode
+	{
+		SOLO,
+		COOP,
+		VERSUS
+	};
+
 	class SceneStates
 	{
 	public:
@@ -13,6 +20,8 @@ namespace qbert
 		virtual void Enter() {}
 		virtual void Exit();
 
+		static bool IncrementGameMode(const int addedValue);
+
 	protected:
 		static void ResetLevelAndRound();
 		static void IncrementRound();
@@ -21,6 +30,8 @@ namespace qbert
 		static int GetRoundNumber() { return m_RoundNumber; }
 		static bool IsLevelFinished() { return m_LevelFinished; }
 		static void SetLevelFinished(const bool isFinished) { m_LevelFinished = isFinished; }
+
+		static GameMode m_GameMode;
 
 	private:
 		static int m_LevelNumber;

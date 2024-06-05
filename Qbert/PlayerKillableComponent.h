@@ -1,4 +1,7 @@
 #pragma once
+#include <memory>
+#include <vector>
+
 #include "BaseComponent.h"
 
 namespace qbert
@@ -9,7 +12,7 @@ namespace qbert
 	class PlayerKillableComponent final : public dae::BaseComponent
 	{
 	public:
-		PlayerKillableComponent(dae::GameObject* owner, GridMoveComponent* pPlayerMoveComponent);
+		PlayerKillableComponent(dae::GameObject* owner, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects);
 		virtual ~PlayerKillableComponent() override = default;
 
 
@@ -25,7 +28,7 @@ namespace qbert
 
 		GridMoveComponent* m_pMoveComponent{ nullptr };
 
-		GridMoveComponent* m_pPlayerMoveComponent{ nullptr };
+		std::vector<GridMoveComponent*> m_pPlayerMoveComponents{};
 	};
 }
 

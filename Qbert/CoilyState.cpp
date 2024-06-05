@@ -8,6 +8,7 @@
 #include "FollowPlayerComponent.h"
 #include "KillerComponent.h"
 #include "CoilyAnimatorComponent.h"
+#include "InputDirectionComponent.h"
 
 
 void qbert::CoilyState::Enter(dae::GameObject& coilyObject)
@@ -18,18 +19,33 @@ void qbert::CoilyState::Enter(dae::GameObject& coilyObject)
 	m_pFollowPlayerComponent = coilyObject.GetComponent<FollowPlayerComponent>();
 	m_pKillerComponent = coilyObject.GetComponent<KillerComponent>();
 	m_pAnimatorComponent = coilyObject.GetComponent<CoilyAnimatorComponent>();
+	m_pInputComponent = coilyObject.GetComponent<InputDirectionComponent>();
 }
 
 std::unique_ptr<qbert::CoilyState> qbert::CoilyWaitingState::HandleTransitions()
 {
-	if (m_CurrentWaitingTime >= m_MaxWaitingTime) return std::make_unique<CoilyJumpingState>();
+	if(GetFollowComponent())
+	{
+		if (m_CurrentWaitingTime >= m_MaxWaitingTime) return std::make_unique<CoilyJumpingState>();
+	}
+
+	if(GetInputComonent())
+	{
+		if (GetInputComonent()->IsInputPressedThisFrame()) return std::make_unique<CoilyJumpingState>();
+	}
+
+	
 
 	return nullptr;
 }
 
 void qbert::CoilyWaitingState::Update()
 {
-	m_CurrentWaitingTime += dae::EngineTime::GetInstance().GetDeltaTime();
+	if(GetFollowComponent())
+	{
+		m_CurrentWaitingTime += dae::EngineTime::GetInstance().GetDeltaTime();
+	}
+	
 	GetKillerComponent()->CheckForPlayer();
 }
 
@@ -56,8 +72,18 @@ void qbert::CoilyJumpingState::Enter(dae::GameObject& coilyObject)
 {
 	CoilyState::Enter(coilyObject);
 
-	GetFollowComponent()->SetMovementDirection();
+	if(GetFollowComponent())
+	{
+		GetFollowComponent()->SetMovementDirection();
+	}
+	else if(GetInputComonent())
+	{
+		//GetInputComonent()->();
+	}
+	
 	GetMoveComponent()->SetMovementDirection();
+	GetAnimatorComponent()->SetJumpingSprite();
+	
 }
 
 std::unique_ptr<qbert::CoilyState> qbert::CoilyArrivingState::HandleTransitions()

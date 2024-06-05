@@ -5,11 +5,15 @@
 #include "GridMoveComponent.h"
 #include "KillableComponent.h"
 
-qbert::KillerComponent::KillerComponent(dae::GameObject* owner, dae::GameObject* pPlayerObject):
+qbert::KillerComponent::KillerComponent(dae::GameObject* owner, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects):
 BaseComponent(owner)
 {
-	m_pPlayerMoveComponent = pPlayerObject->GetComponent<GridMoveComponent>();
-	m_pPlayerKillableComponent = pPlayerObject->GetComponent<KillableComponent>();
+	for (auto& player : *pPlayerObjects)
+	{
+		m_pPlayerMoveComponents.push_back(player->GetComponent<GridMoveComponent>());
+		m_pPlayerKillableComponents.push_back(player->GetComponent<KillableComponent>());
+	}
+	
 }
 
 void qbert::KillerComponent::Init()
@@ -19,8 +23,12 @@ void qbert::KillerComponent::Init()
 
 void qbert::KillerComponent::CheckForPlayer() const
 {
-	if (m_pPlayerMoveComponent->GetCurrentIndex() == m_pMoveComponent->GetCurrentIndex())
+	for(size_t i{0}; i < m_pPlayerMoveComponents.size(); ++i)
 	{
-		m_pPlayerKillableComponent->EncountersEnemy();
+		if (m_pPlayerMoveComponents[i]->GetCurrentIndex() == m_pMoveComponent->GetCurrentIndex())
+		{
+			m_pPlayerKillableComponents[i]->EncountersEnemy();
+		}
 	}
+	
 }

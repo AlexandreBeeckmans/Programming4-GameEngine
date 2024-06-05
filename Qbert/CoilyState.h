@@ -4,6 +4,11 @@
 
 namespace qbert
 {
+	class InputDirectionComponent;
+}
+
+namespace qbert
+{
 	class CoilyFSMManagerComponent;
 	class GridMoveComponent;
 	class FallComponent;
@@ -28,6 +33,7 @@ namespace qbert
 		FollowPlayerComponent* GetFollowComponent() const { return m_pFollowPlayerComponent; }
 		KillerComponent* GetKillerComponent()const { return m_pKillerComponent; }
 		CoilyAnimatorComponent* GetAnimatorComponent()const { return m_pAnimatorComponent; }
+		InputDirectionComponent* GetInputComonent()const { return m_pInputComponent; }
 
 	private:
 		CoilyFSMManagerComponent* m_pCoilyComponent{};
@@ -36,6 +42,7 @@ namespace qbert
 		FollowPlayerComponent* m_pFollowPlayerComponent{};
 		KillerComponent* m_pKillerComponent{};
 		CoilyAnimatorComponent* m_pAnimatorComponent{};
+		InputDirectionComponent* m_pInputComponent{};
 	};
 
 	class CoilyWaitingState final : public CoilyState

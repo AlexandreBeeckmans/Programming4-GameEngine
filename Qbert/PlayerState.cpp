@@ -96,7 +96,7 @@ void qbert::JumpingState::Exit()
 
 std::unique_ptr<qbert::PlayerState> qbert::DieState::HandleTransitions()
 {
-	if (m_CurrentDeadTime < m_MaxDeadTime) return nullptr;
+	if (m_CurrentDeadTime < m_MaxDeadTime || GetHealthComponent()->IsDead()) return nullptr;
 
 	return std::make_unique<WaitingState>();
 }
@@ -110,16 +110,20 @@ void qbert::DieState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
 	GetKillableComponent()->Kill();
+	if (GetHealthComponent()->IsDead())
+	{
+		QbertScenes::ReducePlayer();
+		if (QbertScenes::AreAllPlayersDead())
+		{
+			QbertScenes::gameOver = true;
+		}
+	}
 	m_CurrentDeadTime = 0;
 }
 
 void qbert::DieState::Exit()
 {
 	GetKillableComponent()->Respawn();
-	if (GetHealthComponent()->IsDead())
-	{
-		QbertScenes::gameOver = true;
-	}
 }
 
 std::unique_ptr<qbert::PlayerState> qbert::WinState::HandleTransitions()
@@ -133,7 +137,8 @@ std::unique_ptr<qbert::PlayerState> qbert::WinState::HandleTransitions()
 void qbert::WinState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::WIN), 100.0f);
+	if(!QbertScenes::goNext)
+		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::WIN), 100.0f);
 	GetTileActivatorComponent()->AnimateTiles();
 }
 
