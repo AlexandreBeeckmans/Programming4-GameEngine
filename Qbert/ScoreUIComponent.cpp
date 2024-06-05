@@ -11,6 +11,11 @@ m_pScoreText{pScoreText}
 
 }
 
+void qbert::ScoreUIComponent::Init()
+{
+	UpdateObserver();
+}
+
 void qbert::ScoreUIComponent::UpdateObserver()
 {
 	int score{m_pScoreComponent->GetScore()};

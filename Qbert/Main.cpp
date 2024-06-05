@@ -38,7 +38,7 @@ int main(int, char* [])
 
 	dae::Minigin engine("../Data/");
 
-	qbert::QbertScenes::Init();
+	qbert::QbertScenes::GetInstance().Init();
 
 	std::unique_ptr<qbert::QbertScenes> sceneCollec{ std::make_unique<qbert::QbertScenes>() };
 	dae::SceneManager::GetInstance().SetSceneCollection(std::move(sceneCollec));

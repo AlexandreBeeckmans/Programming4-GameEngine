@@ -1,7 +1,6 @@
 #pragma once
 #include <glm/vec3.hpp>
 
-
 namespace dae
 {
 	class GameObject;
@@ -33,6 +32,9 @@ namespace dae
 		void SetParent(GameObject* newParent) const;
 		void DetachFromParent() const;
 		void DetachAllChildren() const;
+
+		void SetOwnerActive(const bool isActive)const;
+		bool IsOwnerActive()const;
 
 	protected:
 		GameObject* GetOwner() const;

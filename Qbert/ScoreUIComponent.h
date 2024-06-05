@@ -22,6 +22,8 @@ namespace qbert
 		ScoreUIComponent& operator=(const ScoreUIComponent& other) = delete;
 		ScoreUIComponent& operator=(ScoreUIComponent&& other) = delete;
 
+		virtual void Init() override;
+
 		virtual void UpdateObserver() override;
 
 		void SetScoreComponent(dae::ScoreComponent* pScoreComponent);

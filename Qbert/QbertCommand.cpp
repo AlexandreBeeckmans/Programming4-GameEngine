@@ -18,7 +18,7 @@ void qbert::QbertMoveCommand::Execute()
 
 void qbert::GoNextSceneCommand::Execute()
 {
-	QbertScenes::goNext = true;
+	QbertScenes::GetInstance().goNext = true;
 }
 
 qbert::SelectCommand::SelectCommand(dae::GameObject* pObject, int direction, const float discplacement):

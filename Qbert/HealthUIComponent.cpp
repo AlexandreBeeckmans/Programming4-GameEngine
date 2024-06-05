@@ -8,11 +8,16 @@ m_pLivesImage(pImage)
 {
 }
 
+void qbert::HealthUIComponent::Init()
+{
+	UpdateObserver();
+}
+
 void qbert::HealthUIComponent::UpdateObserver()
 {
 	int maxLives = m_pHealthComponent->GetMaxLives();
 	int lives = m_pHealthComponent->GetLivesRemaining();
-	m_pLivesImage->ReduceHeight(static_cast<float>(lives) / static_cast<float>(maxLives));
+	m_pLivesImage->ReduceHeight(static_cast<float>(lives - 1) / static_cast<float>(maxLives - 1));
 }
 
 void qbert::HealthUIComponent::SetHealthComponent(dae::HealthComponent* pHealthComponent)

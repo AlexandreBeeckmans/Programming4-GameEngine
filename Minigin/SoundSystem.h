@@ -18,6 +18,7 @@ namespace dae
 	public:
 		virtual ~SoundSystem() = default;
 		virtual void Play(const soundId id, const float volume);
+
 		virtual void Init() = 0;
 		virtual void LoadSound(const std::string& path) = 0;
 		virtual void Update() = 0;

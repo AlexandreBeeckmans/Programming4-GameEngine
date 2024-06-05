@@ -22,7 +22,7 @@ bool qbert::PlayerKillableComponent::IsEncounteringPlayer() const
 {
 	for (auto playerMove : m_pPlayerMoveComponents)
 	{
-		if (playerMove->GetCurrentIndex() == m_pMoveComponent->GetCurrentIndex())
+		if (playerMove->GetCurrentIndex() == m_pMoveComponent->GetCurrentIndex() && playerMove->IsOwnerActive())
 			return true;
 	}
 	return false;

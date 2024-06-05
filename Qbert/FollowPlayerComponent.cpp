@@ -28,6 +28,11 @@ void qbert::FollowPlayerComponent::SetMovementDirection() const
 	std::vector<int> distances;
 	for (auto move : m_pPlayerMoveComponents)
 	{
+		if (!move->IsOwnerActive())
+		{
+			distances.push_back(INT16_MAX);
+			continue;
+		}
 		const int playerRow = m_pMap->GetRowFromIndex(move->GetCurrentIndex());
 		const int playerColumn = m_pMap->GetColumnFromIndex(move->GetCurrentIndex());
 

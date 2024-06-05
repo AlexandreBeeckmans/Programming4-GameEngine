@@ -53,12 +53,13 @@
 #include "SoundTypes.h"
 #include "TileActivatorComponent.h"
 
-std::unique_ptr<qbert::SceneStates> qbert::QbertScenes::m_pSceneState = std::make_unique<qbert::StartMenuSceneState>(qbert::StartMenuSceneState{});
-const float qbert::QbertScenes::m_LevelScale = 2.0f;
-int qbert::QbertScenes::nbPlayer{};
-
-bool qbert::QbertScenes::goNext = false;
-bool qbert::QbertScenes::gameOver = false;
+//std::unique_ptr<qbert::SceneStates> qbert::QbertScenes::m_pSceneState = std::make_unique<qbert::StartMenuSceneState>(qbert::StartMenuSceneState{});
+//const float qbert::QbertScenes::m_LevelScale = 2.0f;
+//int qbert::QbertScenes::nbPlayer{};
+//
+//bool qbert::QbertScenes::goNext = false;
+//bool qbert::QbertScenes::gameOver = false;
+//std::vector<int> qbert::QbertScenes::m_Lives{};
 
 void qbert::QbertScenes::Init()
 {
@@ -493,6 +494,39 @@ bool qbert::QbertScenes::AreAllPlayersDead()
 	return nbPlayer <= 0;
 }
 
+void qbert::QbertScenes::AddHealthComponents(dae::HealthComponent* pComp)
+{
+	m_pHealthComponents.push_back(pComp);
+}
+
+void qbert::QbertScenes::ClearHealthComponents()
+{
+	m_pHealthComponents.clear();
+}
+
+void qbert::QbertScenes::AddScoreComponent(dae::ScoreComponent* pComp)
+{
+	m_pScoreComponents.push_back(pComp);
+}
+
+void qbert::QbertScenes::ClearScoreComponents()
+{
+	m_pScoreComponents.clear();
+}
+
+void qbert::QbertScenes::UpdateObserver()
+{
+	for(size_t i{0}; i < m_pHealthComponents.size(); ++i)
+	{
+		m_Lives[i] = m_pHealthComponents[i]->GetLivesRemaining();
+	}
+
+	for (size_t i{ 0 }; i < m_pScoreComponents.size(); ++i)
+	{
+		m_Scores[i] = m_pScoreComponents[i]->GetScore();
+	}
+}
+
 std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreatePlayer(const int playerNb, MapComponent* pMapComponent)
 {
 	std::unique_ptr<dae::GameObject> playerObject = std::make_unique<dae::GameObject>();
@@ -508,8 +542,14 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreatePlayer(const int play
 	playerObject->AddComponent<qbert::TileActivatorComponent>(pMapComponent);
 	playerObject->AddComponent<qbert::QbertJumpAnimatorComponent>();
 
-	playerObject->AddComponent<dae::ScoreComponent>();
-	playerObject->AddComponent<dae::HealthComponent>();
+	playerObject->AddComponent<dae::ScoreComponent>(m_Scores[playerNb - 1]);
+	playerObject->GetComponent<dae::ScoreComponent>()->AddObserver(this);
+	AddScoreComponent(playerObject->GetComponent<dae::ScoreComponent>());
+
+
+	playerObject->AddComponent<dae::HealthComponent>(m_Lives[playerNb - 1]);
+	playerObject->GetComponent<dae::HealthComponent>()->AddObserver(this);
+	AddHealthComponents(playerObject->GetComponent<dae::HealthComponent>());
 
 
 	std::unique_ptr<dae::GamepadController> gamepadController{ std::make_unique<dae::GamepadController>() };

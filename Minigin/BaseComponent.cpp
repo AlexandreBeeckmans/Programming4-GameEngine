@@ -32,6 +32,16 @@ void dae::BaseComponent::DetachAllChildren() const
 	GetOwner()->DetachAllChildren();
 }
 
+void dae::BaseComponent::SetOwnerActive(const bool isActive) const
+{
+	GetOwner()->SetActive(isActive);
+}
+
+bool dae::BaseComponent::IsOwnerActive() const
+{
+	return m_pOwnerObject->IsActive();
+}
+
 dae::GameObject* dae::BaseComponent::GetOwner() const
 {
 	return m_pOwnerObject;

@@ -26,6 +26,7 @@ void qbert::PlayerState::Enter(dae::GameObject& qbertObject)
 	m_pJumpAnimator = qbertObject.GetComponent<QbertJumpAnimatorComponent>();
 
 	m_pHealthComponent = qbertObject.GetComponent<dae::HealthComponent>();
+	m_pImageComponent = qbertObject.GetComponent<dae::ImageComponent>();
 }
 
 std::unique_ptr<qbert::PlayerState> qbert::WaitingState::HandleTransitions()
@@ -47,6 +48,8 @@ std::unique_ptr<qbert::PlayerState> qbert::WaitingState::HandleTransitions()
 	{
 		return std::make_unique<WinState>();
 	}
+
+	if (GetHealthComponent()->IsDead()) return std::make_unique<DeadState>();
 
 	return nullptr;
 
@@ -94,7 +97,8 @@ void qbert::JumpingState::Exit()
 
 std::unique_ptr<qbert::PlayerState> qbert::DieState::HandleTransitions()
 {
-	if (m_CurrentDeadTime < m_MaxDeadTime || GetHealthComponent()->IsDead()) return nullptr;
+	if (m_CurrentDeadTime < m_MaxDeadTime) return nullptr;
+	if (GetHealthComponent()->IsDead()) return std::make_unique<DeadState>();
 
 	return std::make_unique<WaitingState>();
 }
@@ -110,10 +114,10 @@ void qbert::DieState::Enter(dae::GameObject& qbert)
 	GetKillableComponent()->Kill();
 	if (GetHealthComponent()->IsDead())
 	{
-		QbertScenes::ReducePlayer();
-		if (QbertScenes::AreAllPlayersDead())
+		QbertScenes::GetInstance().ReducePlayer();
+		if (QbertScenes::GetInstance().AreAllPlayersDead())
 		{
-			QbertScenes::gameOver = true;
+			QbertScenes::GetInstance().gameOver = true;
 		}
 	}
 	m_CurrentDeadTime = 0;
@@ -124,19 +128,29 @@ void qbert::DieState::Exit()
 	GetKillableComponent()->Respawn();
 }
 
+
+bool qbert::WinState::m_HasWon{ false };
 std::unique_ptr<qbert::PlayerState> qbert::WinState::HandleTransitions()
 {
+	
 	if (m_CurrentWinTime < m_MaxWinTime) return nullptr;
-
-	QbertScenes::goNext = true;
+	QbertScenes::GetInstance().goNext = true;
+	m_HasWon = false;
+	
 	return std::make_unique<WaitingState>();
 }
 
 void qbert::WinState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
-	if(!QbertScenes::goNext)
+	
+
+	if(!m_HasWon)
+	{
 		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::WIN), 100.0f);
+		m_HasWon = true;
+	}
+		
 	GetTileActivatorComponent()->AnimateTiles();
 }
 
@@ -169,4 +183,11 @@ void qbert::FallingState::Enter(dae::GameObject& qbert)
 void qbert::FallingState::Update()
 {
 	GetFallComponent()->UpdateFall();
+}
+
+void qbert::DeadState::Enter(dae::GameObject& qbert)
+{
+	PlayerState::Enter(qbert);
+	GetImageComponent()->SetVisible(false);
+	GetImageComponent()->SetOwnerActive(false);
 }

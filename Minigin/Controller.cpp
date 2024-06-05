@@ -11,6 +11,7 @@ class dae::GamepadController::GamepadControllerImpl
 {
 public:
 	GamepadControllerImpl(GamepadController* pOwner);
+	~GamepadControllerImpl();
 
 	void DoProcessInput();
 
@@ -56,6 +57,11 @@ dae::GamepadController::GamepadControllerImpl::GamepadControllerImpl(GamepadCont
 	//Set the index
 	m_Index = m_GlobalIndex;
 	++m_GlobalIndex;
+}
+
+dae::GamepadController::GamepadControllerImpl::~GamepadControllerImpl()
+{
+	--m_GlobalIndex;
 }
 
 int dae::GamepadController::GamepadControllerImpl::m_GlobalIndex = 0;

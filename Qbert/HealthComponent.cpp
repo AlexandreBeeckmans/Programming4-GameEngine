@@ -2,10 +2,9 @@
 #include "GameObject.h"
 #include "UIComponent.h"
 
-dae::HealthComponent::HealthComponent(GameObject* pParent, const int maxLives) :
+dae::HealthComponent::HealthComponent(GameObject* pParent, const int livesRemaining) :
 	BaseComponent::BaseComponent{ pParent },
-m_MaxLives(maxLives),
-m_CurrentLives(maxLives)
+m_CurrentLives(livesRemaining)
 {
 
 }

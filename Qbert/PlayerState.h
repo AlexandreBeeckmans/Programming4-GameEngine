@@ -32,6 +32,7 @@ namespace qbert
 		QbertJumpAnimatorComponent* GetJumpAnimator() const { return m_pJumpAnimator; }
 
 		dae::HealthComponent* GetHealthComponent()const { return m_pHealthComponent; }
+		dae::ImageComponent* GetImageComponent() const { return m_pImageComponent; }
 	private:
 		GridMoveComponent* m_pMoveComponent{};
 		FallComponent* m_pFallComponent{};
@@ -41,6 +42,7 @@ namespace qbert
 		QbertJumpAnimatorComponent* m_pJumpAnimator{};
 
 		dae::HealthComponent* m_pHealthComponent{};
+		dae::ImageComponent* m_pImageComponent{};
 	};
 
 	class WaitingState final : public PlayerState
@@ -81,6 +83,8 @@ namespace qbert
 	private:
 		float m_CurrentWinTime = 0.0f;
 		float m_MaxWinTime = 5.0f;
+
+		static bool m_HasWon;
 	};
 
 	class TeleportingState final : public PlayerState
@@ -97,6 +101,12 @@ namespace qbert
 		virtual void Enter(dae::GameObject& qbert) override;
 		virtual void Update() override;
 
+	};
+
+	class DeadState final : public PlayerState
+	{
+	public:
+		virtual void Enter(dae::GameObject& qbert) override;
 	};
 }
 

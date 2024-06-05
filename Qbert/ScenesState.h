@@ -42,6 +42,7 @@ namespace qbert
 
 		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
 		virtual void Enter() override;
+		virtual void Exit() override;
 	};
 
 	class LevelSceneState final :public SceneStates

@@ -4,8 +4,9 @@
 #include "ScoreUIComponent.h"
 #include "UIComponent.h"
 
-dae::ScoreComponent::ScoreComponent(GameObject* pParent) :
-	BaseComponent::BaseComponent{ pParent }
+dae::ScoreComponent::ScoreComponent(GameObject* pParent, const int score) :
+	BaseComponent::BaseComponent{ pParent },
+	m_CurrentScore(score)
 {
 
 }

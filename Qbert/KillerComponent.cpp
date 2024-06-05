@@ -25,7 +25,7 @@ void qbert::KillerComponent::CheckForPlayer() const
 {
 	for(size_t i{0}; i < m_pPlayerMoveComponents.size(); ++i)
 	{
-		if (m_pPlayerMoveComponents[i]->GetCurrentIndex() == m_pMoveComponent->GetCurrentIndex())
+		if (m_pPlayerMoveComponents[i]->GetCurrentIndex() == m_pMoveComponent->GetCurrentIndex() && m_pPlayerMoveComponents[i]->IsOwnerActive())
 		{
 			m_pPlayerKillableComponents[i]->EncountersEnemy();
 		}

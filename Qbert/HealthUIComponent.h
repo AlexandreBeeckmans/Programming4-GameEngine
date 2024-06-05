@@ -23,6 +23,8 @@ namespace qbert
 		HealthUIComponent& operator=(const HealthUIComponent& other) = delete;
 		HealthUIComponent& operator=(HealthUIComponent&& other) = delete;
 
+		virtual void Init() override;
+
 		virtual void UpdateObserver() override;
 
 		void SetHealthComponent(dae::HealthComponent* pScoreComponent);

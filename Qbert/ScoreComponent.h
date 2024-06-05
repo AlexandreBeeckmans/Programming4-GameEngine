@@ -13,7 +13,7 @@ namespace dae
 	{
 	public:
 
-		ScoreComponent(GameObject* m_pParent);
+		ScoreComponent(GameObject* m_pParent, int score = 0);
 		~ScoreComponent() override = default;
 		ScoreComponent(const ScoreComponent& other) = default;
 		ScoreComponent(ScoreComponent&& other) = default;

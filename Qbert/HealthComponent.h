@@ -8,7 +8,7 @@ namespace dae
 	{
 	public:
 
-		HealthComponent(GameObject* m_pParent, const int maxLives = 3);
+		HealthComponent(GameObject* m_pParent, const int livesRemaining);
 		virtual ~HealthComponent() = default;
 		HealthComponent(const HealthComponent& other) = default;
 		HealthComponent(HealthComponent&& other) = default;
@@ -17,13 +17,15 @@ namespace dae
 
 		void RemoveLive();
 
-		int GetLivesRemaining()const { return m_CurrentLives; };
-		int GetMaxLives() const { return  m_MaxLives; }
+		int GetLivesRemaining()const { return m_CurrentLives; }
+		void SetLivesRemaining(const int livesRemaining) { m_CurrentLives = livesRemaining; }
 
-		bool IsDead() const { return m_IsDead; }
+		static int GetMaxLives() { return  m_MaxLives; }
+
+		bool IsDead() const { return m_CurrentLives <= 0; }
 
 	private:
-		const int m_MaxLives{ 3 };
+		constexpr static int m_MaxLives{ 4 };
 		int m_CurrentLives{ m_MaxLives };
 		bool m_IsDead{ false };
 
