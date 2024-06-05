@@ -1,11 +1,6 @@
 #pragma once
 #include "GameObject.h"
-
-
-namespace qbert
-{
-	class InputDirectionComponent;
-}
+#include "State.hpp"
 
 namespace qbert
 {
@@ -15,19 +10,14 @@ namespace qbert
 	class FollowPlayerComponent;
 	class CoilyAnimatorComponent;
 	class KillerComponent;
+	class InputDirectionComponent;
 
-	class CoilyState
+	class CoilyState : public dae::State<CoilyState>
 	{
 	public:
-		virtual ~CoilyState() {}
-
-		virtual std::unique_ptr<CoilyState> HandleTransitions() { return nullptr; }
-		virtual void Update() {}
 		virtual void Enter(dae::GameObject& coilyObject);
-		virtual void Exit() {}
 
 	protected:
-		CoilyFSMManagerComponent* GetCoilyComponent()const { return m_pCoilyComponent; }
 		GridMoveComponent* GetMoveComponent()const { return m_pMoveComponent; }
 		FallComponent* GetFallComponent() const { return m_pFallComponent; }
 		FollowPlayerComponent* GetFollowComponent() const { return m_pFollowPlayerComponent; }
@@ -36,7 +26,6 @@ namespace qbert
 		InputDirectionComponent* GetInputComonent()const { return m_pInputComponent; }
 
 	private:
-		CoilyFSMManagerComponent* m_pCoilyComponent{};
 		GridMoveComponent* m_pMoveComponent{};
 		FallComponent* m_pFallComponent{};
 		FollowPlayerComponent* m_pFollowPlayerComponent{};

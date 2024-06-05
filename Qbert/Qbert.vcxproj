@@ -155,7 +155,6 @@
     <ClCompile Include="BubbleManagerComponent.cpp" />
     <ClCompile Include="ChangeToUIComponent.cpp" />
     <ClCompile Include="CoilyAnimatorComponent.cpp" />
-    <ClCompile Include="CoilyFSMManagerComponent.cpp" />
     <ClCompile Include="CoilyState.cpp" />
     <ClCompile Include="DeadFallComponent.cpp" />
     <ClCompile Include="DiscComponent.cpp" />
@@ -177,7 +176,6 @@
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="QbertCommand.cpp" />
     <ClCompile Include="QbertJumpAnimatorComponent.cpp" />
-    <ClCompile Include="QbertFSMManagerComponent.cpp" />
     <ClCompile Include="QbertScenes.cpp" />
     <ClCompile Include="RenderFPSComponent.cpp" />
     <ClCompile Include="RotatingComponent.cpp" />
@@ -186,7 +184,6 @@
     <ClCompile Include="ScoreUIComponent.cpp" />
     <ClCompile Include="SlickAnimatorComponent.cpp" />
     <ClCompile Include="SlickDirection.cpp" />
-    <ClCompile Include="SlickFSMManagerComponent.cpp" />
     <ClCompile Include="SlickState.cpp" />
     <ClCompile Include="TestCommand.cpp" />
     <ClCompile Include="TileActivatorComponent.cpp" />
@@ -199,7 +196,6 @@
     <ClInclude Include="BubbleManagerComponent.h" />
     <ClInclude Include="ChangeToUIComponent.h" />
     <ClInclude Include="CoilyAnimatorComponent.h" />
-    <ClInclude Include="CoilyFSMManagerComponent.h" />
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="DeadFallComponent.h" />
     <ClInclude Include="DiscComponent.h" />
@@ -221,7 +217,6 @@
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="QbertCommand.h" />
     <ClInclude Include="QbertJumpAnimatorComponent.h" />
-    <ClInclude Include="QbertFSMManagerComponent.h" />
     <ClInclude Include="QbertScenes.h" />
     <ClInclude Include="RenderFPSComponent.h" />
     <ClInclude Include="RotatingComponent.h" />
@@ -230,7 +225,6 @@
     <ClInclude Include="ScoreUIComponent.h" />
     <ClInclude Include="SlickAnimatorComponent.h" />
     <ClInclude Include="SlickDirection.h" />
-    <ClInclude Include="SlickFSMManagerComponent.h" />
     <ClInclude Include="SlickState.h" />
     <ClInclude Include="SoundTypes.h" />
     <ClInclude Include="TestCommand.h" />

@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 
+#include "State.hpp"
+
 namespace qbert
 {
 	enum class GameMode
@@ -10,14 +12,9 @@ namespace qbert
 		VERSUS
 	};
 
-	class SceneStates
+	class SceneStates : public dae::State<SceneStates>
 	{
 	public:
-		virtual ~SceneStates() {}
-
-		virtual std::unique_ptr<SceneStates> HandleTransitions() { return nullptr; }
-		virtual void Update() {}
-		virtual void Enter() {}
 		virtual void Exit();
 
 		static bool IncrementGameMode(const int addedValue);
@@ -65,7 +62,7 @@ namespace qbert
 		virtual void Enter() override;
 
 	private :
-		const float m_MaxWaitingTime{ 3.0f };
+		static constexpr float m_MaxWaitingTime{ 3.0f };
 		float m_CurrentWaitingTime{0.0f};
 	};
 

@@ -8,8 +8,9 @@
 #include "BlinkingComponent.h"
 #include "ChangeToUIComponent.h"
 
-#include "QbertFSMManagerComponent.h"
-#include "CoilyFSMManagerComponent.h"
+#include "PlayerState.h"
+#include "CoilyState.h"
+#include "SlickState.h"
 
 
 #include "DiscComponent.h"
@@ -22,6 +23,7 @@
 #include "KillerComponent.h"
 #include "CoilyAnimatorComponent.h"
 #include "DeadFallComponent.h"
+#include "FSMManagerComponent.hpp"
 #include "SlickAnimatorComponent.h"
 
 #include "TileDeactivatorComponent.h"
@@ -47,7 +49,6 @@
 #include "ScoreUIComponent.h"
 #include "ServiceLocator.h"
 #include "SlickDirection.h"
-#include "SlickFSMManagerComponent.h"
 #include "SoundTypes.h"
 #include "TileActivatorComponent.h"
 
@@ -457,7 +458,6 @@ void qbert::QbertScenes::Update()
 	if (pNewState)
 	{
 		m_pSceneState->Exit();
-		//delete m_pSceneState;
 		m_pSceneState = std::move(pNewState);
 		m_pSceneState->Enter();
 	}
@@ -485,7 +485,7 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreatePlayer(const int play
 	std::unique_ptr<dae::GameObject> playerObject = std::make_unique<dae::GameObject>();
 
 	playerObject->AddComponent<dae::ImageComponent>("qbert/Qbert P" + std::to_string(playerNb) +" Spritesheet.png", true, 0.0f, 0.0f, 1, 4);
-	playerObject->AddComponent<qbert::QbertFSMManagerComponent>();
+	playerObject->AddComponent<dae::FSMManagerComponent<PlayerState, WaitingState>>();
 	playerObject->AddComponent<qbert::GridMoveComponent>(pMapComponent);
 	playerObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndexToTop();
 	playerObject->AddComponent<qbert::FallComponent>();
@@ -539,7 +539,7 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(std::vector<std
 {
 	std::unique_ptr<dae::GameObject> coilyObject = std::make_unique<dae::GameObject>();
 	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
-	coilyObject->AddComponent<qbert::CoilyFSMManagerComponent>();
+	coilyObject->AddComponent<dae::FSMManagerComponent<CoilyState, CoilyPreparingState>>();
 	coilyObject->AddComponent<qbert::GridMoveComponent>(pMapComponent);
 	coilyObject->AddComponent<qbert::FallComponent>();
 	coilyObject->AddComponent<qbert::KillerComponent>(pPlayerObjects);
@@ -582,7 +582,7 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateUgg(bool)
 std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateSlick(const bool isSlick, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent)
 {
 	std::unique_ptr<dae::GameObject> slickObject = std::make_unique<dae::GameObject>();
-	slickObject->AddComponent<qbert::SlickFSMManagerComponent>();
+	slickObject->AddComponent<dae::FSMManagerComponent<SlickState, SlickPreparingState>>();
 
 	const int spriteRow{ static_cast<int>(isSlick) };
 	slickObject->AddComponent<dae::ImageComponent>("qbert/Slick_Sam_Spritesheet.png", true, 0.0f, 0.0f, 2, 2, spriteRow, 0);

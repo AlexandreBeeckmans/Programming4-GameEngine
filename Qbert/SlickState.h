@@ -2,53 +2,23 @@
 #include <memory>
 
 #include "GameObject.h"
-
-namespace qbert
-{
-	class SlickAnimatorComponent;
-}
+#include "State.hpp"
 
 namespace qbert
 {
 	class DeadFallComponent;
-}
-
-namespace qbert
-{
 	class PlayerKillableComponent;
-}
-
-namespace qbert
-{
 	class TileDeactivatorComponent;
-}
-
-namespace qbert
-{
 	class GridMoveComponent;
-}
-
-namespace qbert
-{
 	class SlickDirection;
-}
-
-namespace qbert
-{
 	class FallComponent;
-}
+	class SlickAnimatorComponent;
 
-namespace qbert
-{
-	class SlickState
+	class SlickState : public dae::State<SlickState>
 	{
 	public:
-		virtual ~SlickState() {}
 
-		virtual std::unique_ptr<SlickState> HandleTransitions() { return nullptr; }
-		virtual void Update() {}
 		virtual void Enter(dae::GameObject& slickObject);
-		virtual void Exit() {}
 
 	protected:
 		FallComponent* GetFallComponent()const { return m_pFallComponent; }
@@ -81,7 +51,6 @@ namespace qbert
 		float m_PreparingTime{ 0.0f };
 
 		static constexpr float m_MaxPreparingTime{ 8.0f };
-
 	};
 
 	class SlickFallingState final : public SlickState

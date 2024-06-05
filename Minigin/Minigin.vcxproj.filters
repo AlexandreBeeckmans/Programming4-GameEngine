@@ -131,6 +131,8 @@
     </ClInclude>
     <ClInclude Include="SceneCollection.h" />
     <ClInclude Include="AnimatorComponent.h" />
+    <ClInclude Include="FSMManagerComponent.hpp" />
+    <ClInclude Include="State.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui.cpp">

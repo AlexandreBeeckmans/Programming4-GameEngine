@@ -42,9 +42,6 @@
     <ClCompile Include="MapComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QbertFSMManagerComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QbertCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="MoveComponent.cpp">
       <Filter>Test Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CoilyFSMManagerComponent.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerState.cpp">
       <Filter>Player\FSM</Filter>
@@ -141,9 +135,6 @@
     <ClCompile Include="CoilyAnimatorComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SlickFSMManagerComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SlickState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -165,9 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QbertFSMManagerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QbertCommand.h">
@@ -213,9 +201,6 @@
       <Filter>Test Files</Filter>
     </ClInclude>
     <ClInclude Include="SoundTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CoilyFSMManagerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayerState.h">
@@ -273,9 +258,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CoilyAnimatorComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SlickFSMManagerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SlickState.h">

@@ -4,7 +4,6 @@
 #include "GameObject.h"
 #include "QbertScenes.h"
 
-#include "QbertFSMManagerComponent.h"
 #include "GridMoveComponent.h"
 #include "FallComponent.h"
 #include "InputDirectionComponent.h"
@@ -20,7 +19,6 @@
 void qbert::PlayerState::Enter(dae::GameObject& qbertObject)
 {
 	m_pMoveComponent = qbertObject.GetComponent<GridMoveComponent>();
-	m_pQbertComponent = qbertObject.GetComponent<QbertFSMManagerComponent>();
 	m_pFallComponent = qbertObject.GetComponent<FallComponent>();
 	m_pInputComponent = qbertObject.GetComponent<InputDirectionComponent>();
 	m_pKillableComponent = qbertObject.GetComponent<KillableComponent>();
@@ -149,7 +147,7 @@ void qbert::WinState::Update()
 
 std::unique_ptr<qbert::PlayerState> qbert::TeleportingState::HandleTransitions()
 {
-	if (GetQbertComponent()->GetParent() != nullptr) return nullptr;
+	if (GetMoveComponent()->GetParent() != nullptr) return nullptr;
 
 	return std::make_unique<FallingState>();
 }

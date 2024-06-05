@@ -2,7 +2,6 @@
 
 #include "EngineTime.h"
 
-#include "CoilyFSMManagerComponent.h"
 #include "GridMoveComponent.h"
 #include "FallComponent.h"
 #include "FollowPlayerComponent.h"
@@ -14,7 +13,6 @@
 void qbert::CoilyState::Enter(dae::GameObject& coilyObject)
 {
 	m_pMoveComponent = coilyObject.GetComponent<GridMoveComponent>();
-	m_pCoilyComponent = coilyObject.GetComponent<CoilyFSMManagerComponent>();
 	m_pFallComponent = coilyObject.GetComponent<FallComponent>();
 	m_pFollowPlayerComponent = coilyObject.GetComponent<FollowPlayerComponent>();
 	m_pKillerComponent = coilyObject.GetComponent<KillerComponent>();

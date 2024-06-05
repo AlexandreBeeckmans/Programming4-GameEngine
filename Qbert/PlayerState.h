@@ -1,11 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "State.hpp"
 
-
-namespace qbert
-{
-	class QbertJumpAnimatorComponent;
-}
 
 namespace dae
 {
@@ -14,6 +10,7 @@ namespace dae
 
 namespace qbert
 {
+	class QbertJumpAnimatorComponent;
 	class QbertFSMManagerComponent;
 	class GridMoveComponent;
 	class FallComponent;
@@ -21,19 +18,12 @@ namespace qbert
 	class KillableComponent;
 	class TileActivatorComponent;
 
-	class PlayerState
+	class PlayerState : public dae::State<PlayerState>
 	{
 	public:
-		virtual ~PlayerState(){}
-
-		virtual std::unique_ptr<PlayerState> HandleTransitions() { return nullptr; }
-
-		virtual void Update(){}
 		virtual void Enter(dae::GameObject& qbertObject);
-		virtual void Exit() {}
 
 	protected:
-		QbertFSMManagerComponent* GetQbertComponent()const{ return m_pQbertComponent; }
 		GridMoveComponent* GetMoveComponent()const { return m_pMoveComponent; }
 		FallComponent* GetFallComponent() const { return m_pFallComponent; }
 		InputDirectionComponent* GetInputComponent() const { return m_pInputComponent; }
@@ -43,7 +33,6 @@ namespace qbert
 
 		dae::HealthComponent* GetHealthComponent()const { return m_pHealthComponent; }
 	private:
-		QbertFSMManagerComponent* m_pQbertComponent{};
 		GridMoveComponent* m_pMoveComponent{};
 		FallComponent* m_pFallComponent{};
 		InputDirectionComponent* m_pInputComponent{};
