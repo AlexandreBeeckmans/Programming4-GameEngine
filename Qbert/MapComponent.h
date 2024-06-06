@@ -56,6 +56,8 @@ namespace qbert
 
 		void SetAllTileAnimated(const bool isAnimated);
 
+		bool AreIndexesOnTheSameRow(const int index1, const int index2);
+
 
 	private:
 		std::vector<TileComponent*> m_pTiles{};

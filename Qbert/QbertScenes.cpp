@@ -53,6 +53,11 @@
 #include "SlickDirection.h"
 #include "SoundTypes.h"
 #include "TileActivatorComponent.h"
+#include "UggAnimatorComponent.h"
+
+#include "UggStates.h"
+#include "UggDirectionComponent.h"
+
 #include "WritableNameComponent.h"
 
 void qbert::QbertScenes::Init()
@@ -153,6 +158,15 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round, const 
 	{
 		slickObjects.push_back(CreateSlick(static_cast<bool>(i%2), &playerObjects, pMapObject->GetComponent<MapComponent>()));
 	}
+
+
+	std::vector<std::unique_ptr<dae::GameObject>> uggObjects{};
+
+	for (int i{ 0 }; i < levelInfo.nbUgg; ++i)
+	{
+		uggObjects.push_back(CreateUgg(static_cast<bool>(i%2), &playerObjects, pMapObject->GetComponent<MapComponent>()));
+	}
+
 #pragma region DISC
 	auto leftDiscObject = std::make_unique<dae::GameObject>();
 	leftDiscObject->SetLocalPosition(150, 150);
@@ -343,6 +357,11 @@ void qbert::QbertScenes::LoadQbertLevel(const int level, const int round, const 
 	for (auto& slick : slickObjects)
 	{
 		scene.Add(std::move(slick));
+	}
+
+	for (auto& ugg : uggObjects)
+	{
+		scene.Add(std::move(ugg));
 	}
 }
 
@@ -720,9 +739,19 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(const int coily
 	return coilyObject;
 }
 
-std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateUgg(bool)
+std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateUgg(bool isLeft, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent)
 {
 	std::unique_ptr<dae::GameObject> uggObject = std::make_unique<dae::GameObject>();
+
+	uggObject->AddComponent<dae::ImageComponent>("qbert/Ugg_Wrongway_Spritesheet.png", true, 0.0f, 0.0f, 2, 4, 0, 0);
+
+	uggObject->AddComponent<dae::FSMManagerComponent<UggState, UggPreparingState>>();
+	uggObject->AddComponent<qbert::GridMoveComponent>(pMapComponent);
+	uggObject->AddComponent<qbert::FallComponent>();
+	uggObject->AddComponent<qbert::KillerComponent>(pPlayerObjects);
+	uggObject->AddComponent<qbert::UggDirectionComponent>(pMapComponent, isLeft);
+	uggObject->AddComponent<qbert::DeadFallComponent>();
+	uggObject->AddComponent<qbert::UggAnimatorComponent>(pMapComponent);
 
 
 	return uggObject;

@@ -76,7 +76,7 @@ namespace qbert
 		std::unique_ptr<dae::GameObject> CreatePlayer(const int playerNb, MapComponent* pMapComponent);
 		std::unique_ptr<dae::GameObject> CreateBubble(dae::GameObject* pPlayerObject);
 		std::unique_ptr<dae::GameObject> CreateCoily(const int coilyNb, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent, const bool isVersus);
-		std::unique_ptr<dae::GameObject> CreateUgg(bool isLeft);
+		std::unique_ptr<dae::GameObject> CreateUgg(bool isLeft, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent);
 		std::unique_ptr<dae::GameObject> CreateSlick(const bool isSlick, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent);
 
 		ScoreData GetHighScore();

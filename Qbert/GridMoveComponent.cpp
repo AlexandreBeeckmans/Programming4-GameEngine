@@ -43,6 +43,8 @@ void qbert::GridMoveComponent::SetCurrentIndexToTop()
 void qbert::GridMoveComponent::SetCurrentIndex(int index)
 {
 	m_CurrentIndex = index;
+	if (m_CurrentIndex < 0) return;
+
 	m_Target = m_pMap->GetTileByIndex(m_CurrentIndex)->GetStartPoint();
 }
 
@@ -79,6 +81,11 @@ void qbert::GridMoveComponent::SetMovementDirection()
 bool qbert::GridMoveComponent::HasReachedFinalPosition() const
 {
 	return m_AccumulatedDistanceX >= m_MaxDistanceX;
+}
+
+bool qbert::GridMoveComponent::IsOnTop() const
+{
+	return m_CurrentIndex >= m_pMap->GetLastIndex();
 }
 
 qbert::TileComponent* qbert::GridMoveComponent::GetCurrentTile() const

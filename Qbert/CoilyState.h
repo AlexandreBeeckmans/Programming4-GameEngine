@@ -4,18 +4,13 @@
 
 namespace qbert
 {
-	class DeadFallComponent;
-}
-
-namespace qbert
-{
-	class CoilyFSMManagerComponent;
 	class GridMoveComponent;
 	class FallComponent;
 	class FollowPlayerComponent;
 	class CoilyAnimatorComponent;
 	class KillerComponent;
 	class InputDirectionComponent;
+	class DeadFallComponent;
 
 	class CoilyState : public dae::State<CoilyState>
 	{

@@ -41,6 +41,7 @@ namespace qbert
 		void SetMovementDirection();
 
 		bool HasReachedFinalPosition() const;
+		bool IsOnTop() const;
 
 		int GetCurrentIndex() const { return m_CurrentIndex; }
 		TileComponent* GetCurrentTile() const;

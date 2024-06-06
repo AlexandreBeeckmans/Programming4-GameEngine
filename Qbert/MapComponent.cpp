@@ -202,4 +202,9 @@ void qbert::MapComponent::SetAllTileAnimated(const bool isAnimated)
 	}
 }
 
+bool qbert::MapComponent::AreIndexesOnTheSameRow(const int index1, const int index2)
+{
+	return GetRowFromIndex(index1) == GetRowFromIndex(index2);
+}
+
 

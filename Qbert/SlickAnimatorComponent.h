@@ -1,6 +1,16 @@
 #pragma once
 #include "BaseComponent.h"
 
+namespace qbert
+{
+	class UggDirectionComponent;
+}
+
+namespace qbert
+{
+	class SlickDirection;
+}
+
 namespace dae
 {
 	class ImageComponent;
@@ -31,6 +41,8 @@ namespace qbert
 	private:
 		GridMoveComponent* m_pMoveComponent{ nullptr };
 		dae::ImageComponent* m_pImageComponent{ nullptr };
+
+		UggDirectionComponent* m_pDirectionComponent{ nullptr };
 	};
 }
 
