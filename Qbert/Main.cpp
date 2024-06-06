@@ -4,6 +4,9 @@
 #endif
 #endif
 
+#include <iostream>
+
+#include "EventManager.h"
 #include "Minigin.h"
 #include "InputManager.h"
 
@@ -39,11 +42,17 @@ void Load()
 	LoadSounds();
 }
 
-
+void PrintNumber(int number)
+{
+	std::cout << number;
+}
 
 
 int main(int, char* [])
 {
+	//dae::EventManager::GetInstance().AddFunction<int>(0, &PrintNumber, 5);
+	//dae::EventManager::GetInstance().CallFunction(0);
+
 
 	dae::Minigin engine("../Data/");
 

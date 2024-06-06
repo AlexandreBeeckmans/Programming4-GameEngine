@@ -308,5 +308,8 @@
     <ClInclude Include="UggAnimatorComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EventTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

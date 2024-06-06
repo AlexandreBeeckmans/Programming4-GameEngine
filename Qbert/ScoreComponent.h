@@ -21,7 +21,8 @@ namespace dae
 		ScoreComponent& operator=(ScoreComponent&& other) = default;
 
 		void InitObserver(qbert::ScoreUIComponent* pUiComponent);
-		void IncrementScore(const int& valueToAdd);
+		void IncrementScore(int valueToAdd);
+		void Test();
 		int GetScore()const { return m_CurrentScore; };
 
 	private:

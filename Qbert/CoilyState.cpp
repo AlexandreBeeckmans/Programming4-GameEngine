@@ -8,7 +8,10 @@
 #include "KillerComponent.h"
 #include "CoilyAnimatorComponent.h"
 #include "DeadFallComponent.h"
+#include "EventManager.h"
+#include "EventTypes.h"
 #include "InputDirectionComponent.h"
+#include "ScoreComponent.h"
 #include "ServiceLocator.h"
 #include "SoundTypes.h"
 
@@ -152,4 +155,6 @@ void qbert::CoilyDyingState::Enter(dae::GameObject& coilyObject)
 	CoilyState::Enter(coilyObject);
 
 	GetDeadFallComponent()->InitValues();
+
+	dae::EventManager::GetInstance().CallFunction(static_cast<int>(qbert::EventType::COILYDEATH));
 }

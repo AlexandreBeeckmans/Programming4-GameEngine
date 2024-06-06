@@ -204,6 +204,7 @@
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="DeadFallComponent.h" />
     <ClInclude Include="DiscComponent.h" />
+    <ClInclude Include="EventTypes.h" />
     <ClInclude Include="FallComponent.h" />
     <ClInclude Include="FollowPlayerComponent.h" />
     <ClInclude Include="FPSComponent.h" />

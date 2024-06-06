@@ -223,6 +223,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Out
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_truetype.h" />
     <ClInclude Include="AnimatorComponent.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BaseGuiComponent.h" />
@@ -266,6 +267,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Out
     <ClCompile Include="BaseGuiComponent.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
