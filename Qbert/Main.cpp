@@ -18,10 +18,19 @@
 
 void LoadSounds()
 {
-	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/QBert Jump.wav");
-	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/QBert Fall.wav");
-	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/Round_Complete_Tune.wav");
-	dae::ServiceLocator::GetSoundSystem().LoadSound("../Data/qbert/Sounds/Level Screen Tune.wav");
+	std::string path{ dae::ResourceManager::GetInstance().GetPath() + "qbert/Sounds/" };
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "QBert Jump.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "QBert Fall.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "Round_Complete_Tune.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "Level Screen Tune.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "QBert Hit.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "Change Selection.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "Coily Snake Jump.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "Coily Fall.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "Disk Lift.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "Disk Land.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "SlickSam Caught.wav");
+	dae::ServiceLocator::GetSoundSystem().LoadSound(path + "Swearing.wav");
 }
 
 void Load()

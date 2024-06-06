@@ -36,7 +36,7 @@ void qbert::KillableComponent::EncountersEnemy()
 
 void qbert::KillableComponent::Kill() const
 {
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
+	
 	m_pBubbleComponent->ShowBubble(true);
 	m_pHealthComponent->RemoveLive();
 }

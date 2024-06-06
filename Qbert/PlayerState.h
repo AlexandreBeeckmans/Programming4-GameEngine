@@ -91,6 +91,7 @@ namespace qbert
 	{
 	public:
 		virtual std::unique_ptr<PlayerState> HandleTransitions() override;
+		virtual void Enter(dae::GameObject& qbert) override;
 		
 	};
 

@@ -35,6 +35,7 @@ std::unique_ptr<qbert::PlayerState> qbert::WaitingState::HandleTransitions()
 	//If an enemy is on the same index
 	if(GetKillableComponent()->IsEnemyEncounteredThisFrame())
 	{
+		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::HIT), 100.0f);
 		return std::make_unique<DieState>();
 	}
 
@@ -49,7 +50,11 @@ std::unique_ptr<qbert::PlayerState> qbert::WaitingState::HandleTransitions()
 		return std::make_unique<WinState>();
 	}
 
-	if (GetHealthComponent()->IsDead()) return std::make_unique<DeadState>();
+	if (GetHealthComponent()->IsDead())
+	{
+
+		return std::make_unique<DeadState>();
+	}
 
 	return nullptr;
 
@@ -70,6 +75,8 @@ std::unique_ptr<qbert::PlayerState> qbert::JumpingState::HandleTransitions()
 	if (GetMoveComponent()->GetCurrentIndex() >= 0) return std::make_unique<WaitingState>();
 
 	if (GetTileActivatorComponent()->IsOnTeleporter()) return std::make_unique<TeleportingState>();
+
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
 	return std::make_unique<DieState>();
 }
 
@@ -121,6 +128,8 @@ void qbert::DieState::Enter(dae::GameObject& qbert)
 		}
 	}
 	m_CurrentDeadTime = 0;
+
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::SWEAR), 100.0f);
 }
 
 void qbert::DieState::Exit()
@@ -166,6 +175,12 @@ std::unique_ptr<qbert::PlayerState> qbert::TeleportingState::HandleTransitions()
 	return std::make_unique<FallingState>();
 }
 
+void qbert::TeleportingState::Enter(dae::GameObject& qbert)
+{
+	PlayerState::Enter(qbert);
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::DISKMOVE), 100.0f);
+}
+
 std::unique_ptr<qbert::PlayerState> qbert::FallingState::HandleTransitions()
 {
 	if (!GetFallComponent()->HasReachedFallPos()) return nullptr;
@@ -177,6 +192,7 @@ void qbert::FallingState::Enter(dae::GameObject& qbert)
 	PlayerState::Enter(qbert);
 	GetMoveComponent()->SetCurrentIndexToTop();
 	GetFallComponent()->SetFallDirection();
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::DISKLAND), 100.0f);
 
 }
 
@@ -188,6 +204,8 @@ void qbert::FallingState::Update()
 void qbert::DeadState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
+
+
 	GetImageComponent()->SetVisible(false);
 	GetImageComponent()->SetOwnerActive(false);
 }

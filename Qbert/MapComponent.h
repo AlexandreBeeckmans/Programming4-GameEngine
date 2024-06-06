@@ -26,7 +26,10 @@ namespace qbert
 
 		void AddDisc(DiscComponent* pDiscComponent);
 
-		int GetNbRows() const { return m_Rows; }
+		int GetNbRows() const
+		{
+			return m_Rows;
+		}
 
 
 		//TileComponent* GetCurrentTile() const;

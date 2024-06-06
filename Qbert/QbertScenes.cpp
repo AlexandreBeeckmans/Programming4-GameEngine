@@ -681,7 +681,6 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateBubble(dae::GameObjec
 
 	return bubbleObject;
 }
-
 std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(const int coilyNb,  std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent, const bool isVersus)
 {
 	std::unique_ptr<dae::GameObject> coilyObject = std::make_unique<dae::GameObject>();
@@ -693,7 +692,7 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(const int coily
 	coilyObject->AddComponent<qbert::CoilyAnimatorComponent>();
 	coilyObject->AddComponent<qbert::DeadFallComponent>();
 
-	coilyObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndex(coilyNb * 6);
+	coilyObject->GetComponent<qbert::GridMoveComponent>()->SetCurrentIndex(coilyNb * (pMapComponent->GetNbRows() - 1));
 
 	if(isVersus && coilyNb == 0)
 	{

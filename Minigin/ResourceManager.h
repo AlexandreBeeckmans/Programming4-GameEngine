@@ -16,6 +16,7 @@ namespace dae
 		std::unique_ptr<Texture2D> LoadTexture(const std::string& file) const;
 		std::unique_ptr<Font> LoadFont(const std::string& file, unsigned int size) const;
 		nlohmann::json ReadFile(const std::string& path) const;
+		std::string GetPath()const { return m_dataPath; }
 
 	private:
 		friend class Singleton<ResourceManager>;

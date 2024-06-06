@@ -9,7 +9,9 @@
 #include "SlickDirection.h"
 #include "TileDeactivatorComponent.h"
 #include "PlayerKillableComponent.h"
+#include "ServiceLocator.h"
 #include "SlickAnimatorComponent.h"
+#include "SoundTypes.h"
 
 
 void qbert::SlickState::Enter(dae::GameObject& slickObject)
@@ -66,7 +68,12 @@ std::unique_ptr<qbert::SlickState> qbert::SlickWaitingState::HandleTransitions()
 {
 	if (m_CurrentWaitingTime >= m_WaitingTime) return std::make_unique<SlickJumpingState>();
 
-	if (GetKillableComponent()->IsEncounteringPlayer()) return std::make_unique<SlickDyingState>();
+	if (GetKillableComponent()->IsEncounteringPlayer())
+	{
+		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::SLICKCAUGHT), 100.0f);
+		return std::make_unique<SlickDyingState>();
+	}
+
 	if (GetMoveComponent()->GetCurrentIndex() < 0) return std::make_unique<SlickDyingState>();
 
 	return nullptr;
@@ -119,6 +126,7 @@ std::unique_ptr<qbert::SlickState> qbert::SlickDyingState::HandleTransitions()
 
 void qbert::SlickDyingState::Enter(dae::GameObject& slickObject)
 {
+	
 	SlickState::Enter(slickObject);
 	GetDeadFallComponent()->InitValues();
 }

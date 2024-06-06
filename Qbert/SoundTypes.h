@@ -6,6 +6,14 @@ namespace qbert
 		JUMP,
 		FALL,
 		WIN,
-		LOAD
+		LOAD,
+		HIT,
+		MENUSELECTION,
+		COILYJUMP,
+		COILYFALL,
+		DISKMOVE,
+		DISKLAND,
+		SLICKCAUGHT,
+		SWEAR
 	};
 }

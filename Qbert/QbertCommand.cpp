@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "InputDirectionComponent.h"
 #include "QbertScenes.h"
+#include "ServiceLocator.h"
+#include "SoundTypes.h"
 #include "WritableNameComponent.h"
 
 qbert::QbertMoveCommand::QbertMoveCommand(dae::GameObject* pObject, const glm::vec2& direction) :
@@ -19,6 +21,7 @@ void qbert::QbertMoveCommand::Execute()
 
 void qbert::GoNextSceneCommand::Execute()
 {
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::MENUSELECTION), 100.0f);
 	QbertScenes::GetInstance().goNext = true;
 }
 
@@ -29,6 +32,7 @@ GameObjectCommand(pObject)
 
 void qbert::IncrementLetterCommand::Execute()
 {
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::MENUSELECTION), 100.0f);
 	GetGameActor()->GetComponent<qbert::WritableNameComponent>()->IncrementCurrentLetter();
 }
 
@@ -39,6 +43,7 @@ GameObjectCommand(pObject)
 
 void qbert::IncrementLetterIndexCommand::Execute()
 {
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::MENUSELECTION), 100.0f);
 	GetGameActor()->GetComponent<qbert::WritableNameComponent>()->IncrementLetterIndex();
 }
 
@@ -52,6 +57,7 @@ m_Discplacement(discplacement)
 
 void qbert::SelectCommand::Execute()
 {
+	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::MENUSELECTION), 100.0f);
 	if(SceneStates::IncrementGameMode(m_Direction))
 		GetGameActor()->Translate(glm::vec2{ 0, m_Discplacement * static_cast<float>(m_Direction) });
 }
