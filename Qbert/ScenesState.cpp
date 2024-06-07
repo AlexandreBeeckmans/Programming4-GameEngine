@@ -1,6 +1,7 @@
 #include "ScenesState.h"
 
 #include "EngineTime.h"
+#include "EventManager.h"
 #include "HealthComponent.h"
 #include "InputManager.h"
 #include "QbertScenes.h"
@@ -124,6 +125,7 @@ void qbert::LevelSceneState::Exit()
 	SceneStates::Exit();
 	QbertScenes::GetInstance().ClearHealthComponents();
 	QbertScenes::GetInstance().ClearScoreComponents();
+	dae::EventManager::GetInstance().ClearFunctions();
 }
 
 std::unique_ptr<qbert::SceneStates> qbert::LevelLoadingState::HandleTransitions()

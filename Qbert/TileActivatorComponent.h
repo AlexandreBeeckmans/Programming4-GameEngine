@@ -30,6 +30,8 @@ namespace qbert
 		void AnimateTiles() const;
 		bool IsOnTeleporter() const;
 
+		void ProcessWin()const;
+
 	private:
 		MapComponent* m_pMap{ nullptr };
 		GridMoveComponent* m_pMoveComponent{ nullptr };

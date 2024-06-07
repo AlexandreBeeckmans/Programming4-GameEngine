@@ -31,6 +31,7 @@ namespace qbert
 
 		void SetTarget(const glm::vec2& target) { m_Target = target; }
 		void SetActive(const bool isActive, dae::GameObject* qbert);
+		
 
 	private:
 		void SetRandomRow();

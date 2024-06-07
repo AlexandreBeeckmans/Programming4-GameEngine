@@ -121,7 +121,6 @@ void qbert::CoilyArrivingState::Enter(dae::GameObject& coilyObject)
 	CoilyState::Enter(coilyObject);
 	GetAnimatorComponent()->SetVisible();
 
-	GetMoveComponent()->SetCurrentIndex(0);
 	GetFallComponent()->SetFallDirection();
 	GetAnimatorComponent()->SetArrivingSprite(0);
 }
@@ -155,6 +154,7 @@ void qbert::CoilyDyingState::Enter(dae::GameObject& coilyObject)
 	CoilyState::Enter(coilyObject);
 
 	GetDeadFallComponent()->InitValues();
+	GetMoveComponent()->SetCurrentIndex(0);
 
 	dae::EventManager::GetInstance().CallFunction(static_cast<int>(qbert::EventType::COILYDEATH));
 }

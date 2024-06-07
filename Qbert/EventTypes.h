@@ -4,6 +4,8 @@ namespace qbert
 	enum class EventType
 	{
 		COILYDEATH,
-		CATCHINGSLICK
+		CATCHINGSLICK,
+		ACTIVATETILE,
+		REMAININGDISK
 	};
 }

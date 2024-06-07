@@ -3,22 +3,22 @@
 
 #include "BaseComponent.h"
 
-enum EventType 
-{
-	PLAYER_DIED,
-	PLAYER_SCORED,
-	PLAYER_WIN
-};
-
-
-struct Event 
-{
-	static const uint8_t MAX_ARGS = 8;
-
-	EventType m_type;
-	uint8_t m_numArgs;
-	dae::BaseComponent* m_args[MAX_ARGS];
-};
+//enum EventType 
+//{
+//	PLAYER_DIED,
+//	PLAYER_SCORED,
+//	PLAYER_WIN
+//};
+//
+//
+//struct Event 
+//{
+//	static const uint8_t MAX_ARGS = 8;
+//
+//	EventType m_type;
+//	uint8_t m_numArgs;
+//	dae::BaseComponent* m_args[MAX_ARGS];
+//};
 
 namespace dae
 {

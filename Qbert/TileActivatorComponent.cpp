@@ -1,5 +1,7 @@
 #include "TileActivatorComponent.h"
 
+#include "EventManager.h"
+#include "EventTypes.h"
 #include "GameObject.h"
 #include "MapComponent.h"
 #include "GridMoveComponent.h"
@@ -29,7 +31,7 @@ void qbert::TileActivatorComponent::ActivateCurrentTile() const
 
 	if (!m_pMoveComponent->GetCurrentTile()->IsCompleted())
 	{
-		m_pScoreComponent->IncrementScore(25);
+		dae::EventManager::GetInstance().CallFunctionFromComponent(static_cast<int>(qbert::EventType::ACTIVATETILE), m_pScoreComponent);
 	}
 
 	m_pMap->ActivateTileAtIndex(m_pMoveComponent->GetCurrentIndex());
@@ -43,4 +45,12 @@ void qbert::TileActivatorComponent::AnimateTiles() const
 bool qbert::TileActivatorComponent::IsOnTeleporter() const
 {
 	return m_pMap->IsOnATeleporter(GetOwner());
+}
+
+void qbert::TileActivatorComponent::ProcessWin() const
+{
+	for(int i{0}; i < m_pMap->GetRemainingDisks(); ++i)
+	{
+		dae::EventManager::GetInstance().CallFunctionFromComponent(static_cast<int>(qbert::EventType::REMAININGDISK), this);
+	}
 }

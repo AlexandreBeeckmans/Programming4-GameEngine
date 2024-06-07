@@ -1,5 +1,7 @@
 #include "PlayerKillableComponent.h"
 
+#include "EventManager.h"
+#include "EventTypes.h"
 #include "GameObject.h"
 
 #include "GridMoveComponent.h"
@@ -23,7 +25,11 @@ bool qbert::PlayerKillableComponent::IsEncounteringPlayer() const
 	for (auto playerMove : m_pPlayerMoveComponents)
 	{
 		if (playerMove->GetCurrentIndex() == m_pMoveComponent->GetCurrentIndex() && playerMove->IsOwnerActive())
+		{
+			dae::EventManager::GetInstance().CallFunctionFromComponent(static_cast<int>(qbert::EventType::CATCHINGSLICK), playerMove);
 			return true;
+		}
+			
 	}
 	return false;
 }

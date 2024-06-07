@@ -4,6 +4,8 @@
 
 #include "DeadFallComponent.h"
 #include "EngineTime.h"
+#include "EventManager.h"
+#include "EventTypes.h"
 #include "FallComponent.h"
 #include "GridMoveComponent.h"
 #include "SlickDirection.h"
@@ -71,6 +73,7 @@ std::unique_ptr<qbert::SlickState> qbert::SlickWaitingState::HandleTransitions()
 	if (GetKillableComponent()->IsEncounteringPlayer())
 	{
 		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::SLICKCAUGHT), 100.0f);
+		
 		return std::make_unique<SlickDyingState>();
 	}
 

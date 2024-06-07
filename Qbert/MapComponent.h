@@ -58,6 +58,8 @@ namespace qbert
 
 		bool AreIndexesOnTheSameRow(const int index1, const int index2);
 
+		int GetRemainingDisks() const;
+
 
 	private:
 		std::vector<TileComponent*> m_pTiles{};

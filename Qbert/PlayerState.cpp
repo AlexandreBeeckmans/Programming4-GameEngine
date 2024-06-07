@@ -1,6 +1,8 @@
 #include "PlayerState.h"
 
 #include "EngineTime.h"
+#include "EventManager.h"
+#include "EventTypes.h"
 #include "GameObject.h"
 #include "QbertScenes.h"
 
@@ -10,6 +12,7 @@
 #include "KillableComponent.h"
 #include "TileActivatorComponent.h"
 #include "QbertJumpAnimatorComponent.h"
+#include "ScoreComponent.h"
 
 #include "HealthComponent.h"
 #include "ServiceLocator.h"
@@ -27,6 +30,7 @@ void qbert::PlayerState::Enter(dae::GameObject& qbertObject)
 
 	m_pHealthComponent = qbertObject.GetComponent<dae::HealthComponent>();
 	m_pImageComponent = qbertObject.GetComponent<dae::ImageComponent>();
+	m_pScoreComponent = qbertObject.GetComponent<dae::ScoreComponent>();
 }
 
 std::unique_ptr<qbert::PlayerState> qbert::WaitingState::HandleTransitions()
@@ -119,14 +123,6 @@ void qbert::DieState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
 	GetKillableComponent()->Kill();
-	if (GetHealthComponent()->IsDead())
-	{
-		QbertScenes::GetInstance().ReducePlayer();
-		if (QbertScenes::GetInstance().AreAllPlayersDead())
-		{
-			QbertScenes::GetInstance().gameOver = true;
-		}
-	}
 	m_CurrentDeadTime = 0;
 
 	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::SWEAR), 100.0f);
@@ -157,10 +153,13 @@ void qbert::WinState::Enter(dae::GameObject& qbert)
 	if(!m_HasWon)
 	{
 		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::WIN), 100.0f);
+		GetTileActivatorComponent()->AnimateTiles();
 		m_HasWon = true;
 	}
+
+	GetTileActivatorComponent()->ProcessWin();
 		
-	GetTileActivatorComponent()->AnimateTiles();
+	
 }
 
 void qbert::WinState::Update()
@@ -204,8 +203,13 @@ void qbert::FallingState::Update()
 void qbert::DeadState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
+	QbertScenes::GetInstance().ReducePlayer();
+	if (QbertScenes::GetInstance().AreAllPlayersDead())
+	{
+		QbertScenes::GetInstance().gameOver = true;
+	}
 
-
+	
 	GetImageComponent()->SetVisible(false);
 	GetImageComponent()->SetOwnerActive(false);
 }

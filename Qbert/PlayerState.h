@@ -5,6 +5,11 @@
 
 namespace dae
 {
+	class ScoreComponent;
+}
+
+namespace dae
+{
 	class HealthComponent;
 }
 
@@ -33,6 +38,7 @@ namespace qbert
 
 		dae::HealthComponent* GetHealthComponent()const { return m_pHealthComponent; }
 		dae::ImageComponent* GetImageComponent() const { return m_pImageComponent; }
+		dae::ScoreComponent* GetScoreComponent() const { return m_pScoreComponent; }
 	private:
 		GridMoveComponent* m_pMoveComponent{};
 		FallComponent* m_pFallComponent{};
@@ -43,6 +49,7 @@ namespace qbert
 
 		dae::HealthComponent* m_pHealthComponent{};
 		dae::ImageComponent* m_pImageComponent{};
+		dae::ScoreComponent* m_pScoreComponent{};
 	};
 
 	class WaitingState final : public PlayerState

@@ -703,7 +703,7 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateBubble(dae::GameObjec
 std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(const int coilyNb,  std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent, const bool isVersus)
 {
 	std::unique_ptr<dae::GameObject> coilyObject = std::make_unique<dae::GameObject>();
-	coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
+	
 	coilyObject->AddComponent<dae::FSMManagerComponent<CoilyState, CoilyPreparingState>>();
 	coilyObject->AddComponent<qbert::GridMoveComponent>(pMapComponent);
 	coilyObject->AddComponent<qbert::FallComponent>();
@@ -729,10 +729,12 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(const int coily
 		gamepadController->Bind(XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<qbert::QbertMoveCommand>(qbertMoveDownCommand), dae::InputType::DOWN);
 
 		dae::InputManager::GetInstance().AddController(std::move(gamepadController));
+		coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily_Versus_Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
 		
 	}
 	else
 	{
+		coilyObject->AddComponent<dae::ImageComponent>("qbert/Coily Spritesheet.png", true, 0.0f, 0.0f, 1, 10, 0, 0);
 		coilyObject->AddComponent<qbert::FollowPlayerComponent>(pPlayerObjects, pMapComponent);
 	}
 

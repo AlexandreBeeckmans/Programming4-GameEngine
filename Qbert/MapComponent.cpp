@@ -1,5 +1,7 @@
 #include "MapComponent.h"
 
+#include <numeric>
+
 #include "DiscComponent.h"
 #include "GameObject.h"
 
@@ -205,6 +207,16 @@ void qbert::MapComponent::SetAllTileAnimated(const bool isAnimated)
 bool qbert::MapComponent::AreIndexesOnTheSameRow(const int index1, const int index2)
 {
 	return GetRowFromIndex(index1) == GetRowFromIndex(index2);
+}
+
+int qbert::MapComponent::GetRemainingDisks() const
+{
+	int nbDiscs = std::accumulate(m_pDiscs.begin(), m_pDiscs.end(), 0,
+		[](int accum, DiscComponent* disc) {
+			return disc->IsOwnerActive() ? accum + 1 : accum;
+		});
+
+	return nbDiscs;
 }
 
 
