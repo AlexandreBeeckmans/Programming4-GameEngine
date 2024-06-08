@@ -82,7 +82,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 #if _DEBUG
 	ServiceLocator::GetInstance().RegisterSoundSystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<SDLSoundSystem>()));
 #else
-	ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDLSoundSystem>());
+	ServiceLocator::GetInstance().RegisterSoundSystem(std::make_unique<dae::SDLSoundSystem>());
 #endif
 
 	ServiceLocator::GetInstance().GetSoundSystem().Init();
