@@ -82,8 +82,13 @@ void dae::ImageComponent::MakeShapeFitTexture()
 	m_ImageShape.h = m_pTexture->GetSize().y / m_MaxRow;
 }
 
-void dae::ImageComponent::SetWidth(const int newWidth)
+void dae::ImageComponent::SetWidth(const int newWidth, bool conserveProportions)
 {
+	if(conserveProportions)
+	{
+		const float percentage = static_cast<float>(newWidth) / static_cast<float>(m_ImageShape.w);
+		m_ImageShape.h = static_cast<int>(static_cast<float>(m_ImageShape.h) * percentage);
+	}
 	m_ImageShape.w = newWidth;
 }
 

@@ -2,30 +2,44 @@
 
 #include "EngineTime.h"
 #include "EventManager.h"
+#include "GameOverLevel.h"
 #include "HealthComponent.h"
 #include "InputManager.h"
+#include "LoadLevel.h"
+#include "MainLevel.h"
 #include "QbertCommand.h"
+#include "QbertGameState.h"
 #include "QbertScenes.h"
 #include "SceneManager.h"
+#include "StartMenuLevel.h"
 
-int qbert::SceneStates::m_LevelNumber{ 0 };
-int qbert::SceneStates::m_RoundNumber{ 0 };
-bool qbert::SceneStates::m_LevelFinished{ false };
-qbert::GameMode qbert::SceneStates::m_GameMode{ qbert::GameMode::SOLO };
+int qbert::SceneState::m_LevelNumber{ 0 };
+int qbert::SceneState::m_RoundNumber{ 0 };
+bool qbert::SceneState::m_LevelFinished{ false };
+qbert::GameMode qbert::SceneState::m_GameMode{ qbert::GameMode::SOLO };
 
-void qbert::SceneStates::Enter()
+void qbert::SceneState::Enter()
 {
+
+	QbertScenes::GetInstance().goNext = false;
+	
 	dae::MuteCommand muteCommand{};
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_F2, std::make_unique<dae::MuteCommand>(muteCommand), dae::InputType::DOWN);
+	dae::SceneManager::GetInstance().Init();
+	if(m_AssociatedLevel)
+	{
+		m_AssociatedLevel->Load();
+	}
+	dae::SceneManager::GetInstance().Init();
 }
 
-void qbert::SceneStates::Exit()
+void qbert::SceneState::Exit()
 {
 	dae::SceneManager::GetInstance().ClearScenes();
 	dae::InputManager::GetInstance().UnbindAll();
 }
 
-bool qbert::SceneStates::IncrementGameMode(const int addedValue)
+bool qbert::SceneState::IncrementGameMode(const int addedValue)
 {
 	if (static_cast<int>(m_GameMode) + addedValue >= 3) return false;
 	if (static_cast<int>(m_GameMode) + addedValue < 0) return false;
@@ -34,13 +48,13 @@ bool qbert::SceneStates::IncrementGameMode(const int addedValue)
 	return true;
 }
 
-void qbert::SceneStates::ResetLevelAndRound()
+void qbert::SceneState::ResetLevelAndRound()
 {
 	m_LevelNumber = 0;
 	m_RoundNumber = 0;
 }
 
-void qbert::SceneStates::IncrementRound()
+void qbert::SceneState::IncrementRound()
 {
 	++m_RoundNumber;
 
@@ -54,7 +68,7 @@ void qbert::SceneStates::IncrementRound()
 	if (m_LevelNumber >= 3) QbertScenes::GetInstance().gameOver = true;
 }
 
-void qbert::SceneStates::IncrementLevel()
+void qbert::SceneState::IncrementLevel()
 {
 	m_RoundNumber = 0;
 	++m_LevelNumber;
@@ -65,7 +79,17 @@ void qbert::SceneStates::IncrementLevel()
 	}
 }
 
-std::unique_ptr<qbert::SceneStates> qbert::StartMenuSceneState::HandleTransitions()
+void qbert::SceneState::SetGameMode(const GameMode& gameMode)
+{
+	m_GameMode = gameMode;
+}
+
+qbert::StartMenuSceneState::StartMenuSceneState()
+{
+	m_AssociatedLevel = std::make_unique<StartMenuLevel>();
+}
+
+std::unique_ptr<qbert::SceneState> qbert::StartMenuSceneState::HandleTransitions()
 {
 	if (QbertScenes::GetInstance().goNext) return std::make_unique<LevelLoadingState>(LevelLoadingState{});
 	return nullptr;
@@ -73,14 +97,13 @@ std::unique_ptr<qbert::SceneStates> qbert::StartMenuSceneState::HandleTransition
 
 void qbert::StartMenuSceneState::Enter()
 {
-	SceneStates::Enter();
+	SceneState::Enter();
 
-	QbertScenes::GetInstance().LoadStartMenu();
 	QbertScenes::GetInstance().gameOver = false;
-	QbertScenes::GetInstance().m_Lives.clear();
-	QbertScenes::GetInstance().m_Scores.clear();
+	QbertGameState::GetInstance().ClearLives();
+	QbertGameState::GetInstance().ClearScores();
 	QbertScenes::GetInstance().goNext = false;
-	m_GameMode = GameMode::SOLO;
+	SetGameMode(GameMode::SOLO);
 
 	ResetLevelAndRound();
 	
@@ -88,18 +111,18 @@ void qbert::StartMenuSceneState::Enter()
 
 void qbert::StartMenuSceneState::Exit()
 {
-	SceneStates::Exit();
+	SceneState::Exit();
 
-	QbertScenes::GetInstance().m_Lives.push_back(dae::HealthComponent::GetMaxLives());
-	QbertScenes::GetInstance().m_Scores.push_back(0);
-	if (m_GameMode == GameMode::COOP)
+	QbertGameState::GetInstance().AddLive(dae::HealthComponent::GetMaxLives());
+	QbertGameState::GetInstance().AddScore(0);
+	if (GetGameMode() == GameMode::COOP)
 	{
-		QbertScenes::GetInstance().m_Lives.push_back(dae::HealthComponent::GetMaxLives());
-		QbertScenes::GetInstance().m_Scores.push_back(0);
+		QbertGameState::GetInstance().AddLive(dae::HealthComponent::GetMaxLives());
+		QbertGameState::GetInstance().AddScore(0);
 	}
 }
 
-std::unique_ptr<qbert::SceneStates> qbert::LevelSceneState::HandleTransitions()
+std::unique_ptr<qbert::SceneState> qbert::LevelSceneState::HandleTransitions()
 {
 	if (QbertScenes::GetInstance().gameOver) return std::make_unique<GameOverScreen>();
 
@@ -136,7 +159,19 @@ std::unique_ptr<qbert::SceneStates> qbert::LevelSceneState::HandleTransitions()
 
 void qbert::LevelSceneState::Enter()
 {
-	SceneStates::Enter();
+	switch (GetGameMode())
+	{
+	case(GameMode::SOLO):
+		m_AssociatedLevel = std::make_unique<MainLevel>(GetLevelNumber(), GetRoundNumber(), 1, false);
+		break;
+	case(GameMode::COOP):
+		m_AssociatedLevel = std::make_unique<MainLevel>(GetLevelNumber(), GetRoundNumber(), 2, false);
+		break;
+	case(GameMode::VERSUS):
+		m_AssociatedLevel = std::make_unique<MainLevel>(GetLevelNumber(), GetRoundNumber(), 1, true);
+		break;
+	}
+	SceneState::Enter();
 
 	SkipLevelCommand skipLevelCommand{};
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_F1, std::make_unique<qbert::SkipLevelCommand>(skipLevelCommand), dae::InputType::DOWN);
@@ -145,32 +180,26 @@ void qbert::LevelSceneState::Enter()
 
 	QbertScenes::GetInstance().goNext = false;
 
-	switch(m_GameMode)
-	{
-	case(GameMode::SOLO):
-		QbertScenes::GetInstance().LoadQbertLevel(GetLevelNumber(), GetRoundNumber(), 1);
-		break;
-	case(GameMode::COOP):
-		QbertScenes::GetInstance().LoadQbertLevel(GetLevelNumber(), GetRoundNumber(), 2);
-		break;
-	case(GameMode::VERSUS):
-		QbertScenes::GetInstance().LoadQbertLevel(GetLevelNumber(), GetRoundNumber(), 1, true);
-		break;
-	}
+	
 	
 
-	dae::SceneManager::GetInstance().Init();
+	
 }
 
 void qbert::LevelSceneState::Exit()
 {
-	SceneStates::Exit();
-	QbertScenes::GetInstance().ClearHealthComponents();
-	QbertScenes::GetInstance().ClearScoreComponents();
+	SceneState::Exit();
+	QbertGameState::GetInstance().ClearHealthComponents();
+	QbertGameState::GetInstance().ClearScoreComponents();
 	dae::EventManager::GetInstance().ClearFunctions();
 }
 
-std::unique_ptr<qbert::SceneStates> qbert::LevelLoadingState::HandleTransitions()
+qbert::LevelLoadingState::LevelLoadingState()
+{
+	m_AssociatedLevel = std::make_unique<LoadLevel>(GetLevelNumber());
+}
+
+std::unique_ptr<qbert::SceneState> qbert::LevelLoadingState::HandleTransitions()
 {
 	if (m_CurrentWaitingTime >= m_MaxWaitingTime) return std::make_unique<LevelSceneState>(LevelSceneState{});
 	return nullptr;
@@ -183,14 +212,18 @@ void qbert::LevelLoadingState::Update()
 
 void qbert::LevelLoadingState::Enter()
 {
-	SceneStates::Enter();
+	SceneState::Enter();
 
-	QbertScenes::GetInstance().LoadLevelLoading(GetLevelNumber());
-	QbertScenes::GetInstance().goNext = false;
+	
 	SetLevelFinished(false);
 }
 
-std::unique_ptr<qbert::SceneStates> qbert::GameOverScreen::HandleTransitions()
+qbert::GameOverScreen::GameOverScreen()
+{
+	m_AssociatedLevel = std::make_unique<GameOverLevel>();
+}
+
+std::unique_ptr<qbert::SceneState> qbert::GameOverScreen::HandleTransitions()
 {
 	if (QbertScenes::GetInstance().goNext) return std::make_unique<StartMenuSceneState>();
 	return nullptr;
@@ -198,14 +231,11 @@ std::unique_ptr<qbert::SceneStates> qbert::GameOverScreen::HandleTransitions()
 
 void qbert::GameOverScreen::Enter()
 {
-	SceneStates::Enter();
-
-	QbertScenes::GetInstance().LoadGameOverScreen();
-	dae::SceneManager::GetInstance().Init();
+	SceneState::Enter();
 }
 
 void qbert::GameOverScreen::Exit()
 {
-	SceneStates::Exit();
+	SceneState::Exit();
 	QbertScenes::GetInstance().LeaveGameOverScreen();
 }

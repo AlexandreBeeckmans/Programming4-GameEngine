@@ -15,6 +15,7 @@
 #include "ScoreComponent.h"
 
 #include "HealthComponent.h"
+#include "QbertGameState.h"
 #include "ServiceLocator.h"
 #include "SoundTypes.h"
 
@@ -203,8 +204,8 @@ void qbert::FallingState::Update()
 void qbert::DeadState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
-	QbertScenes::GetInstance().ReducePlayer();
-	if (QbertScenes::GetInstance().AreAllPlayersDead())
+	QbertGameState::GetInstance().ReducePlayer();
+	if (QbertGameState::GetInstance().AreAllPlayersDead())
 	{
 		QbertScenes::GetInstance().gameOver = true;
 	}

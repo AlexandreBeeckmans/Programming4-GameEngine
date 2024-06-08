@@ -134,6 +134,8 @@
     <ClInclude Include="FSMManagerComponent.hpp" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="EventManager.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="Level.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui.cpp">
@@ -235,6 +237,8 @@
     <ClCompile Include="SceneCollection.cpp" />
     <ClCompile Include="AnimatorComponent.cpp" />
     <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Level.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

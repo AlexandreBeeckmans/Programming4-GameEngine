@@ -31,15 +31,20 @@ namespace qbert
 	class IncrementLetterCommand : public dae::GameObjectCommand
 	{
 	public:
-		IncrementLetterCommand(dae::GameObject* pObject);
+		IncrementLetterCommand(dae::GameObject* pObject, const int direction);
 		virtual void Execute() override;
+	private:
+		int m_Direction{};
 	};
 
 	class IncrementLetterIndexCommand : public dae::GameObjectCommand
 	{
 	public:
-		IncrementLetterIndexCommand(dae::GameObject* pObject);
+		IncrementLetterIndexCommand(const int direction, dae::GameObject* pObject, const std::vector<dae::GameObject*>& pArrow);
 		virtual void Execute() override;
+	private:
+		std::vector<dae::GameObject*> m_pArrow{};
+		int m_Direction{ 0 };
 	};
 
 	class SelectCommand : public dae::GameObjectCommand

@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 
+#include "Level.h"
+#include "Singleton.h"
 #include "State.hpp"
 
 namespace qbert
@@ -12,7 +14,7 @@ namespace qbert
 		VERSUS
 	};
 
-	class SceneStates : public dae::State<SceneStates>
+	class SceneState : public dae::State<SceneState>
 	{
 	public:
 		virtual void Enter() override;
@@ -31,37 +33,42 @@ namespace qbert
 		static bool IsLevelFinished() { return m_LevelFinished; }
 		static void SetLevelFinished(const bool isFinished) { m_LevelFinished = isFinished; }
 
-		static GameMode m_GameMode;
+		static void SetGameMode(const GameMode& gameMode);
+
+		std::unique_ptr<dae::Level> m_AssociatedLevel;
 
 	private:
 		static int m_LevelNumber;
 		static int m_RoundNumber;
 		static bool m_LevelFinished;
+		static GameMode m_GameMode;
+
+		
 	};
 
-	class StartMenuSceneState final :public SceneStates
+	class StartMenuSceneState final :public SceneState
 	{
 	public:
-
-		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
+		StartMenuSceneState();
+		virtual std::unique_ptr<SceneState> HandleTransitions() override;
 		virtual void Enter() override;
 		virtual void Exit() override;
 	};
 
-	class LevelSceneState final :public SceneStates
+	class LevelSceneState final :public SceneState
 	{
 	public:
 
-		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
+		virtual std::unique_ptr<SceneState> HandleTransitions() override;
 		virtual void Enter() override;
 		virtual void Exit() override;
 	};
 
-	class LevelLoadingState final :public SceneStates
+	class LevelLoadingState final :public SceneState
 	{
 	public:
-
-		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
+		LevelLoadingState();
+		virtual std::unique_ptr<SceneState> HandleTransitions() override;
 		virtual void Update() override;
 		virtual void Enter() override;
 
@@ -70,10 +77,11 @@ namespace qbert
 		float m_CurrentWaitingTime{0.0f};
 	};
 
-	class GameOverScreen final : public SceneStates
+	class GameOverScreen final : public SceneState
 	{
 	public:
-		virtual std::unique_ptr<SceneStates> HandleTransitions() override;
+		GameOverScreen();
+		virtual std::unique_ptr<SceneState> HandleTransitions() override;
 		virtual void Enter() override;
 		virtual void Exit() override;
 

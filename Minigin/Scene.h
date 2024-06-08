@@ -1,9 +1,10 @@
 #pragma once
 #include "SceneManager.h"
+#include "GameObject.h"
 
 namespace dae
 {
-	class GameObject;
+
 	class Scene final
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
@@ -23,10 +24,10 @@ namespace dae
 
 		~Scene() = default;
 		void Init();
-		Scene(const Scene& other) = delete;
-		Scene(Scene&& other) = delete;
-		Scene& operator=(const Scene& other) = delete;
-		Scene& operator=(Scene&& other) = delete;
+		Scene(const Scene& other) = default;
+		Scene(Scene&& other) = default;
+		Scene& operator=(const Scene& other) = default;
+		Scene& operator=(Scene&& other) = default;
 
 	private: 
 		explicit Scene(const std::string& name);

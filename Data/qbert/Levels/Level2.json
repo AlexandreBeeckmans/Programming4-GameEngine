@@ -1,0 +1,32 @@
+[
+	{
+	"nbCoily" : 2,
+	"nbSlick" : 0,
+	"nbUgg" : 0
+},
+{
+	"nbCoily" : 2,
+	"nbSlick" : 0,
+	"nbUgg" : 1
+},
+{
+	"nbCoily" : 1,
+	"nbSlick" : 0,
+	"nbUgg" : 2
+},
+{
+	"nbCoily" : 2,
+	"nbSlick" : 1,
+	"nbUgg" : 2
+},
+{
+	"nbCoily" : 2,
+	"nbSlick" : 2,
+	"nbUgg" : 1
+},
+{
+	"nbCoily" : 3,
+	"nbSlick" : 2,
+	"nbUgg" : 1
+}
+]

@@ -31,10 +31,10 @@ void dae::TextComponent::SetColor(const SDL_Color& color)
 	InitTexture();
 }
 
-void dae::TextComponent::IncrementLetter(const int index)
+void dae::TextComponent::IncrementLetter(const int index, const int direction)
 {
-	if (m_Text[index] >= 90) return;
-	++m_Text[index];
+	if (m_Text[index] + direction > 90 || m_Text[index] + direction < 65) return;
+	m_Text[index] += static_cast<char>(direction);
 	SetText(m_Text);
 }
 

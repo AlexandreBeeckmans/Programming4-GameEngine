@@ -9,69 +9,29 @@
 namespace dae
 {
 	class Scene;
-	class ScoreComponent;
-	class HealthComponent;
 }
 
 namespace qbert
 {
-	struct ScoreData
-	{
-		std::string name;
-		int score;
-	};
+	
 
 	class MapComponent;
 
-	class QbertScenes final : public dae::SceneCollection, public dae::Observer, public dae::Singleton<QbertScenes>
+	class QbertScenes final : public dae::SceneCollection, public dae::Singleton<QbertScenes>
 	{
 	public:
 		void Init();
-
-		void LoadQbertLevel(const int level, const int round, const int nbPlayerLevel, const bool isVersus = false);
-		void LoadStartMenu();
-		void LoadLevelLoading(const int level);
-		void LoadGameOverScreen();
 		void LeaveGameOverScreen();
 
 		virtual void Update() override;
-		std::unique_ptr<SceneStates> m_pSceneState{ std::make_unique<qbert::StartMenuSceneState>(qbert::StartMenuSceneState{}) };
+		std::unique_ptr<SceneState> m_pSceneState{ std::make_unique<qbert::StartMenuSceneState>() };
 
-		void SetNbPlayer(const int nbPlayers);
-		void ReducePlayer();
-		bool AreAllPlayersDead();
-
-		void AddHealthComponents(dae::HealthComponent* pComp);
-		void ClearHealthComponents();
-
-		void AddScoreComponent(dae::ScoreComponent* pComp);
-		void ClearScoreComponents();
-
-		void SetName(const std::string& newName) { m_Score.name = newName; }
-
-		virtual void UpdateObserver() override;
 
 		void LoadSounds();
 
 		bool goNext{false};
 		bool gameOver{false};
 		bool skipLevel{ false };
-
-		std::vector<int> m_Lives{};
-		std::vector<int> m_Scores{};
-
-	private :
-		const float m_LevelScale{2.0f};
-		int nbPlayer{};
-		ScoreData m_Score
-		{
-			"Robert",
-			0
-		};
-
-
-		std::vector<dae::HealthComponent*> m_pHealthComponents{};
-		std::vector<dae::ScoreComponent*> m_pScoreComponents{};
 
 		std::unique_ptr<dae::GameObject> CreatePlayer(const int playerNb, MapComponent* pMapComponent);
 		std::unique_ptr<dae::GameObject> CreateBubble(dae::GameObject* pPlayerObject);
@@ -84,10 +44,7 @@ namespace qbert
 		void CreateScoreUIObject(dae::Scene* pScene, const std::unique_ptr<dae::GameObject>& pPlayerObject, const int playerNb);
 		void CreateNextTileUIObject(dae::Scene* pScene, const int level, const int round);
 		void CreateControlsUIObject(dae::Scene* pScene);
-
-		ScoreData GetHighScore();
-		void RegisterHighScore(ScoreData newHighScore);
-
+		void CreateDiscObject(dae::Scene* pScene, MapComponent* pMapComponent, const bool isLeft, const int round);
 	};
 }
 

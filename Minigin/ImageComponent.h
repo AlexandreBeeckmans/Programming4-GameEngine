@@ -40,7 +40,7 @@ namespace dae
 
 		void UpdateShape();
 		void MakeShapeFitTexture();
-		void SetWidth(const int newWidth);
+		void SetWidth(const int newWidth, bool conserveProportions = false);
 		void SetHeight(const int newHeight);
 
 		void ReduceHeight(const float percentage);

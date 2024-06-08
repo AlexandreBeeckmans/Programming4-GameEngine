@@ -4,12 +4,12 @@
 
 qbert::LevelInfo qbert::LevelLoader::LoadLevel(const int level, const int round)
 {
-	auto jsonLevel = dae::ResourceManager::GetInstance().ReadFile("qbert/Levels/Level_" + std::to_string(level) + "_" + std::to_string(round) + ".json");
-
+	auto jsonLevel = dae::ResourceManager::GetInstance().ReadFile("qbert/Levels/Level" + std::to_string(level) + ".json");
+	auto obj = jsonLevel[round - 1];
 	return LevelInfo
 	{
-		jsonLevel["nbCoily"],
-		jsonLevel["nbSlick"],
-		jsonLevel["nbUgg"]
+		obj["nbCoily"],
+		obj["nbSlick"],
+		obj["nbUgg"]
 	};
 }

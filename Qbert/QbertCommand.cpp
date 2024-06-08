@@ -31,26 +31,29 @@ void qbert::SkipLevelCommand::Execute()
 	QbertScenes::GetInstance().goNext = true;
 }
 
-qbert::IncrementLetterCommand::IncrementLetterCommand(dae::GameObject* pObject) :
-GameObjectCommand(pObject)
+qbert::IncrementLetterCommand::IncrementLetterCommand(dae::GameObject* pObject, const int direction) :
+GameObjectCommand(pObject),
+m_Direction(direction)
 {
 }
 
 void qbert::IncrementLetterCommand::Execute()
 {
 	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::MENUSELECTION), 100.0f);
-	GetGameActor()->GetComponent<qbert::WritableNameComponent>()->IncrementCurrentLetter();
+	GetGameActor()->GetComponent<qbert::WritableNameComponent>()->IncrementCurrentLetter(m_Direction);
 }
 
-qbert::IncrementLetterIndexCommand::IncrementLetterIndexCommand(dae::GameObject* pObject):
-GameObjectCommand(pObject)
+qbert::IncrementLetterIndexCommand::IncrementLetterIndexCommand(const int direction, dae::GameObject* pObject, const std::vector<dae::GameObject*>& pArrow):
+GameObjectCommand(pObject),
+m_pArrow(pArrow),
+m_Direction(direction)
 {
 }
 
 void qbert::IncrementLetterIndexCommand::Execute()
 {
 	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::MENUSELECTION), 100.0f);
-	GetGameActor()->GetComponent<qbert::WritableNameComponent>()->IncrementLetterIndex();
+	GetGameActor()->GetComponent<qbert::WritableNameComponent>()->IncrementLetterIndex(m_Direction, m_pArrow);
 }
 
 qbert::SelectCommand::SelectCommand(dae::GameObject* pObject, int direction, const float discplacement):
@@ -64,7 +67,7 @@ m_Discplacement(discplacement)
 void qbert::SelectCommand::Execute()
 {
 	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::MENUSELECTION), 100.0f);
-	if(SceneStates::IncrementGameMode(m_Direction))
+	if(SceneState::IncrementGameMode(m_Direction))
 		GetGameActor()->Translate(glm::vec2{ 0, m_Discplacement * static_cast<float>(m_Direction) });
 }
 

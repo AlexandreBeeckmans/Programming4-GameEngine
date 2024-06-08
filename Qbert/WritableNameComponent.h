@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 #include "BaseComponent.h"
 
 namespace dae
@@ -21,8 +23,8 @@ namespace qbert
 
 		virtual void Init() override;
 
-		void IncrementCurrentLetter();
-		void IncrementLetterIndex();
+		void IncrementCurrentLetter(const int direction);
+		void IncrementLetterIndex(const int direction, const std::vector<dae::GameObject*>& pArrow);
 
 	private:
 		dae::TextComponent* m_pTextComponent{ nullptr };

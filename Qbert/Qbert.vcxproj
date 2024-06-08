@@ -161,6 +161,7 @@
     <ClCompile Include="FallComponent.cpp" />
     <ClCompile Include="FollowPlayerComponent.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
+    <ClCompile Include="GameOverLevel.cpp" />
     <ClCompile Include="GridMoveComponent.cpp" />
     <ClCompile Include="GuiEx1Component.cpp" />
     <ClCompile Include="GuiEx2Component.cpp" />
@@ -170,12 +171,15 @@
     <ClCompile Include="KillableComponent.cpp" />
     <ClCompile Include="KillerComponent.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
+    <ClCompile Include="LoadLevel.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainLevel.cpp" />
     <ClCompile Include="MapComponent.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="PlayerKillableComponent.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="QbertCommand.cpp" />
+    <ClCompile Include="QbertGameState.cpp" />
     <ClCompile Include="QbertJumpAnimatorComponent.cpp" />
     <ClCompile Include="QbertScenes.cpp" />
     <ClCompile Include="RenderFPSComponent.cpp" />
@@ -186,6 +190,7 @@
     <ClCompile Include="SlickAnimatorComponent.cpp" />
     <ClCompile Include="SlickDirection.cpp" />
     <ClCompile Include="SlickState.cpp" />
+    <ClCompile Include="StartMenuLevel.cpp" />
     <ClCompile Include="TestCommand.cpp" />
     <ClCompile Include="TileActivatorComponent.cpp" />
     <ClCompile Include="TileComponent.cpp" />
@@ -208,6 +213,7 @@
     <ClInclude Include="FallComponent.h" />
     <ClInclude Include="FollowPlayerComponent.h" />
     <ClInclude Include="FPSComponent.h" />
+    <ClInclude Include="GameOverLevel.h" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="GridMoveComponent.h" />
     <ClInclude Include="GuiEx1Component.h" />
@@ -218,11 +224,14 @@
     <ClInclude Include="KillableComponent.h" />
     <ClInclude Include="KillerComponent.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="LoadLevel.h" />
+    <ClInclude Include="MainLevel.h" />
     <ClInclude Include="MapComponent.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="PlayerKillableComponent.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="QbertCommand.h" />
+    <ClInclude Include="QbertGameState.h" />
     <ClInclude Include="QbertJumpAnimatorComponent.h" />
     <ClInclude Include="QbertScenes.h" />
     <ClInclude Include="RenderFPSComponent.h" />
@@ -234,6 +243,7 @@
     <ClInclude Include="SlickDirection.h" />
     <ClInclude Include="SlickState.h" />
     <ClInclude Include="SoundTypes.h" />
+    <ClInclude Include="StartMenuLevel.h" />
     <ClInclude Include="TestCommand.h" />
     <ClInclude Include="TileActivatorComponent.h" />
     <ClInclude Include="TileComponent.h" />

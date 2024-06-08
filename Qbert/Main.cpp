@@ -11,13 +11,11 @@
 #include "InputManager.h"
 
 #include "GuiEx2Component.h"
-#include "ServiceLocator.h"
 
 #include"QbertScenes.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "GameObject.h"
-#include "SoundTypes.h"
 
 
 void Load()

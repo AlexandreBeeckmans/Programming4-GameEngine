@@ -40,6 +40,7 @@
 #include "Minigin.h"
 #include "PlayerKillableComponent.h"
 #include "QbertCommand.h"
+#include "QbertGameState.h"
 #include "QbertJumpAnimatorComponent.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
@@ -65,385 +66,14 @@ void qbert::QbertScenes::Init()
 	m_pSceneState->Enter();
 }
 
-void qbert::QbertScenes::LoadQbertLevel(const int level, const int round, const int nbPlayerLevel, const bool isVersus)
-{
-	LevelInfo levelInfo{ LevelLoader::GetInstance().LoadLevel(level + 1, round + 1) };
-
-	SetNbPlayer(nbPlayerLevel);
-	dae::ImageComponent::SetSpriteScale(m_LevelScale);
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level" + std::to_string(level) + "Round" + std::to_string(round));
-
-	auto backgroundObject = std::make_unique<dae::GameObject>();
-
-	backgroundObject->AddComponent<dae::ImageComponent>("background.tga", true, 0.0f, 0.0f);
-	backgroundObject->AddComponent<dae::ImageComponent>("logo.tga", true, 220.0f, 200.0f);
-	backgroundObject->SetLocalPosition(0, 0);
-	scene.Add(std::move(backgroundObject));
-
-
-#pragma region SET_MAP
-
-	constexpr int nbOfRow{ 7 };
-	int nbOfTiles{ nbOfRow };
-	std::unique_ptr<dae::GameObject> pMapObject{ std::make_unique<dae::GameObject>() };
-
-	pMapObject->AddComponent<qbert::MapComponent>(nbOfRow);
-	float baseTileX{ 0.0f };
-	float baseTileY{ 0.0f };
-
-	std::vector<std::unique_ptr<dae::GameObject>> tiles{};
-
-
-	for (int j{ 0 }; j < nbOfRow; ++j)
-	{
-		for (int i{ 0 }; i < nbOfTiles; ++i)
-		{
-			auto tileObject = std::make_unique<dae::GameObject>();
-			tileObject->AddComponent<qbert::TileComponent>(level%2 + 1, level >= 2);
-			tileObject->AddComponent<dae::ImageComponent>("qbert/Qbert Cubes.png", true, 0.0f, 0.0f, 3, 6, 0, round);
-			tileObject->AddComponent<dae::AnimatorComponent>(false, 0.1f, 1,3,round,0);
-
-			tileObject->SetParent(pMapObject.get(), true);
-			tileObject->SetLocalPosition(baseTileX + i * tileObject->GetComponent<dae::ImageComponent>()->GetShape().w, baseTileY);
-
-			pMapObject->GetComponent<qbert::MapComponent>()->AddTile(tileObject->GetComponent<qbert::TileComponent>());
-			tiles.emplace_back(std::move(tileObject));
-		}
-
-		--nbOfTiles;
-		baseTileX += tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().w / 2.0f;
-		baseTileY -= 3 * tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().h / 4.0f;
-	}
-
-	const glm::vec2 mapPosition
-	{
-		static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(nbOfRow * tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f,
-		static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f + static_cast<float>(nbOfRow * tiles[0]->GetComponent<dae::ImageComponent>()->GetShape().h) / 4.0f
-	};
-	pMapObject->SetLocalPosition(mapPosition);
-
-
-
-#pragma endregion
-
-	std::vector<std::unique_ptr<dae::GameObject>> playerObjects{};
-	std::vector<std::unique_ptr<dae::GameObject>> bubbleObjects{};
-	for(int i{0}; i < nbPlayerLevel; ++i)
-	{
-		playerObjects.push_back(CreatePlayer(i + 1, pMapObject->GetComponent<MapComponent>()));
-		bubbleObjects.push_back(CreateBubble(playerObjects[i].get()));
-		playerObjects[i]->GetComponent<qbert::BubbleManagerComponent>()->SetBubbleImage(bubbleObjects[i]->GetComponent<dae::ImageComponent>());
-	}
-
-	//reposition if multiple players
-	if(nbPlayerLevel > 1)
-	{
-		playerObjects[0]->GetComponent<GridMoveComponent>()->SetCurrentIndex(0);
-		playerObjects[1]->GetComponent<GridMoveComponent>()->SetCurrentIndex(nbOfRow - 1);
-	}
-
-	
-
-	
-
-	std::vector<std::unique_ptr<dae::GameObject>> coilyObjects{};
-	for(int i{0}; i < levelInfo.nbCoily; ++i)
-	{
-		coilyObjects.push_back(CreateCoily(i, &playerObjects, pMapObject->GetComponent<MapComponent>(), isVersus));
-	}
-
-	std::vector<std::unique_ptr<dae::GameObject>> slickObjects{};
-
-	for (int i{ 0 }; i < levelInfo.nbSlick; ++i)
-	{
-		slickObjects.push_back(CreateSlick(static_cast<bool>(i%2), &playerObjects, pMapObject->GetComponent<MapComponent>()));
-	}
-
-
-	std::vector<std::unique_ptr<dae::GameObject>> uggObjects{};
-
-	for (int i{ 0 }; i < levelInfo.nbUgg; ++i)
-	{
-		uggObjects.push_back(CreateUgg(static_cast<bool>(i%2), &playerObjects, pMapObject->GetComponent<MapComponent>()));
-	}
-
-#pragma region DISC
-	auto leftDiscObject = std::make_unique<dae::GameObject>();
-	leftDiscObject->SetLocalPosition(150, 150);
-
-	leftDiscObject->AddComponent<dae::ImageComponent>("qbert/Disk_Spritesheet.png", true, 0.0f, 0.0f, 1, 30, 0, 5 * round);
-	leftDiscObject->AddComponent<dae::AnimatorComponent>(true, 0.25f, 4, 1, 5 * round, 0);
-	leftDiscObject->AddComponent<qbert::DiscComponent>(pMapObject->GetComponent<qbert::MapComponent>());
-
-
-	auto rightDiscObject = std::make_unique<dae::GameObject>();
-	rightDiscObject->SetLocalPosition(150, 150);
-
-	rightDiscObject->AddComponent<dae::ImageComponent>("qbert/Disk_Spritesheet.png", true, 0.0f, 0.0f, 1, 30, 0, 5 * round);
-	rightDiscObject->AddComponent<dae::AnimatorComponent>(true, 0.25f, 4, 1, 5 * round, 0);
-	rightDiscObject->AddComponent<qbert::DiscComponent>(pMapObject->GetComponent<qbert::MapComponent>(), false);
-
-	pMapObject->GetComponent<MapComponent>()->AddDisc(leftDiscObject->GetComponent<DiscComponent>());
-	pMapObject->GetComponent<MapComponent>()->AddDisc(rightDiscObject->GetComponent<DiscComponent>());
-
-#pragma endregion
-
-
-	CreateGameUI(&scene, playerObjects, level, round);
-	
-
-	for (auto& tile : tiles)
-	{
-		scene.Add(std::move(tile));
-	}
-	scene.Add(std::move(pMapObject));
-
-	scene.Add(std::move(leftDiscObject));
-	scene.Add(std::move(rightDiscObject));
-
-	for (auto& bubble : bubbleObjects)
-	{
-		scene.Add(std::move(bubble));
-	}
-
-	for (auto& player : playerObjects)
-	{
-		scene.Add(std::move(player));
-	}
-
-	for (auto& coily : coilyObjects)
-	{
-		scene.Add(std::move(coily));
-	}
-
-	for (auto& slick : slickObjects)
-	{
-		scene.Add(std::move(slick));
-	}
-
-	for (auto& ugg : uggObjects)
-	{
-		scene.Add(std::move(ugg));
-	}
-}
-
-void qbert::QbertScenes::LoadStartMenu()
-{
-	dae::ImageComponent::SetSpriteScale(1.0f);
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("StartMenu");
-
-	auto titleObject = std::make_unique<dae::GameObject>();
-	titleObject->AddComponent<dae::ImageComponent>("qbert/Game_Title.png");
-
-	const glm::vec2 titlePos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(titleObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 8.0f)
-	};
-	titleObject->SetLocalPosition(titlePos);
-
-	auto font = dae::ResourceManager::GetInstance().LoadFont("qbert/Minecraft.ttf", 36);
-	auto pressSpaceObject = std::make_unique<dae::GameObject>();
-	auto soloObject = std::make_unique<dae::GameObject>();
-	auto coopObject = std::make_unique<dae::GameObject>();
-	auto versusObject = std::make_unique<dae::GameObject>();
-
-	dae::Font actualFont = *font;
-	std::string enterString{ "Press space to continue..." };
-	std::string soloString{ "Solo  Mode" };
-	std::string coopString{ "Coop Mode" };
-	std::string versusString{ "Versus Mode" };
-
-	pressSpaceObject->AddComponent<dae::TextComponent>(enterString, actualFont);
-	pressSpaceObject->AddComponent<qbert::BlinkingComponent>(0.25f);
-
-	soloObject->AddComponent<dae::TextComponent>(soloString, actualFont);
-	coopObject->AddComponent<dae::TextComponent>(coopString, actualFont);
-	versusObject->AddComponent<dae::TextComponent>(versusString, actualFont);
-
-	const glm::vec2 pressSpacePos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(pressSpaceObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) - static_cast<float>(pressSpaceObject->GetComponent<dae::ImageComponent>()->GetShape().h))
-	};
-	pressSpaceObject->SetLocalPosition(pressSpacePos);
-
-	constexpr float titleOffset{ 100.f };
-	constexpr float titleDiscplacement{ 100.0f };
-	const glm::vec2 soloPos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(soloObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(titleObject->GetComponent<dae::ImageComponent>()->GetShape().y + titleObject->GetComponent<dae::ImageComponent>()->GetShape().h) + titleOffset + 0 * titleDiscplacement)
-	};
-	soloObject->SetLocalPosition(soloPos);
-
-	const glm::vec2 coopPos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(coopObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(titleObject->GetComponent<dae::ImageComponent>()->GetShape().y + titleObject->GetComponent<dae::ImageComponent>()->GetShape().h) + titleOffset +  1 * titleDiscplacement)
-	};
-	coopObject->SetLocalPosition(coopPos);
-
-	const glm::vec2 versusPos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(versusObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(titleObject->GetComponent<dae::ImageComponent>()->GetShape().y + titleObject->GetComponent<dae::ImageComponent>()->GetShape().h) + titleOffset + 2 * titleDiscplacement)
-	};
-	versusObject->SetLocalPosition(versusPos);
-
-
-	//cursor
-	auto cursorObject{ std::make_unique<dae::GameObject>() };
-	cursorObject->AddComponent<dae::ImageComponent>("qbert/Selection_Arrow.png");
-	cursorObject->GetComponent<dae::ImageComponent>()->SetWidth(10);
-	cursorObject->GetComponent<dae::ImageComponent>()->SetHeight(25);
-
-	const glm::vec2 cursorPos
-	{
-		static_cast<int>(soloObject->GetWorldPosition().x - static_cast<float>(cursorObject->GetComponent<dae::ImageComponent>()->GetShape().w) - 50),
-		soloObject->GetWorldPosition().y
-	};
-	cursorObject->SetLocalPosition(cursorPos);
-	
-	qbert::SelectCommand selectDownCommand{ cursorObject.get(), 1, titleDiscplacement };
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_DOWN, std::make_unique<qbert::SelectCommand>(selectDownCommand), dae::InputType::DOWN);
-
-	qbert::SelectCommand selectUpCommand{ cursorObject.get(), -1, titleDiscplacement };
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_UP, std::make_unique<qbert::SelectCommand>(selectUpCommand), dae::InputType::DOWN);
-
-	scene.Add(std::move(titleObject));
-	scene.Add(std::move(pressSpaceObject));
-	scene.Add(std::move(soloObject));
-	scene.Add(std::move(coopObject));
-	scene.Add(std::move(versusObject));
-	scene.Add(std::move(cursorObject));
-
-	qbert::GoNextSceneCommand goNextCommand{};
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_SPACE, std::make_unique<qbert::GoNextSceneCommand>(goNextCommand), dae::InputType::DOWN);
-
-
-}
-
-void qbert::QbertScenes::LoadLevelLoading(const int level)
-{
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("StartMenu");
-
-	auto loadObject = std::make_unique<dae::GameObject>();
-	loadObject->AddComponent<dae::ImageComponent>("qbert/Level_" + std::to_string(level + 1) + "_Title.png");
-
-	loadObject->GetComponent<dae::ImageComponent>()->SetWidth(dae::Minigin::GetWindowWidth());
-	loadObject->GetComponent<dae::ImageComponent>()->SetHeight(dae::Minigin::GetWindowHeight());
-
-	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::LOAD), 100.0f);
-
-
-
-	scene.Add(std::move(loadObject));
-}
-
-void qbert::QbertScenes::LoadGameOverScreen()
-{
-
-	const int currentScore{ std::accumulate(std::cbegin(m_Scores), std::cend(m_Scores), 0) };
-	ScoreData highScore{ GetHighScore() };
-
-
-	auto gameOverFont = dae::ResourceManager::GetInstance().LoadFont("qbert/Minecraft.ttf", 55);
-	dae::Font actualGameOverFont{ *gameOverFont };
-
-	auto gameOverTextObject{ std::make_unique<dae::GameObject>() };
-	gameOverTextObject->AddComponent<dae::TextComponent>("GAME OVER!", actualGameOverFont);
-	const glm::vec2 gameOverPos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(gameOverTextObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 8.0f)
-	};
-	gameOverTextObject->SetLocalPosition(gameOverPos);
-
-
-	auto scoreFont = dae::ResourceManager::GetInstance().LoadFont("qbert/Minecraft.ttf", 36);
-	dae::Font actualScoreFont{ *scoreFont };
-
-	auto nameObject{ std::make_unique<dae::GameObject>() };
-	nameObject->AddComponent<dae::TextComponent>("AAA", actualGameOverFont);
-	nameObject->AddComponent<qbert::WritableNameComponent>();
-
-	qbert::IncrementLetterCommand incrementLetterCommand{ nameObject.get() };
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_UP, std::make_unique<qbert::IncrementLetterCommand>(incrementLetterCommand), dae::InputType::DOWN);
-
-	qbert::IncrementLetterIndexCommand incrementLetterIndexCommand{ nameObject.get() };
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_RIGHT, std::make_unique<qbert::IncrementLetterIndexCommand>(incrementLetterIndexCommand), dae::InputType::DOWN);
-
-	const glm::vec2 namePos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(nameObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f - 100)
-	};
-	nameObject->SetLocalPosition(namePos);
-
-	auto yourScoreTextObject{ std::make_unique<dae::GameObject>() };
-	yourScoreTextObject->AddComponent<dae::TextComponent>("YOUR SCORE:", actualGameOverFont);
-	const glm::vec2 yourScorePos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(yourScoreTextObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f)
-	};
-	yourScoreTextObject->SetLocalPosition(yourScorePos);
-
-	auto currentScoreObject{ std::make_unique<dae::GameObject>() };
-	currentScoreObject->AddComponent<dae::TextComponent>(std::to_string(currentScore), actualGameOverFont);
-	const glm::vec2 currentScorePos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(currentScoreObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f + 50)
-	};
-	currentScoreObject->SetLocalPosition(currentScorePos);
-
-	auto highScoreTextObject{ std::make_unique<dae::GameObject>() };
-	highScoreTextObject->AddComponent<dae::TextComponent>("HIGH SCORE:", actualGameOverFont);
-	const glm::vec2 highScoreTextPos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(highScoreTextObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f + 100)
-	};
-	highScoreTextObject->SetLocalPosition(highScoreTextPos);
-
-	auto highScoreObject{ std::make_unique<dae::GameObject>() };
-	highScoreObject->AddComponent<dae::TextComponent>(highScore.name +": " + std::to_string(highScore.score), actualGameOverFont);
-	const glm::vec2 highScorePos
-	{
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowWidth()) / 2.0f - static_cast<float>(highScoreObject->GetComponent<dae::ImageComponent>()->GetShape().w) / 2.0f),
-		static_cast<int>(static_cast<float>(dae::Minigin::GetWindowHeight()) / 2.0f + 150)
-	};
-	highScoreObject->SetLocalPosition(highScorePos);
-
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("GameOverMenu");
-	scene.Add(std::move(gameOverTextObject));
-	scene.Add(std::move(nameObject));
-	scene.Add(std::move(yourScoreTextObject));
-	scene.Add(std::move(currentScoreObject));
-	scene.Add(std::move(highScoreTextObject));
-	scene.Add(std::move(highScoreObject));
-
-	m_Score.score = currentScore;
-
-	qbert::GoNextSceneCommand goNextCommand{};
-	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_SPACE, std::make_unique<qbert::GoNextSceneCommand>(goNextCommand), dae::InputType::DOWN);
-}
-
 void qbert::QbertScenes::LeaveGameOverScreen()
 {
-	ScoreData highScore = GetHighScore();
-
-	if(m_Score.score > highScore.score)
-	{
-		RegisterHighScore(m_Score);
-	}
+	QbertGameState::GetInstance().TestNewScore();
 }
 
 void qbert::QbertScenes::Update()
 {
-	std::unique_ptr<SceneStates> pNewState = m_pSceneState->HandleTransitions();
+	std::unique_ptr<SceneState> pNewState = m_pSceneState->HandleTransitions();
 	if (pNewState)
 	{
 		m_pSceneState->Exit();
@@ -454,53 +84,6 @@ void qbert::QbertScenes::Update()
 	m_pSceneState->Update();
 }
 
-void qbert::QbertScenes::SetNbPlayer(const int nbPlayers)
-{
-	nbPlayer = nbPlayers;
-}
-
-void qbert::QbertScenes::ReducePlayer()
-{
-	--nbPlayer;
-}
-
-bool qbert::QbertScenes::AreAllPlayersDead()
-{
-	return nbPlayer <= 0;
-}
-
-void qbert::QbertScenes::AddHealthComponents(dae::HealthComponent* pComp)
-{
-	m_pHealthComponents.push_back(pComp);
-}
-
-void qbert::QbertScenes::ClearHealthComponents()
-{
-	m_pHealthComponents.clear();
-}
-
-void qbert::QbertScenes::AddScoreComponent(dae::ScoreComponent* pComp)
-{
-	m_pScoreComponents.push_back(pComp);
-}
-
-void qbert::QbertScenes::ClearScoreComponents()
-{
-	m_pScoreComponents.clear();
-}
-
-void qbert::QbertScenes::UpdateObserver()
-{
-	for(size_t i{0}; i < m_pHealthComponents.size(); ++i)
-	{
-		m_Lives[i] = m_pHealthComponents[i]->GetLivesRemaining();
-	}
-
-	for (size_t i{ 0 }; i < m_pScoreComponents.size(); ++i)
-	{
-		m_Scores[i] = m_pScoreComponents[i]->GetScore();
-	}
-}
 
 std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreatePlayer(const int playerNb, MapComponent* pMapComponent)
 {
@@ -517,14 +100,14 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreatePlayer(const int play
 	playerObject->AddComponent<qbert::TileActivatorComponent>(pMapComponent);
 	playerObject->AddComponent<qbert::QbertJumpAnimatorComponent>();
 
-	playerObject->AddComponent<dae::ScoreComponent>(m_Scores[playerNb - 1]);
-	playerObject->GetComponent<dae::ScoreComponent>()->AddObserver(this);
-	AddScoreComponent(playerObject->GetComponent<dae::ScoreComponent>());
+	playerObject->AddComponent<dae::ScoreComponent>(QbertGameState::GetInstance().GetScoreAtIndex(playerNb - 1));
+	playerObject->GetComponent<dae::ScoreComponent>()->AddObserver(&QbertGameState::GetInstance());
+	QbertGameState::GetInstance().AddScoreComponent(playerObject->GetComponent<dae::ScoreComponent>());
 
 
-	playerObject->AddComponent<dae::HealthComponent>(m_Lives[playerNb - 1]);
-	playerObject->GetComponent<dae::HealthComponent>()->AddObserver(this);
-	AddHealthComponents(playerObject->GetComponent<dae::HealthComponent>());
+	playerObject->AddComponent<dae::HealthComponent>(QbertGameState::GetInstance().GetLiveAtIndex(playerNb - 1));
+	playerObject->GetComponent<dae::HealthComponent>()->AddObserver(&QbertGameState::GetInstance());
+	QbertGameState::GetInstance().AddHealthComponents(playerObject->GetComponent<dae::HealthComponent>());
 
 
 	std::unique_ptr<dae::GamepadController> gamepadController{ std::make_unique<dae::GamepadController>() };
@@ -559,7 +142,6 @@ std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateBubble(dae::GameObjec
 	bubbleObject->AddComponent<dae::ImageComponent>("qbert/Qbert Curses.png", false);
 	bubbleObject->SetParent(pPlayerObject);
 	bubbleObject->SetLocalPosition(-15.0f, -35.0f);
-
 	return bubbleObject;
 }
 std::unique_ptr<dae::GameObject> qbert::QbertScenes::CreateCoily(const int coilyNb,  std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent, const bool isVersus)
@@ -782,10 +364,10 @@ void qbert::QbertScenes::CreateControlsUIObject(dae::Scene* pScene)
 	controls1Object->SetLocalPosition(pos1);
 	pScene->Add(std::move(controls1Object));
 
-	if (SceneStates::GetGameMode() == GameMode::SOLO) return;
+	if (SceneState::GetGameMode() == GameMode::SOLO) return;
 	auto controls2Object = std::make_unique<dae::GameObject>();
 	std::string imagePath{ "qbert/P2_QBert_Controls.png" };
-	if(SceneStates::GetGameMode() == GameMode::VERSUS)
+	if(SceneState::GetGameMode() == GameMode::VERSUS)
 	{
 		imagePath = "qbert/P2_Coily_Controls.png";
 	}
@@ -801,31 +383,19 @@ void qbert::QbertScenes::CreateControlsUIObject(dae::Scene* pScene)
 	pScene->Add(std::move(controls2Object));
 }
 
-
-qbert::ScoreData qbert::QbertScenes::GetHighScore()
+void qbert::QbertScenes::CreateDiscObject(dae::Scene* pScene, MapComponent* pMapComponent, const bool isLeft, const int round)
 {
-	nlohmann::json json = dae::ResourceManager::GetInstance().ReadFile("../Data/qbert/highscore.json");
-	ScoreData currentHighScore{};
-	if (json.contains("name")) currentHighScore.name = json["name"];
-	if (json.contains("score")) currentHighScore.score = json["score"];
+	auto leftDiscObject = std::make_unique<dae::GameObject>();
 
-	return currentHighScore;
+	leftDiscObject->AddComponent<dae::ImageComponent>("qbert/Disk_Spritesheet.png", true, 0.0f, 0.0f, 1, 30, 0, 5 * round);
+	leftDiscObject->AddComponent<dae::AnimatorComponent>(true, 0.25f, 4, 1, 5 * round, 0);
+	leftDiscObject->AddComponent<qbert::DiscComponent>(pMapComponent, isLeft);
+
+	pMapComponent->AddDisc(leftDiscObject->GetComponent<DiscComponent>());
+	pScene->Add(std::move(leftDiscObject));
+	
 }
 
-void qbert::QbertScenes::RegisterHighScore(ScoreData newHighScore)
-{
-	nlohmann::json jsonObject{};
-
-	jsonObject["name"] = newHighScore.name;
-	jsonObject["score"] = newHighScore.score;
-
-	std::ofstream file("../Data/qbert/highscore.json", std::ios::out);
-	if (file.is_open())
-	{
-		file << jsonObject.dump(4);
-		file.close();
-	}
-}
 
 void qbert::QbertScenes::LoadSounds()
 {

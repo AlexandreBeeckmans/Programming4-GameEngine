@@ -25,7 +25,7 @@ namespace dae
 
 		void SetColor(const SDL_Color& color);
 
-		void IncrementLetter(const int index);
+		void IncrementLetter(const int index, const int direction);
 
 	private:
 
