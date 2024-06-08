@@ -21,7 +21,7 @@ qbert::GameMode qbert::SceneState::m_GameMode{ qbert::GameMode::SOLO };
 void qbert::SceneState::Enter()
 {
 
-	QbertScenes::GetInstance().goNext = false;
+	QbertScenes::GetInstance().SetGoNextScene(false);
 	
 	dae::MuteCommand muteCommand{};
 	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_F2, std::make_unique<dae::MuteCommand>(muteCommand), dae::InputType::DOWN);
@@ -65,7 +65,7 @@ void qbert::SceneState::IncrementRound()
 		SetLevelFinished(true);
 	}
 
-	if (m_LevelNumber >= 3) QbertScenes::GetInstance().gameOver = true;
+	if (m_LevelNumber >= 3) QbertScenes::GetInstance().SetGameOver(true);
 }
 
 void qbert::SceneState::IncrementLevel()
@@ -91,7 +91,7 @@ qbert::StartMenuSceneState::StartMenuSceneState()
 
 std::unique_ptr<qbert::SceneState> qbert::StartMenuSceneState::HandleTransitions()
 {
-	if (QbertScenes::GetInstance().goNext) return std::make_unique<LevelLoadingState>(LevelLoadingState{});
+	if (QbertScenes::GetInstance().IsGoingNext()) return std::make_unique<LevelLoadingState>(LevelLoadingState{});
 	return nullptr;
 }
 
@@ -99,10 +99,10 @@ void qbert::StartMenuSceneState::Enter()
 {
 	SceneState::Enter();
 
-	QbertScenes::GetInstance().gameOver = false;
+	QbertScenes::GetInstance().SetGameOver(false);
 	QbertGameState::GetInstance().ClearLives();
 	QbertGameState::GetInstance().ClearScores();
-	QbertScenes::GetInstance().goNext = false;
+	QbertScenes::GetInstance().SetGoNextScene(false);
 	SetGameMode(GameMode::SOLO);
 
 	ResetLevelAndRound();
@@ -124,9 +124,9 @@ void qbert::StartMenuSceneState::Exit()
 
 std::unique_ptr<qbert::SceneState> qbert::LevelSceneState::HandleTransitions()
 {
-	if (QbertScenes::GetInstance().gameOver) return std::make_unique<GameOverScreen>();
+	if (QbertScenes::GetInstance().IsGameOver()) return std::make_unique<GameOverScreen>();
 
-	if (QbertScenes::GetInstance().goNext)
+	if (QbertScenes::GetInstance().IsGoingNext())
 	{
 		IncrementRound();
 
@@ -134,13 +134,13 @@ std::unique_ptr<qbert::SceneState> qbert::LevelSceneState::HandleTransitions()
 			return std::make_unique<LevelSceneState>(LevelSceneState{});
 
 
-		if (QbertScenes::GetInstance().gameOver) return std::make_unique<GameOverScreen>();
+		if (QbertScenes::GetInstance().IsGameOver()) return std::make_unique<GameOverScreen>();
 		return std::make_unique<LevelLoadingState>(LevelLoadingState{});
 	}
 
-	if(QbertScenes::GetInstance().skipLevel)
+	if(QbertScenes::GetInstance().IsSkippingLevel())
 	{
-		QbertScenes::GetInstance().skipLevel = false;
+		QbertScenes::GetInstance().SetSkipLevel(false);
 		IncrementLevel();
 
 		if(GetLevelNumber() > 0)
@@ -178,7 +178,7 @@ void qbert::LevelSceneState::Enter()
 
 
 
-	QbertScenes::GetInstance().goNext = false;
+	QbertScenes::GetInstance().SetGoNextScene(false);
 
 	
 	
@@ -225,7 +225,7 @@ qbert::GameOverScreen::GameOverScreen()
 
 std::unique_ptr<qbert::SceneState> qbert::GameOverScreen::HandleTransitions()
 {
-	if (QbertScenes::GetInstance().goNext) return std::make_unique<StartMenuSceneState>();
+	if (QbertScenes::GetInstance().IsGoingNext()) return std::make_unique<StartMenuSceneState>();
 	return nullptr;
 }
 

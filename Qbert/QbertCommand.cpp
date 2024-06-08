@@ -22,13 +22,13 @@ void qbert::QbertMoveCommand::Execute()
 void qbert::GoNextSceneCommand::Execute()
 {
 	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::MENUSELECTION), 100.0f);
-	QbertScenes::GetInstance().goNext = true;
+	QbertScenes::GetInstance().SetGoNextScene(true);
 }
 
 void qbert::SkipLevelCommand::Execute()
 {
-	QbertScenes::GetInstance().skipLevel = true;
-	QbertScenes::GetInstance().goNext = true;
+	QbertScenes::GetInstance().SetSkipLevel(true);
+	QbertScenes::GetInstance().SetGoNextScene(true);
 }
 
 qbert::IncrementLetterCommand::IncrementLetterCommand(dae::GameObject* pObject, const int direction) :

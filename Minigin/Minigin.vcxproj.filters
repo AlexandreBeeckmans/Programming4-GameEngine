@@ -25,6 +25,9 @@
     <Filter Include="Sounds">
       <UniqueIdentifier>{b6eb352a-1494-43e5-ad14-f3a1fcf2a420}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneManagment">
+      <UniqueIdentifier>{e389c80f-2075-47c4-81e9-69a7bc5e95df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imconfig.h">
@@ -129,13 +132,27 @@
     <ClInclude Include="LoggingSoundSystem.h">
       <Filter>Sounds</Filter>
     </ClInclude>
-    <ClInclude Include="SceneCollection.h" />
-    <ClInclude Include="AnimatorComponent.h" />
-    <ClInclude Include="FSMManagerComponent.hpp" />
-    <ClInclude Include="State.hpp" />
-    <ClInclude Include="EventManager.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="Level.h" />
+    <ClInclude Include="AnimatorComponent.h">
+      <Filter>Visuals</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>SceneManagment</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCollection.h">
+      <Filter>SceneManagment</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMManagerComponent.hpp">
+      <Filter>BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>SceneManagment</Filter>
+    </ClInclude>
+    <ClInclude Include="State.hpp">
+      <Filter>BaseComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui.cpp">
@@ -234,11 +251,21 @@
     <ClCompile Include="LoggingSoundSystem.cpp">
       <Filter>Sounds</Filter>
     </ClCompile>
-    <ClCompile Include="SceneCollection.cpp" />
-    <ClCompile Include="AnimatorComponent.cpp" />
-    <ClCompile Include="EventManager.cpp" />
-    <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="AnimatorComponent.cpp">
+      <Filter>Visuals</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>SceneManagment</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCollection.cpp">
+      <Filter>SceneManagment</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>SceneManagment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

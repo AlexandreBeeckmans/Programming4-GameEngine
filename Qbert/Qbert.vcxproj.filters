@@ -1,18 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Test Files">
       <UniqueIdentifier>{ca531461-27c4-4f2e-b190-06f74fc1c323}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Disc">
-      <UniqueIdentifier>{5be25986-26d3-471f-a0eb-67e374d420af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Disc\FSM">
-      <UniqueIdentifier>{4614570f-3c22-4237-8f0b-8de33d821d04}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game Entities">
       <UniqueIdentifier>{b1d98bf8-d0ac-4d1c-b50a-1514efd97258}</UniqueIdentifier>
@@ -53,6 +43,12 @@
     </Filter>
     <Filter Include="Levels">
       <UniqueIdentifier>{f1ec42ca-352c-43d9-aed4-c48f42fa7bc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Entities\Disc">
+      <UniqueIdentifier>{5be25986-26d3-471f-a0eb-67e374d420af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Entities\Disc\FSM">
+      <UniqueIdentifier>{4614570f-3c22-4237-8f0b-8de33d821d04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +95,7 @@
       <Filter>Game Entities\Ennemies\Coily\FSM</Filter>
     </ClCompile>
     <ClCompile Include="DiscComponent.cpp">
-      <Filter>Disc</Filter>
+      <Filter>Game Entities\Disc</Filter>
     </ClCompile>
     <ClCompile Include="BubbleManagerComponent.cpp">
       <Filter>Game Entities\Player</Filter>
@@ -173,9 +169,6 @@
     <ClCompile Include="ScenesState.cpp">
       <Filter>Scenes Management</Filter>
     </ClCompile>
-    <ClCompile Include="KillableComponent.cpp">
-      <Filter>Game Entities</Filter>
-    </ClCompile>
     <ClCompile Include="LevelLoader.cpp">
       <Filter>Scenes Management</Filter>
     </ClCompile>
@@ -191,17 +184,20 @@
     <ClCompile Include="BlinkingComponent.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="StartMenuLevel.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
     <ClCompile Include="LoadLevel.cpp">
-      <Filter>Misc</Filter>
+      <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="MainLevel.cpp">
-      <Filter>Misc</Filter>
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="StartMenuLevel.cpp">
+      <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="GameOverLevel.cpp">
-      <Filter>Misc</Filter>
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="KillableComponent.cpp">
+      <Filter>Game Entities\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,7 +244,7 @@
       <Filter>Game Entities\Ennemies\Coily\FSM</Filter>
     </ClInclude>
     <ClInclude Include="DiscComponent.h">
-      <Filter>Disc</Filter>
+      <Filter>Game Entities\Disc</Filter>
     </ClInclude>
     <ClInclude Include="WritableNameComponent.h">
       <Filter>UI</Filter>
@@ -265,67 +261,16 @@
     <ClInclude Include="ScoreUIComponent.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="UggStates.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="UggDirectionComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="UggAnimatorComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="TileDeactivatorComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="TileComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="TileActivatorComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="SlickState.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="SlickDirection.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="SlickAnimatorComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="QbertJumpAnimatorComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerKillableComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="MapComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="KillerComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="KillableComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
     <ClInclude Include="InputDirectionComponent.h">
       <Filter>Game Entities</Filter>
     </ClInclude>
     <ClInclude Include="GridMoveComponent.h">
       <Filter>Game Entities</Filter>
     </ClInclude>
-    <ClInclude Include="FollowPlayerComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
     <ClInclude Include="FallComponent.h">
       <Filter>Game Entities</Filter>
     </ClInclude>
     <ClInclude Include="DeadFallComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="CoilyAnimatorComponent.h">
-      <Filter>Game Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="BubbleManagerComponent.h">
       <Filter>Game Entities</Filter>
     </ClInclude>
     <ClInclude Include="QbertGameState.h">
@@ -349,9 +294,68 @@
     <ClInclude Include="SoundTypes.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="StartMenuLevel.h" />
-    <ClInclude Include="LoadLevel.h" />
-    <ClInclude Include="MainLevel.h" />
-    <ClInclude Include="GameOverLevel.h" />
+    <ClInclude Include="GameOverLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="MainLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="StartMenuLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="KillerComponent.h">
+      <Filter>Game Entities\Ennemies</Filter>
+    </ClInclude>
+    <ClInclude Include="KillableComponent.h">
+      <Filter>Game Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleManagerComponent.h">
+      <Filter>Game Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CoilyAnimatorComponent.h">
+      <Filter>Game Entities\Ennemies\Coily</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowPlayerComponent.h">
+      <Filter>Game Entities\Ennemies\Coily</Filter>
+    </ClInclude>
+    <ClInclude Include="MapComponent.h">
+      <Filter>Game Entities\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerKillableComponent.h">
+      <Filter>Game Entities\Ennemies\Slick</Filter>
+    </ClInclude>
+    <ClInclude Include="TileActivatorComponent.h">
+      <Filter>Game Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="TileComponent.h">
+      <Filter>Game Entities\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="UggStates.h">
+      <Filter>Game Entities\Ennemies\Ugg</Filter>
+    </ClInclude>
+    <ClInclude Include="UggDirectionComponent.h">
+      <Filter>Game Entities\Ennemies\Ugg</Filter>
+    </ClInclude>
+    <ClInclude Include="UggAnimatorComponent.h">
+      <Filter>Game Entities\Ennemies\Ugg</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDeactivatorComponent.h">
+      <Filter>Game Entities\Ennemies\Slick</Filter>
+    </ClInclude>
+    <ClInclude Include="SlickState.h">
+      <Filter>Game Entities\Ennemies\Slick</Filter>
+    </ClInclude>
+    <ClInclude Include="SlickDirection.h">
+      <Filter>Game Entities\Ennemies\Slick</Filter>
+    </ClInclude>
+    <ClInclude Include="SlickAnimatorComponent.h">
+      <Filter>Game Entities\Ennemies\Slick</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertJumpAnimatorComponent.h">
+      <Filter>Game Entities\Player</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -140,7 +140,7 @@ std::unique_ptr<qbert::PlayerState> qbert::WinState::HandleTransitions()
 {
 	
 	if (m_CurrentWinTime < m_MaxWinTime) return nullptr;
-	QbertScenes::GetInstance().goNext = true;
+	QbertScenes::GetInstance().SetGoNextScene(true);
 	m_HasWon = false;
 	
 	return std::make_unique<WaitingState>();
@@ -207,7 +207,7 @@ void qbert::DeadState::Enter(dae::GameObject& qbert)
 	QbertGameState::GetInstance().ReducePlayer();
 	if (QbertGameState::GetInstance().AreAllPlayersDead())
 	{
-		QbertScenes::GetInstance().gameOver = true;
+		QbertScenes::GetInstance().SetGameOver(true);
 	}
 
 	

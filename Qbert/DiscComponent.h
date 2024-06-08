@@ -6,15 +6,7 @@
 namespace qbert
 {
 	class QbertMoveComponent;
-}
-
-namespace qbert
-{
 	class MapComponent;
-}
-
-namespace qbert
-{
 	class DiscComponent final : public dae::BaseComponent
 	{
 	public:
