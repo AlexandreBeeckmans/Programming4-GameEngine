@@ -8,6 +8,7 @@
 
 namespace dae
 {
+	class Scene;
 	class ScoreComponent;
 }
 
@@ -79,6 +80,11 @@ namespace qbert
 		std::unique_ptr<dae::GameObject> CreateCoily(const int coilyNb, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent, const bool isVersus);
 		std::unique_ptr<dae::GameObject> CreateUgg(bool isLeft, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent);
 		std::unique_ptr<dae::GameObject> CreateSlick(const bool isSlick, std::vector<std::unique_ptr<dae::GameObject>>* pPlayerObjects, MapComponent* pMapComponent);
+
+
+		void CreateGameUI(dae::Scene* pScene, const std::vector<std::unique_ptr<dae::GameObject>>& playerObjects, const int level, const int round);
+		void CreateScoreUIObject(dae::Scene* pScene, const std::unique_ptr<dae::GameObject>& pPlayerObject, const int playerNb);
+		void CreateNextTileUIObject(dae::Scene* pScene, const int level, const int round);
 
 		ScoreData GetHighScore();
 		void RegisterHighScore(ScoreData newHighScore);

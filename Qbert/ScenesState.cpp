@@ -80,6 +80,7 @@ void qbert::StartMenuSceneState::Enter()
 	QbertScenes::GetInstance().m_Lives.clear();
 	QbertScenes::GetInstance().m_Scores.clear();
 	QbertScenes::GetInstance().goNext = false;
+	m_GameMode = GameMode::SOLO;
 
 	ResetLevelAndRound();
 	

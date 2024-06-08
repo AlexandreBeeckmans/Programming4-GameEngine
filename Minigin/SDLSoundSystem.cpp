@@ -7,27 +7,50 @@
 #include <unordered_map>
 #include <vector>
 
+#include <condition_variable>
+
+struct DeleteSound
+{
+    void operator()(Mix_Chunk* pSound) { Mix_FreeChunk(pSound); }
+};
+
 class dae::SDLSoundSystem::SDLSoundSystemImpl
 {
 public:
 
-    SDLSoundSystemImpl() = default;
-    ~SDLSoundSystemImpl() = default;
+    SDLSoundSystemImpl()
+    {
+        m_Thread = std::jthread{ &SDLSoundSystemImpl::PlaySoundOnThread, this };
+    }
+    ~SDLSoundSystemImpl()
+    {
+        m_IsActive = false;
+        m_ConditionalVariable.notify_all();
+    }
+
     void DoPlaySound(const soundId id, const float volume);
     void DoLoadSound(const std::string& path, const soundId id);
     void DoUpdate();
     void DoStopAll();
 private:
 
-    void PlaySoundOnThread(Mix_Chunk* sound, const float volume);
+    void PlaySoundOnThread();
 	void LoadOnThread(const std::string& path, const soundId id);
     std::deque<PlayMessageEvent>& GetPendingEvents() { return m_PendingEvents; }
 
     std::deque<PlayMessageEvent> m_PendingEvents;
 
-    std::unordered_map<int,Mix_Chunk*> m_AudioClips;
+    std::unordered_map<int,std::unique_ptr<Mix_Chunk, DeleteSound>> m_AudioClips;
+
     std::jthread m_Thread;
+    std::jthread m_LoadSoundThread;
+
     std::mutex m_SoundMutex;
+    std::condition_variable m_ConditionalVariable{};
+
+    bool m_IsActive{ true };
+
+   
 };
 
 
@@ -87,16 +110,12 @@ void dae::SDLSoundSystem::SDLSoundSystemImpl::DoPlaySound(const soundId id, cons
         }
     }
     m_PendingEvents.push_back({ id, volume });
+    m_ConditionalVariable.notify_all();
 }
 
 void dae::SDLSoundSystem::SDLSoundSystemImpl::DoLoadSound(const std::string& path, const soundId id)
 {
-    if(m_Thread.joinable())
-    {
-        m_Thread.join();
-    }
-	m_Thread = std::jthread(&SDLSoundSystemImpl::LoadOnThread, this, path, id);
-    
+    LoadOnThread(path, id);
 }
 
 void dae::SDLSoundSystem::Update()
@@ -106,7 +125,7 @@ void dae::SDLSoundSystem::Update()
 
 void dae::SDLSoundSystem::SDLSoundSystemImpl::DoUpdate()
 {
-    if (GetPendingEvents().empty()) return;
+    /*if (GetPendingEvents().empty()) return;
 
     if (GetPendingEvents().front().id >= m_AudioClips.size()) return;
     Mix_Chunk* sound = m_AudioClips[GetPendingEvents().front().id];
@@ -123,7 +142,7 @@ void dae::SDLSoundSystem::SDLSoundSystemImpl::DoUpdate()
     {
         std::cerr << "Failed to play sound for ID: " << GetPendingEvents().front().id << "\n";
     }
-    GetPendingEvents().pop_front();
+    GetPendingEvents().pop_front();*/
 }
 
 void dae::SDLSoundSystem::SDLSoundSystemImpl::DoStopAll()
@@ -132,27 +151,49 @@ void dae::SDLSoundSystem::SDLSoundSystemImpl::DoStopAll()
     Mix_HaltChannel(-1); 
 }
 
-void dae::SDLSoundSystem::SDLSoundSystemImpl::PlaySoundOnThread(Mix_Chunk* sound, const float volume)
+void dae::SDLSoundSystem::SDLSoundSystemImpl::PlaySoundOnThread()
 {
-    std::lock_guard soundLock{m_SoundMutex};
 
-    // Adjust volume
-    Mix_VolumeChunk(sound, static_cast<int>(volume * MIX_MAX_VOLUME));
 
-    // Play the sound
-    Mix_PlayChannel(-1, sound, 0);
+    while(m_IsActive)
+    {
+        std::unique_lock soundLock{ m_SoundMutex };
+        m_ConditionalVariable.wait(soundLock, [&]
+        {
+                return !GetPendingEvents().empty() || !m_IsActive;
+        });
+
+        if (!m_IsActive) return;
+
+        Mix_Chunk* sound = m_AudioClips[GetPendingEvents().front().id].get();
+        if (sound != nullptr)
+        {
+
+            // Adjust volume
+            Mix_VolumeChunk(sound, static_cast<int>(GetPendingEvents().front().volume * MIX_MAX_VOLUME));
+
+            // Play the sound
+            Mix_PlayChannel(-1, sound, 0);
+
+        }
+        else
+        {
+            std::cerr << "Failed to play sound for ID: " << GetPendingEvents().front().id << "\n";
+        }
+        GetPendingEvents().pop_front();
+    }
 }
 
 void dae::SDLSoundSystem::SDLSoundSystemImpl::LoadOnThread(const std::string& path, const soundId id)
 {
     std::lock_guard loadLock{m_SoundMutex};
-    Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
+    std::unique_ptr<Mix_Chunk, DeleteSound> sound = std::unique_ptr<Mix_Chunk, DeleteSound>(Mix_LoadWAV(path.c_str()));
     if (sound == NULL)
     {
         printf("Unable to load sound: %s\n", Mix_GetError());
     }
     else
     {
-        m_AudioClips[id] = sound;
+        m_AudioClips[id] = std::move(sound);
     }
 }
