@@ -46,7 +46,7 @@ void qbert::FollowPlayerComponent::SetMovementDirection() const
 
 
 	
-
+	if (m_pPlayerMoveComponents[playerToFollowIndex]->GetCurrentIndex() == -1) return;
 
 	const int finalRow = m_pMap->GetRowFromIndex(m_pPlayerMoveComponents[playerToFollowIndex]->GetCurrentIndex());
 	const int finalColumn = m_pMap->GetColumnFromIndex(m_pPlayerMoveComponents[playerToFollowIndex]->GetCurrentIndex());

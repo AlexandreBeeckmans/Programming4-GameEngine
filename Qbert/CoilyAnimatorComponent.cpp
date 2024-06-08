@@ -13,7 +13,8 @@ void qbert::CoilyAnimatorComponent::Init()
 	m_pImageComponent = GetOwner()->GetComponent<dae::ImageComponent>();
 	m_pMoveComponent = GetOwner()->GetComponent<GridMoveComponent>();
 
-	GetOwner()->GetComponent<dae::ImageComponent>()->SetVisible(false);
+	m_pImageComponent->SetVisible(false);
+	
 }
 
 void qbert::CoilyAnimatorComponent::SetWaitingSprite() const
@@ -28,12 +29,15 @@ void qbert::CoilyAnimatorComponent::SetWaitingSprite() const
 	{
 		m_pImageComponent->SetColumn(2);
 	}
+	m_pImageComponent->SetRelativePosition(0, -static_cast<float>(m_pImageComponent->GetShape().h) / 2.0f);
 
 }
 
 void qbert::CoilyAnimatorComponent::SetArrivingSprite(const int column) const
 {
 	m_pImageComponent->SetColumn(column);
+	m_pImageComponent->SetRelativePosition(0, 0);
+	
 }
 
 void qbert::CoilyAnimatorComponent::SetJumpingSprite() const

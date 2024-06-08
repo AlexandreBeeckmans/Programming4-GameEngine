@@ -649,7 +649,7 @@ void qbert::QbertScenes::CreateGameUI(dae::Scene* pScene, const std::vector<std:
 #pragma region SCORE1_OBJECT
 	for(size_t i{0}; i < playerObjects.size(); ++i)
 	{
-		CreateScoreUIObject(pScene, playerObjects[i], i);
+		CreateScoreUIObject(pScene, playerObjects[i], static_cast<int>(i));
 	}
 #pragma endregion
 
