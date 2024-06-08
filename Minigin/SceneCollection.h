@@ -5,6 +5,7 @@ namespace dae
 	{
 	public:
 		virtual ~SceneCollection() = default;
+		virtual void Init() = 0;
 		virtual void Update() = 0;
 	};
 }
