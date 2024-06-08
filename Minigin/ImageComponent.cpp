@@ -34,6 +34,8 @@ dae::ImageComponent::ImageComponent(GameObject* pGameObject, const std::string& 
 
 	m_StartingDestHeight = static_cast<float>(m_ImageShape.h);
 	m_StartingSrcHeight = static_cast<float>(m_SrcRect.h);
+	m_StartingDestWidth = static_cast<float>(m_ImageShape.w);
+	m_StartingSrcWidth = static_cast<float>(m_SrcRect.w);
 	
 }
 
@@ -94,6 +96,18 @@ void dae::ImageComponent::ReduceHeight(const float percentage)
 {
 	m_SrcRect.h = static_cast<int>(percentage * m_StartingSrcHeight);
 	m_ImageShape.h = static_cast<int>(percentage * m_StartingDestHeight);
+}
+
+void dae::ImageComponent::ReduceWidth(const float percentage)
+{
+	m_SrcRect.w = static_cast<int>(percentage * m_StartingSrcWidth);
+	m_ImageShape.w = static_cast<int>(percentage * m_StartingDestWidth);
+}
+
+void dae::ImageComponent::Rescale(const float percentage)
+{
+	m_ImageShape.h = static_cast<int>(percentage * m_StartingDestHeight);
+	m_ImageShape.w = static_cast<int>(percentage * m_StartingDestWidth);
 }
 
 void dae::ImageComponent::SetVisible(const bool isVisible)

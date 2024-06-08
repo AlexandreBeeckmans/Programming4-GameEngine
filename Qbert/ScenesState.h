@@ -19,6 +19,7 @@ namespace qbert
 		virtual void Exit() override;
 
 		static bool IncrementGameMode(const int addedValue);
+		static GameMode GetGameMode(){ return m_GameMode; }
 
 	protected:
 		static void ResetLevelAndRound();

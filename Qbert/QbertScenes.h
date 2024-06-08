@@ -10,10 +10,6 @@ namespace dae
 {
 	class Scene;
 	class ScoreComponent;
-}
-
-namespace dae
-{
 	class HealthComponent;
 }
 
@@ -55,6 +51,8 @@ namespace qbert
 
 		virtual void UpdateObserver() override;
 
+		void LoadSounds();
+
 		bool goNext{false};
 		bool gameOver{false};
 		bool skipLevel{ false };
@@ -85,9 +83,11 @@ namespace qbert
 		void CreateGameUI(dae::Scene* pScene, const std::vector<std::unique_ptr<dae::GameObject>>& playerObjects, const int level, const int round);
 		void CreateScoreUIObject(dae::Scene* pScene, const std::unique_ptr<dae::GameObject>& pPlayerObject, const int playerNb);
 		void CreateNextTileUIObject(dae::Scene* pScene, const int level, const int round);
+		void CreateControlsUIObject(dae::Scene* pScene);
 
 		ScoreData GetHighScore();
 		void RegisterHighScore(ScoreData newHighScore);
+
 	};
 }
 

@@ -12,6 +12,12 @@ namespace dae
 		float volume;
 	};
 
+	struct LoadMessageEvent
+	{
+		soundId id;
+		std::string path;
+	};
+
 	class SDLSoundSystem final : public SoundSystem
 	{
 	public:
@@ -22,7 +28,7 @@ namespace dae
 
 		virtual void Init() override;
 		virtual void LoadSound(const std::string& path, const soundId id) override;
-		virtual void Update() override;
+		virtual void Update() override{};
 
 	private:
 

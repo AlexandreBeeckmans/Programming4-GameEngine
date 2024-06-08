@@ -44,6 +44,8 @@ namespace dae
 		void SetHeight(const int newHeight);
 
 		void ReduceHeight(const float percentage);
+		void ReduceWidth(const float percentage);
+		void Rescale(const float percantage);
 
 
 		void SetVisible(const bool isVisible);
@@ -79,6 +81,8 @@ namespace dae
 
 		float m_StartingDestHeight{};
 		float m_StartingSrcHeight{};
+		float m_StartingDestWidth{};
+		float m_StartingSrcWidth{};
 	};
 }
 
