@@ -41,7 +41,7 @@ std::unique_ptr<qbert::CoilyState> qbert::CoilyWaitingState::HandleTransitions()
 
 	if(GetMoveComponent()->GetCurrentIndex() == -1)
 	{
-		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::COILYFALL), 100.0f);
+		dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::COILYFALL), 100.0f);
 		return std::make_unique<CoilyDyingState>();
 	}
 
@@ -88,7 +88,7 @@ void qbert::CoilyJumpingState::Enter(dae::GameObject& coilyObject)
 		GetFollowComponent()->SetMovementDirection();
 	}
 
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::COILYJUMP), 100.0f);
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::COILYJUMP), 100.0f);
 	GetMoveComponent()->SetMovementDirection();
 	GetAnimatorComponent()->SetJumpingSprite();
 	

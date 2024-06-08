@@ -4,6 +4,7 @@
 #include "EventManager.h"
 #include "HealthComponent.h"
 #include "InputManager.h"
+#include "QbertCommand.h"
 #include "QbertScenes.h"
 #include "SceneManager.h"
 
@@ -11,6 +12,12 @@ int qbert::SceneStates::m_LevelNumber{ 0 };
 int qbert::SceneStates::m_RoundNumber{ 0 };
 bool qbert::SceneStates::m_LevelFinished{ false };
 qbert::GameMode qbert::SceneStates::m_GameMode{ qbert::GameMode::SOLO };
+
+void qbert::SceneStates::Enter()
+{
+	dae::MuteCommand muteCommand{};
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_F2, std::make_unique<dae::MuteCommand>(muteCommand), dae::InputType::DOWN);
+}
 
 void qbert::SceneStates::Exit()
 {
@@ -47,6 +54,17 @@ void qbert::SceneStates::IncrementRound()
 	if (m_LevelNumber >= 3) QbertScenes::GetInstance().gameOver = true;
 }
 
+void qbert::SceneStates::IncrementLevel()
+{
+	m_RoundNumber = 0;
+	++m_LevelNumber;
+
+	if(m_LevelNumber >= 3)
+	{
+		m_LevelNumber = 0;
+	}
+}
+
 std::unique_ptr<qbert::SceneStates> qbert::StartMenuSceneState::HandleTransitions()
 {
 	if (QbertScenes::GetInstance().goNext) return std::make_unique<LevelLoadingState>(LevelLoadingState{});
@@ -55,6 +73,8 @@ std::unique_ptr<qbert::SceneStates> qbert::StartMenuSceneState::HandleTransition
 
 void qbert::StartMenuSceneState::Enter()
 {
+	SceneStates::Enter();
+
 	QbertScenes::GetInstance().LoadStartMenu();
 	QbertScenes::GetInstance().gameOver = false;
 	QbertScenes::GetInstance().m_Lives.clear();
@@ -94,6 +114,20 @@ std::unique_ptr<qbert::SceneStates> qbert::LevelSceneState::HandleTransitions()
 		return std::make_unique<LevelLoadingState>(LevelLoadingState{});
 	}
 
+	if(QbertScenes::GetInstance().skipLevel)
+	{
+		QbertScenes::GetInstance().skipLevel = false;
+		IncrementLevel();
+
+		if(GetLevelNumber() > 0)
+		{
+			return std::make_unique<LevelLoadingState>(LevelLoadingState{});
+		}
+		return std::make_unique<GameOverScreen>();
+		
+		
+	}
+
 	return nullptr;
 }
 
@@ -101,6 +135,13 @@ std::unique_ptr<qbert::SceneStates> qbert::LevelSceneState::HandleTransitions()
 
 void qbert::LevelSceneState::Enter()
 {
+	SceneStates::Enter();
+
+	SkipLevelCommand skipLevelCommand{};
+	dae::InputManager::GetInstance().BindKeyboardInput(SDL_SCANCODE_F1, std::make_unique<qbert::SkipLevelCommand>(skipLevelCommand), dae::InputType::DOWN);
+
+
+
 	QbertScenes::GetInstance().goNext = false;
 
 	switch(m_GameMode)
@@ -141,6 +182,8 @@ void qbert::LevelLoadingState::Update()
 
 void qbert::LevelLoadingState::Enter()
 {
+	SceneStates::Enter();
+
 	QbertScenes::GetInstance().LoadLevelLoading(GetLevelNumber());
 	QbertScenes::GetInstance().goNext = false;
 	SetLevelFinished(false);
@@ -154,6 +197,8 @@ std::unique_ptr<qbert::SceneStates> qbert::GameOverScreen::HandleTransitions()
 
 void qbert::GameOverScreen::Enter()
 {
+	SceneStates::Enter();
+
 	QbertScenes::GetInstance().LoadGameOverScreen();
 	dae::SceneManager::GetInstance().Init();
 }

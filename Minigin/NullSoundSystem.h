@@ -7,9 +7,11 @@ namespace dae
 	{
 	public:
 		virtual ~NullSoundSystem() override = default;
-		void Play(const soundId, const float) override{}
-		void Init() override{}
-		void LoadSound(const std::string&) override{}
+		virtual void Play(const soundId, const float) override{}
+		virtual void StopAll() override{}
+
+		virtual void Init() override{}
+		virtual void LoadSound(const std::string&, const soundId) override{}
 		virtual void Update() override{}
 
 	};

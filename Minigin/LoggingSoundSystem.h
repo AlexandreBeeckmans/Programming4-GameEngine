@@ -12,8 +12,10 @@ namespace dae
 		virtual ~LoggingSoundSystem() override = default;
 
 		virtual void Play(const soundId id, const float volume) override;
+		virtual void StopAll() override;
+
 		virtual void Init() override;
-		virtual void LoadSound(const std::string& path) override;
+		virtual void LoadSound(const std::string& path, const soundId id) override;
 		virtual void Update() override;
 
 	private:

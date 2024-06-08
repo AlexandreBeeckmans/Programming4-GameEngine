@@ -4,6 +4,7 @@
 #include <SDL_mixer.h>
 #include <mutex>
 #include <thread>
+#include <unordered_map>
 #include <vector>
 
 class dae::SDLSoundSystem::SDLSoundSystemImpl
@@ -12,14 +13,19 @@ public:
 
     SDLSoundSystemImpl() = default;
     ~SDLSoundSystemImpl() = default;
-    void DoLoadSound(const std::string& path);
+    void DoPlaySound(const soundId id, const float volume);
+    void DoLoadSound(const std::string& path, const soundId id);
     void DoUpdate();
+    void DoStopAll();
 private:
 
     void PlaySoundOnThread(Mix_Chunk* sound, const float volume);
-	void LoadOnThread(const std::string& path);
+	void LoadOnThread(const std::string& path, const soundId id);
+    std::deque<PlayMessageEvent>& GetPendingEvents() { return m_PendingEvents; }
 
-    std::vector<Mix_Chunk*> m_AudioClips;
+    std::deque<PlayMessageEvent> m_PendingEvents;
+
+    std::unordered_map<int,Mix_Chunk*> m_AudioClips;
     std::jthread m_Thread;
     std::mutex m_SoundMutex;
 };
@@ -34,6 +40,16 @@ dae::SDLSoundSystem::~SDLSoundSystem()
 {
     delete m_pImpl;
     m_pImpl = nullptr;
+}
+
+void dae::SDLSoundSystem::Play(const soundId id, const float volume)
+{
+    m_pImpl->DoPlaySound(id, volume);
+}
+
+void dae::SDLSoundSystem::StopAll()
+{
+    m_pImpl->DoStopAll();
 }
 
 void dae::SDLSoundSystem::Init()
@@ -51,14 +67,36 @@ void dae::SDLSoundSystem::Init()
 
 }
 
-void dae::SDLSoundSystem::LoadSound(const std::string& path)
+void dae::SDLSoundSystem::LoadSound(const std::string& path, const soundId id)
 {
-    m_pImpl->DoLoadSound(path);
+    m_pImpl->DoLoadSound(path, id);
 }
 
-void dae::SDLSoundSystem::SDLSoundSystemImpl::DoLoadSound(const std::string& path)
+void dae::SDLSoundSystem::SDLSoundSystemImpl::DoPlaySound(const soundId id, const float volume)
 {
-    m_Thread = std::jthread(&SDLSoundSystemImpl::LoadOnThread, this, path);
+    for (PlayMessageEvent& event : m_PendingEvents)
+    {
+        //if similar sound is already waiting to be played
+        if (event.id == id)
+        {
+            // Use the larger of the two volumes.
+            event.volume = std::max(volume, event.volume);
+
+            // Don't need to enqueue.
+            return;
+        }
+    }
+    m_PendingEvents.push_back({ id, volume });
+}
+
+void dae::SDLSoundSystem::SDLSoundSystemImpl::DoLoadSound(const std::string& path, const soundId id)
+{
+    if(m_Thread.joinable())
+    {
+        m_Thread.join();
+    }
+	m_Thread = std::jthread(&SDLSoundSystemImpl::LoadOnThread, this, path, id);
+    
 }
 
 void dae::SDLSoundSystem::Update()
@@ -74,7 +112,12 @@ void dae::SDLSoundSystem::SDLSoundSystemImpl::DoUpdate()
     Mix_Chunk* sound = m_AudioClips[GetPendingEvents().front().id];
     if (sound != nullptr)
     {
-        m_Thread = std::jthread{ &SDLSoundSystemImpl::PlaySoundOnThread, this, sound, GetPendingEvents().front().volume};
+        if(m_Thread.joinable())
+        {
+            m_Thread.join();
+        }
+    	m_Thread = std::jthread{ &SDLSoundSystemImpl::PlaySoundOnThread, this, sound, GetPendingEvents().front().volume };
+        
     }
     else
     {
@@ -83,9 +126,16 @@ void dae::SDLSoundSystem::SDLSoundSystemImpl::DoUpdate()
     GetPendingEvents().pop_front();
 }
 
+void dae::SDLSoundSystem::SDLSoundSystemImpl::DoStopAll()
+{
+    std::lock_guard soundLock(m_SoundMutex);
+    Mix_HaltChannel(-1); 
+}
+
 void dae::SDLSoundSystem::SDLSoundSystemImpl::PlaySoundOnThread(Mix_Chunk* sound, const float volume)
 {
     std::lock_guard soundLock{m_SoundMutex};
+
     // Adjust volume
     Mix_VolumeChunk(sound, static_cast<int>(volume * MIX_MAX_VOLUME));
 
@@ -93,7 +143,7 @@ void dae::SDLSoundSystem::SDLSoundSystemImpl::PlaySoundOnThread(Mix_Chunk* sound
     Mix_PlayChannel(-1, sound, 0);
 }
 
-void dae::SDLSoundSystem::SDLSoundSystemImpl::LoadOnThread(const std::string& path)
+void dae::SDLSoundSystem::SDLSoundSystemImpl::LoadOnThread(const std::string& path, const soundId id)
 {
     std::lock_guard loadLock{m_SoundMutex};
     Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
@@ -103,6 +153,6 @@ void dae::SDLSoundSystem::SDLSoundSystemImpl::LoadOnThread(const std::string& pa
     }
     else
     {
-        m_AudioClips.emplace_back(sound);
+        m_AudioClips[id] = sound;
     }
 }

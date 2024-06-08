@@ -80,12 +80,12 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	ResourceManager::GetInstance().Init(dataPath);
 
 #if _DEBUG
-	ServiceLocator::RegisterSoundSystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<SDLSoundSystem>()));
+	ServiceLocator::GetInstance().RegisterSoundSystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<SDLSoundSystem>()));
 #else
 	ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDLSoundSystem>());
 #endif
 
-	ServiceLocator::GetSoundSystem().Init();
+	ServiceLocator::GetInstance().GetSoundSystem().Init();
 }
 
 dae::Minigin::~Minigin()
@@ -118,7 +118,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lastTime = currentTime;
 		lag += deltaTime;
 		time.Update(deltaTime);
-		ServiceLocator::Update();
+
+		ServiceLocator::GetInstance().Update();
 
 		doContinue = input.ProcessInput();
 

@@ -2,25 +2,28 @@
 #include <memory>
 
 #include "NullSoundSystem.h"
+#include "Singleton.h"
 #include "SoundSystem.h"
 
 namespace dae
 {
-	class ServiceLocator final
+	class ServiceLocator final : public Singleton<ServiceLocator>
 	{
-		
-
 	public:
-	
-		static SoundSystem& GetSoundSystem();
-		static void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& soundSystem);
-		static void Update();
+
+
+
+		SoundSystem& GetSoundSystem();
+		void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& soundSystem);
+		void Update();
+		void Mute();
 		
-		//static void Init();
 
 	private:
-		static std::unique_ptr<SoundSystem> m_Instance;
-		static std::unique_ptr<NullSoundSystem>m_NullSystem;
+		std::unique_ptr<SoundSystem> m_Instance{ std::make_unique<NullSoundSystem>() };
+		std::unique_ptr<NullSoundSystem>m_NullSystem{ std::make_unique<NullSoundSystem>() };
+
+		bool m_IsMuted{false};
 	};
 
 }

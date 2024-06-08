@@ -21,6 +21,13 @@ namespace qbert
 		virtual void Execute() override;
 	};
 
+	class SkipLevelCommand : public dae::Command
+	{
+	public:
+		SkipLevelCommand() = default;
+		virtual void Execute() override;
+	};
+
 	class IncrementLetterCommand : public dae::GameObjectCommand
 	{
 	public:

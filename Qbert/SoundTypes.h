@@ -3,8 +3,8 @@ namespace qbert
 {
 	enum class SoundType
 	{
-		JUMP,
 		FALL,
+		JUMP,
 		WIN,
 		LOAD,
 		HIT,

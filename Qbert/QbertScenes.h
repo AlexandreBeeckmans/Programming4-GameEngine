@@ -56,6 +56,7 @@ namespace qbert
 
 		bool goNext{false};
 		bool gameOver{false};
+		bool skipLevel{ false };
 
 		std::vector<int> m_Lives{};
 		std::vector<int> m_Scores{};

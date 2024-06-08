@@ -39,7 +39,7 @@ std::unique_ptr<qbert::PlayerState> qbert::WaitingState::HandleTransitions()
 	//If an enemy is on the same index
 	if(GetKillableComponent()->IsEnemyEncounteredThisFrame())
 	{
-		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::HIT), 100.0f);
+		dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::HIT), 100.0f);
 		return std::make_unique<DieState>();
 	}
 
@@ -80,7 +80,7 @@ std::unique_ptr<qbert::PlayerState> qbert::JumpingState::HandleTransitions()
 
 	if (GetTileActivatorComponent()->IsOnTeleporter()) return std::make_unique<TeleportingState>();
 
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::FALL), 100.0f);
 	return std::make_unique<DieState>();
 }
 
@@ -95,7 +95,7 @@ void qbert::JumpingState::Enter(dae::GameObject& qbert)
 	GetJumpAnimator()->SetJumpSprite();
 
 	//Play jumpSound
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::JUMP), 100.0f);
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::JUMP), 100.0f);
 
 	//Set Movement direction
 	GetMoveComponent()->SetMovementDirection();
@@ -125,7 +125,7 @@ void qbert::DieState::Enter(dae::GameObject& qbert)
 	GetKillableComponent()->Kill();
 	m_CurrentDeadTime = 0;
 
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::SWEAR), 100.0f);
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::SWEAR), 100.0f);
 }
 
 void qbert::DieState::Exit()
@@ -152,7 +152,7 @@ void qbert::WinState::Enter(dae::GameObject& qbert)
 
 	if(!m_HasWon)
 	{
-		dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::WIN), 100.0f);
+		dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::WIN), 100.0f);
 		GetTileActivatorComponent()->AnimateTiles();
 		m_HasWon = true;
 	}
@@ -177,7 +177,7 @@ std::unique_ptr<qbert::PlayerState> qbert::TeleportingState::HandleTransitions()
 void qbert::TeleportingState::Enter(dae::GameObject& qbert)
 {
 	PlayerState::Enter(qbert);
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::DISKMOVE), 100.0f);
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::DISKMOVE), 100.0f);
 }
 
 std::unique_ptr<qbert::PlayerState> qbert::FallingState::HandleTransitions()
@@ -191,7 +191,7 @@ void qbert::FallingState::Enter(dae::GameObject& qbert)
 	PlayerState::Enter(qbert);
 	GetMoveComponent()->SetCurrentIndexToTop();
 	GetFallComponent()->SetFallDirection();
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::DISKLAND), 100.0f);
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::DISKLAND), 100.0f);
 
 }
 

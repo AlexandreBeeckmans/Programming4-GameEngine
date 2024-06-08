@@ -3,11 +3,12 @@
 
 #include "NullSoundSystem.h"
 
-std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::m_Instance{ std::make_unique<NullSoundSystem>() };
-
 dae::SoundSystem& dae::ServiceLocator::GetSoundSystem()
 {
-	return *m_Instance;
+	if(!m_IsMuted)
+		return *m_Instance;
+
+	return *m_NullSystem;
 }
 
 void dae::ServiceLocator::RegisterSoundSystem(std::unique_ptr<SoundSystem>&& soundSystem)
@@ -28,9 +29,10 @@ void dae::ServiceLocator::Update()
 	m_Instance->Update();
 }
 
-//void dae::ServiceLocator::Init()
-//{
-//	std::cout << "SDL Mixer initializing...\n";
-//	m_Instance->Init();
-//	std::cout << "SDL Mixer initialized...\n";
-//}
+void dae::ServiceLocator::Mute()
+{
+	m_IsMuted = !m_IsMuted;
+
+	if (m_IsMuted)
+		m_Instance->StopAll();
+}

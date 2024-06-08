@@ -12,6 +12,13 @@ namespace dae
 		virtual void Execute() = 0;
 	};
 
+	class MuteCommand final : public Command
+	{
+	public:
+		MuteCommand() = default;
+		virtual void Execute() override;
+	};
+
 
 	class GameObjectCommand : public Command
 	{

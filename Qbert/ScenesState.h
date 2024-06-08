@@ -15,13 +15,15 @@ namespace qbert
 	class SceneStates : public dae::State<SceneStates>
 	{
 	public:
-		virtual void Exit();
+		virtual void Enter() override;
+		virtual void Exit() override;
 
 		static bool IncrementGameMode(const int addedValue);
 
 	protected:
 		static void ResetLevelAndRound();
 		static void IncrementRound();
+		static void IncrementLevel();
 
 		static int GetLevelNumber() { return m_LevelNumber; }
 		static int GetRoundNumber() { return m_RoundNumber; }

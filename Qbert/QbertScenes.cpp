@@ -472,7 +472,7 @@ void qbert::QbertScenes::LoadLevelLoading(const int level)
 	loadObject->GetComponent<dae::ImageComponent>()->SetWidth(dae::Minigin::GetWindowWidth());
 	loadObject->GetComponent<dae::ImageComponent>()->SetHeight(dae::Minigin::GetWindowHeight());
 
-	dae::ServiceLocator::GetSoundSystem().Play(static_cast<int>(SoundType::LOAD), 100.0f);
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(static_cast<int>(SoundType::LOAD), 100.0f);
 
 
 
